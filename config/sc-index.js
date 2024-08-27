@@ -7,5 +7,5 @@ const { startServer } = require('./sc-https.js');
 
 module.exports = {
     expressApp,
-    startServer
+    startServer,
 };
