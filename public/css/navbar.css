@@ -1,0 +1,37 @@
+
+
+#navbar {
+    background-color: #333;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    text-align: center; /* Center the content inside the navbar */
+}
+
+.navbar-list {
+    list-style-type: none;
+    display: inline-block; /* Make the ul inline-block to center it */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-list li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.navbar-list li a {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.navbar-list li a:hover {
+    background-color: #575757;
+    border-radius: 4px;
+}
+

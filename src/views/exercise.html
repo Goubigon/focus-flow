@@ -5,18 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercise Page Title</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="/css/exercise.css">
 </head>
 
 <body>
     <div id="navbar"></div>
     <script>
-        fetch('navbar.html')
+        fetch('/partial/navbar.html')
             .then(response => response.text())
             .then(data => document.getElementById('navbar').innerHTML = data);
     </script>
+    
 
-    <div class="container">
+    <div class="middle-rounded-container">
         <h1>Exercise</h1>
         <div class="numbers-container">
             <p id="value1" class="random-number"></p>
@@ -34,7 +36,7 @@
         
     </div>
 
-    <script src="exercise-script.js"></script>
+    <script src="/js/exercise-script.js"></script>
 </body>
 
 </html>
