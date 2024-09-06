@@ -1,21 +1,24 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    background-color: #f0f0f0;
     color: #333;
-    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
 }
 
-h1 {
+#home h1 {
     color: #00b395;
 }
 
-p {
-    font-size: 1.1em;
+#home p {
+    font-size: 1.5em;
     line-height: 1.6;
 }
 
-a {
+#home a {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 15px;
@@ -25,6 +28,6 @@ a {
     border-radius: 5px;
 }
 
-a:hover {
+#home a:hover {
     background-color: #003d7a;
 }
