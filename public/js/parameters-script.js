@@ -8,7 +8,7 @@ document.getElementById('configForm').addEventListener('submit', function (event
     const minNumber = parseFloat(document.getElementById('minNumber').value);
     const maxNumber = parseFloat(document.getElementById('maxNumber').value);
 
-    const floatNumber = parseFloat(document.getElementById('floatNumber').value);
+    const floatNumber = 0;
     const nNumber = 2;
 
 
