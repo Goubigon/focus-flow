@@ -24,14 +24,19 @@ document.getElementById('configForm').addEventListener('submit', function (event
     // Clear previous error message
     errorMessage.textContent = '';
 
-
-
     // Validate input
+    //Min is lower or equal Max
     if (minNumber >= maxNumber) {
         errorMessage.textContent = "Min number must be less than max number.";
         errorMessage.style.color = 'red';
-    } else {
-
+    }
+    //at least one operation is selected
+    else if ((additionCheck||substractionCheck||multiplicationCheck) == false){
+        errorMessage.textContent = "Must check at least one operation.";
+        errorMessage.style.color = 'red';
+    }
+    //All parameters are correct
+    else {
         errorMessage.textContent = "Successfully saved";
         errorMessage.style.color = 'green';
 
