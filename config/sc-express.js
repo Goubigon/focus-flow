@@ -14,6 +14,7 @@ const aboutRoute = require('../src/routes/about.js');
 const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
+const parametersRoute = require('../src/routes/parameters.js');
 
 
 app.use('/', homeRoute);
@@ -21,6 +22,7 @@ app.use('/about', aboutRoute);
 app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
+app.use('/parameters', parametersRoute);
 
 
 

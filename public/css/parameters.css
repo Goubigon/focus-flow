@@ -1,0 +1,22 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+}
+label, input {
+    margin-bottom: 10px;
+}
+.error {
+    color: red;
+    font-size: 0.9em;
+}
