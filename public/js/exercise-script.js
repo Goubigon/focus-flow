@@ -7,24 +7,63 @@ let startTime; //starting time when questions are loaded
 
 //generates the numbers, the operation
 function generateExercise() {
-    const value1 = Math.floor(Math.random() * 10) + 1; // Generates a random number between 1 and 10
-    const value2 = Math.floor(Math.random() * 10) + 1; // Generates another random number between 1 and 10
-    document.getElementById('value1').textContent = value1;
-    document.getElementById('value2').textContent = value2;
 
-    const operations = ["+", "-", "x"];
-    const randomIndex = Math.floor(Math.random() * operations.length);
-    const operation = operations[randomIndex];
-    document.getElementById('randomOperation').textContent = operation;
+    const formDataString = localStorage.getItem('formData');
+    console.log(Math.floor(Math.random()*10)+1)
 
-    // Calculate the correct answer based on the operation
-    if (operation === "+") {
-        correctAnswer = value1 + value2;
-    } else if (operation === "-") {
-        correctAnswer = value1 - value2;
-    } else if (operation === "x") {
-        correctAnswer = value1 * value2;
+    if (formDataString) {
+        const formData = JSON.parse(formDataString);
+
+        // Now you can use formData in this script
+        console.log(formData);
+
+        console.log('Successfully parsed data json');
+
+        const value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber; 
+        const value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+
+
+        if (value1 < 0) {
+            document.getElementById('value1').textContent = `(${value1})`;
+        } else {
+            document.getElementById('value1').textContent = value1;
+        }
+
+        if (value2 < 0) {
+            document.getElementById('value2').textContent = `(${value2})`;
+        } else {
+            document.getElementById('value2').textContent = value2;
+        }
+
+        
+
+        //document.getElementById('value1').textContent = value1;
+        //document.getElementById('value2').textContent = value2;
+
+        const operations = ["+", "-", "x"];
+        const randomIndex = Math.floor(Math.random() * operations.length);
+        const operation = operations[randomIndex];
+        document.getElementById('randomOperation').textContent = operation;
+
+        // Calculate the correct answer based on the operation
+        if (operation === "+") {
+            correctAnswer = value1 + value2;
+        } else if (operation === "-") {
+            correctAnswer = value1 - value2;
+        } else if (operation === "x") {
+            correctAnswer = value1 * value2;
+        }
+
+        // Example usage
+        // alert(`Min Number: ${formData.minNumber}, Max Number: ${formData.maxNumber}, Enable Feature: ${formData.enableFeature}`);
+    } else {
+        console.log('No form data found in localStorage.');
     }
+
+
+
+
+
 
     clearAnswers()
 
@@ -43,7 +82,7 @@ function clearAnswers() {
 
 function submitAnswer() {
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
-    
+
     let feedbackMessage = ''; //displayed message (correct/incorrect)
     const feedbackElement = document.getElementById('feedback');
 
