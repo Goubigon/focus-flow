@@ -6,15 +6,22 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
 }
 form {
-    display: flex;
     flex-direction: column;
-    width: 200px;
+    width: 300px;
 }
 label, input {
     margin-bottom: 10px;
+}
+
+input{
+    margin-right : 10px
+}
+
+label {
+    display: inline-block;
+    margin-right: 10px;
 }
 .error {
     color: red;

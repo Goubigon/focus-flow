@@ -25,20 +25,29 @@
 
         <form id="configForm">
             <label for="minNumber">Min Number:</label>
-            <input type="number" id="minNumber" name="minNumber" required>
+            <input type="number" id="minNumber" name="minNumber" value="-10" required>
             
             <label for="maxNumber">Max Number:</label>
-            <input type="number" id="maxNumber" name="maxNumber" required>
+            <input type="number" id="maxNumber" name="maxNumber" value="10" required>
 
 
             <label for="floatNumber">Numbers after comma:</label>
-            <input type="number" id="floatNumber" name="floatNumber" required>
+            <input type="number" id="floatNumber" name="floatNumber" value="2" required>
 
             <label for="nNumber">Number of Numbers:</label>
-            <input type="number" id="nNumber" name="nNumber" required>
+            <input type="number" id="nNumber" name="nNumber" value="2" disabled>
 
+
+            
             <label for="operation">List of operations:</label>
-            <p>TODO</p>
+
+            <label for="addition">+</label>
+            <input type="checkbox" id="additionCheck" name="additionCheck">
+            <label for="substraction">-</label>
+            <input type="checkbox" id="substractionCheck" name="substractionCheck">
+            <label for="multiplication">x</label>
+            <input type="checkbox" id="multiplicationCheck" name="multiplicationCheck">
+
 
     
             <button type="submit">Submit</button>
