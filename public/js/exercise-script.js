@@ -5,24 +5,23 @@ let isCorrect;
 let startTime; //starting time when questions are loaded
 
 
-//generates the numbers, the operation
+//generates the numbers, the operation on exercise.html
 function generateExercise() {
-
+    //get the form (localstorage) from parameters.html
+    //store in string for now to make sure there is something
     const formDataString = localStorage.getItem('formData');
-    console.log(Math.floor(Math.random()*10)+1)
 
     if (formDataString) {
+        //parse the form in json
         const formData = JSON.parse(formDataString);
-
-        // Now you can use formData in this script
         console.log(formData);
 
-        console.log('Successfully parsed data json');
-
-        const value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber; 
+        //values between min and max
+        const value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
         const value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
 
 
+        //adding () if negative
         if (value1 < 0) {
             document.getElementById('value1').textContent = `(${value1})`;
         } else {
@@ -35,12 +34,14 @@ function generateExercise() {
             document.getElementById('value2').textContent = value2;
         }
 
-        
 
-        //document.getElementById('value1').textContent = value1;
-        //document.getElementById('value2').textContent = value2;
+        //adding the selected operations to a list
+        let operations = [];
+        if (formData.additionCheck) {operations.push("+");}
+        if (formData.substractionCheck) {operations.push("-");}
+        if (formData.multiplicationCheck) {operations.push("x");}
 
-        const operations = ["+", "-", "x"];
+        //select a random operation from the list
         const randomIndex = Math.floor(Math.random() * operations.length);
         const operation = operations[randomIndex];
         document.getElementById('randomOperation').textContent = operation;
@@ -54,16 +55,9 @@ function generateExercise() {
             correctAnswer = value1 * value2;
         }
 
-        // Example usage
-        // alert(`Min Number: ${formData.minNumber}, Max Number: ${formData.maxNumber}, Enable Feature: ${formData.enableFeature}`);
     } else {
         console.log('No form data found in localStorage.');
     }
-
-
-
-
-
 
     clearAnswers()
 
