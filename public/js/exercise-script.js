@@ -1,11 +1,8 @@
 let correctAnswer;  // Global variable to store the correct answer
-const delayTime = 1000; // Delay time in milliseconds (e.g., 3000ms = 3 seconds)
-const incorrectDelayTime = 4000;
-let isCorrect;
 let startTime; //starting time when questions are loaded
 
 
-//generates the numbers, the operation on exercise.html
+//generates the numbers and the operation on exercise.html
 function generateExercise() {
     //get the form (localstorage) from parameters.html
     //store in string for now to make sure there is something
@@ -37,9 +34,9 @@ function generateExercise() {
 
         //adding the selected operations to a list
         let operations = [];
-        if (formData.additionCheck) {operations.push("+");}
-        if (formData.substractionCheck) {operations.push("-");}
-        if (formData.multiplicationCheck) {operations.push("x");}
+        if (formData.additionCheck) { operations.push("+"); }
+        if (formData.substractionCheck) { operations.push("-"); }
+        if (formData.multiplicationCheck) { operations.push("x"); }
 
         //select a random operation from the list
         const randomIndex = Math.floor(Math.random() * operations.length);
@@ -74,37 +71,35 @@ function clearAnswers() {
     document.getElementById('timeTaken').textContent = '';
 }
 
+// When pressing Submit or Enter.key
 function submitAnswer() {
+    //get user's answer
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
 
-    let feedbackMessage = ''; //displayed message (correct/incorrect)
+    //display feedback to user
     const feedbackElement = document.getElementById('feedback');
 
-    if (isNaN(userAnswer)) {
-        feedbackMessage = "Please enter a valid number.";
-        feedbackElement.style.color = 'orange';  // Set color for invalid input
-    } else if (userAnswer === correctAnswer) {
-        feedbackMessage = "Correct! Well done!";
-        feedbackElement.style.color = 'green';  // Set color for correct answer
-        isCorrect = true;
-    } else {
-        feedbackMessage = `Incorrect. The correct answer was ${correctAnswer}.`;
-        feedbackElement.style.color = 'red';  // Set color for incorrect answer
-        isCorrect = false;
-    }
-
-    feedbackElement.textContent = feedbackMessage;
-
+    
     // Calculate time taken
     const endTime = new Date();
+    
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
-    //round to 2nd number
-    document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+    
 
-
-    // Generate a new question after a delay
-    // incorrect answers will let a longer timer
-    setTimeout(generateExercise, isCorrect ? delayTime : incorrectDelayTime);
+    if (isNaN(userAnswer)) {
+        feedbackElement.textContent = "Please enter a valid number.";
+        feedbackElement.style.color = 'orange';  // Set color for invalid input
+    } else if (userAnswer === correctAnswer) {
+        feedbackElement.textContent = "Correct! Well done!";
+        feedbackElement.style.color = 'green';  // Set color for correct answer
+        setTimeout(generateExercise, 1000);
+        document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+    } else {
+        feedbackElement.textContent = `Incorrect. The correct answer was ${correctAnswer}.`;
+        feedbackElement.style.color = 'red';  // Set color for incorrect answer
+        setTimeout(generateExercise, 4000);
+        document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+    }
 }
 
 //Pressing the 'Enter' key also submit the answer
@@ -117,7 +112,8 @@ function setupEnterKeyListener() {
     });
 }
 
-// Call the function to generate random numbers when the page loads
+// When the windows page loads
+// Call the function to generate random numbers 
 window.onload = function () {
     generateExercise();
     setupEnterKeyListener();  // Add this line to set up the Enter key listener
