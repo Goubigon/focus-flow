@@ -1,5 +1,9 @@
+//script used by parameters.html
+//handles form submission
+
+
 document.getElementById('configForm').addEventListener('submit', function (event) {
-    //default form submission makes submition reloads the page
+    //default form submission makes submission reloads the page
     //so this prevents the page from reloading
     event.preventDefault();
 
@@ -13,11 +17,8 @@ document.getElementById('configForm').addEventListener('submit', function (event
 
 
     const additionCheck = document.getElementById('additionCheck').checked;
-    const substractionCheck = document.getElementById('substractionCheck').checked;
+    const subtractionCheck = document.getElementById('subtractionCheck').checked;
     const multiplicationCheck = document.getElementById('multiplicationCheck').checked;
-
-
-
 
     const errorMessage = document.getElementById('errorMessage');
 
@@ -31,7 +32,7 @@ document.getElementById('configForm').addEventListener('submit', function (event
         errorMessage.style.color = 'red';
     }
     //at least one operation is selected
-    else if ((additionCheck||substractionCheck||multiplicationCheck) == false){
+    else if ((additionCheck||subtractionCheck||multiplicationCheck) == false){
         errorMessage.textContent = "Must check at least one operation.";
         errorMessage.style.color = 'red';
     }
@@ -48,21 +49,16 @@ document.getElementById('configForm').addEventListener('submit', function (event
             floatNumber: floatNumber,
 
             additionCheck: additionCheck,
-            substractionCheck: substractionCheck,
+            subtractionCheck: subtractionCheck,
             multiplicationCheck: multiplicationCheck,
         };
-
-
 
         //null -> no placeholder function
         //4 -> number of spaces for indentation in result
         const jsonString = JSON.stringify(formData, null, 4); // Pretty print the JSON
         document.getElementById('jsonOutput').textContent = jsonString;
 
-
         localStorage.setItem('formData', JSON.stringify(formData));
         window.location.href = 'exercise';
-
-
     }
 });

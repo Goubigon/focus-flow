@@ -1,12 +1,10 @@
+//All express routes
 const express = require('express');
-//const path = require('path');
 
 const app = express();
-
 const path = require('path');
 
 app.use(express.static(path.join(__dirname, '../public')));
-
 
 
 const homeRoute = require('../src/routes/home.js');
@@ -23,7 +21,6 @@ app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
-
 
 
 // Handle 404 errors

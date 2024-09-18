@@ -35,7 +35,7 @@ function generateExercise() {
         //adding the selected operations to a list
         let operations = [];
         if (formData.additionCheck) { operations.push("+"); }
-        if (formData.substractionCheck) { operations.push("-"); }
+        if (formData.subtractionCheck) { operations.push("-"); }
         if (formData.multiplicationCheck) { operations.push("x"); }
 
         //select a random operation from the list

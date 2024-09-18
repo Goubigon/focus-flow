@@ -1,3 +1,5 @@
+//Handle https server
+//looking for files in ../certificates/localhost*.pem
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
