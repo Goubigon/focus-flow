@@ -1,6 +1,21 @@
 //script used by parameters.html
 //handles form submission
 
+//when loading parameters windows
+//loads last saved parameters if it exists
+function loadExistingForm(){
+    const formDataString = localStorage.getItem('formData');
+    if(formDataString){
+        const formData = JSON.parse(formDataString);
+        console.log(formData);
+        document.getElementById('minNumber').value = formData.minNumber;
+        document.getElementById('maxNumber').value = formData.maxNumber;
+
+        document.getElementById('additionCheck').checked = formData.additionCheck;
+        document.getElementById('subtractionCheck').checked = formData.subtractionCheck;
+        document.getElementById('multiplicationCheck').checked = formData.multiplicationCheck;
+    }
+}
 
 document.getElementById('configForm').addEventListener('submit', function (event) {
     //default form submission makes submission reloads the page
@@ -62,3 +77,9 @@ document.getElementById('configForm').addEventListener('submit', function (event
         window.location.href = 'exercise';
     }
 });
+
+// When the windows page loads
+// Call the function to generate last written parameters
+window.onload = function () {
+    loadExistingForm();
+};
