@@ -81,6 +81,7 @@ formElement.addEventListener('submit', (event) => {
             minNumber: minNumber,
             maxNumber: maxNumber,
             floatNumber: floatNumber,
+            nNumber: nNumber,
 
             additionCheck: additionCheck,
             subtractionCheck: subtractionCheck,
