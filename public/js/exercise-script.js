@@ -2,6 +2,10 @@ let correctAnswer;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
 
 
+
+const exSubmitButton = document.getElementById('exSubmitButton');
+
+
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
     //get the form (localStorage) from parameters.html
@@ -72,42 +76,46 @@ function clearAnswers() {
 }
 
 // When pressing Submit or Enter.key
-function submitAnswer() {
+exSubmitButton.addEventListener('click', (event) => {
     //get user's answer
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
 
     //display feedback to user
     const feedbackElement = document.getElementById('feedback');
 
-    
+
     // Calculate time taken
     const endTime = new Date();
-    
+
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
-    
+
 
     if (isNaN(userAnswer)) {
         feedbackElement.textContent = "Please enter a valid number.";
         feedbackElement.style.color = 'orange';  // Set color for invalid input
-    } else if (userAnswer === correctAnswer) {
-        feedbackElement.textContent = "Correct! Well done!";
-        feedbackElement.style.color = 'green';  // Set color for correct answer
-        setTimeout(generateExercise, 1000);
-        document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
     } else {
-        feedbackElement.textContent = `Incorrect. The correct answer was ${correctAnswer}.`;
-        feedbackElement.style.color = 'red';  // Set color for incorrect answer
-        setTimeout(generateExercise, 4000);
-        document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+        if (userAnswer === correctAnswer) {
+            feedbackElement.textContent = "Correct! Well done!";
+            feedbackElement.style.color = 'green';  // Set color for correct answer
+            setTimeout(generateExercise, 1000);
+            document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+        } else {
+            feedbackElement.textContent = `Incorrect. The correct answer was ${correctAnswer}.`;
+            feedbackElement.style.color = 'red';  // Set color for incorrect answer
+            setTimeout(generateExercise, 4000);
+            document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+        }
+        
+        
     }
-}
+});
 
 //Pressing the 'Enter' key also submit the answer
 function setupEnterKeyListener() {
     const inputField = document.getElementById('userAnswer');
     inputField.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') {
-            submitAnswer();
+            exSubmitButton.click();
         }
     });
 }
