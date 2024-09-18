@@ -1,16 +1,21 @@
-let correctAnswer;  // Global variable to store the correct answer
+let correctResult;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
 
 
 
 const exSubmitButton = document.getElementById('exSubmitButton');
 
+//TODO rename to left & right values
+let value1 = 0
+let value2 = 0
+let operation = ""
+let formDataString = ""
 
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
     //get the form (localStorage) from parameters.html
     //store in string for now to make sure there is something
-    const formDataString = localStorage.getItem('formData');
+    formDataString = localStorage.getItem('formData');
 
     if (formDataString) {
         //parse the form in json
@@ -18,8 +23,8 @@ function generateExercise() {
         console.log(formData);
 
         //values between min and max
-        const value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
-        const value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+        value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+        value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
 
 
         //adding () if negative
@@ -44,16 +49,16 @@ function generateExercise() {
 
         //select a random operation from the list
         const randomIndex = Math.floor(Math.random() * operations.length);
-        const operation = operations[randomIndex];
+        operation = operations[randomIndex];
         document.getElementById('randomOperation').textContent = operation;
 
         // Calculate the correct answer based on the operation
         if (operation === "+") {
-            correctAnswer = value1 + value2;
+            correctResult = value1 + value2;
         } else if (operation === "-") {
-            correctAnswer = value1 - value2;
+            correctResult = value1 - value2;
         } else if (operation === "x") {
-            correctAnswer = value1 * value2;
+            correctResult = value1 * value2;
         }
 
     } else {
@@ -79,38 +84,57 @@ function clearAnswers() {
 exSubmitButton.addEventListener('click', async (event) => {
     //get user's answer
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
-
     //display feedback to user
     const feedbackElement = document.getElementById('feedback');
 
-
     // Calculate time taken
     const endTime = new Date();
-
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
-
 
     if (isNaN(userAnswer)) {
         feedbackElement.textContent = "Please enter a valid number.";
         feedbackElement.style.color = 'orange';  // Set color for invalid input
     } else {
-        if (userAnswer === correctAnswer) {
+        if (userAnswer === correctResult) {
             feedbackElement.textContent = "Correct! Well done!";
             feedbackElement.style.color = 'green';  // Set color for correct answer
             setTimeout(generateExercise, 1000);
             document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
         } else {
-            feedbackElement.textContent = `Incorrect. The correct answer was ${correctAnswer}.`;
+            feedbackElement.textContent = `Incorrect. The correct answer was ${correctResult}.`;
             feedbackElement.style.color = 'red';  // Set color for incorrect answer
             setTimeout(generateExercise, 4000);
             document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
         }
 
-        createLine("bb1", "vv2");
+
+        console.log(value1)
+        console.log(operation)
+        console.log(value2)
+        console.log(correctResult)
+        console.log(userAnswer)
+        console.log(userAnswer == correctResult)
+
+        console.log(timeTaken)
+        console.log("Done in db")
+
+        if (formDataString) {
+            //parse the form in json
+            const formData = JSON.parse(formDataString);
+            console.log(formData.minNumber);
+            console.log(formData.maxNumber);
+            console.log(formData.floatNumber);
+            console.log(formData.nNumber);
+            console.log(formData.additionCheck);
+            console.log(formData.subtractionCheck);
+            console.log(formData.multiplicationCheck);
+        }
+
+        //createAnswer("bb1", "vv2");
     }
 });
 
-async function createLine(v1, v2){
+async function createAnswer(v1, v2){
     try {
         const response = await fetch('/data/createLine', {
             method: 'POST',

@@ -17,16 +17,23 @@ CREATE TABLE answers (
     maxNumber FLOAT(24) NOT NULL,
     floatNumber INT(10) NOT NULL,
     nNumber INT(10) NOT NULL,
-    availableOperations VARCHAR(5) NOT NULL -- Stores combinations like "+-x", "+-", "x", etc.
+
+    additionCheck BOOLEAN NOT NULL,
+    subtractionCheck BOOLEAN NOT NULL,
+    multiplicationCheck BOOLEAN NOT NULL
 );
 
 INSERT INTO Answers (
     leftOperation, mathOperation, rightOperation, 
     qResult, qAnswer, isCorrect, 
     qTime, qDate, 
-    minNumber, maxNumber, floatNumber, nNumber, availableOperations)
+    minNumber, maxNumber, floatNumber, nNumber,
+    additionCheck, subtractionCheck, multiplicationCheck)
 VALUES (
     2, '+', 3, 
     8.0, 8.0, 1, 
     5.65, '2024-09-18 12:34:56', 
-    0.0, 10.0, 0.0, 2, '+-x');
+    0.0, 10.0, 0.0, 2, 
+    '1', '1', '0');
+
+SELECT * FROM Answers\G --vertical output
