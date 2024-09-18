@@ -76,7 +76,7 @@ function clearAnswers() {
 }
 
 // When pressing Submit or Enter.key
-exSubmitButton.addEventListener('click', (event) => {
+exSubmitButton.addEventListener('click', async (event) => {
     //get user's answer
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
 
@@ -105,10 +105,33 @@ exSubmitButton.addEventListener('click', (event) => {
             setTimeout(generateExercise, 4000);
             document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
         }
-        
-        
+
+        createLine("bb1", "vv2");
     }
 });
+
+async function createLine(v1, v2){
+    try {
+        const response = await fetch('/data/createLine', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name : v1, value : v2 }),
+        });
+    
+        if (response.ok) {
+            const result = await response.json();
+            console.log('My line has been created:', result);
+        } else {
+            console.error('Failed to create line.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+    
+}
+
 
 //Pressing the 'Enter' key also submit the answer
 function setupEnterKeyListener() {
