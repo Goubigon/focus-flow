@@ -1,6 +1,22 @@
 //script used by parameters.html
 //handles form submission
 
+//boolean true if anything in the inputs of the form has changed
+let isFormChanged = false;
+let isFormSubmitted = false;
+
+//get element containing all the inputs (4 numbers, 3 checkboxes)
+const formElement = document.getElementById('configForm');
+
+const inputList = formElement.querySelectorAll('input');
+//add change listener on each inputList
+inputList.forEach(currentInput => {
+    currentInput.addEventListener('change', () => {
+        isFormChanged = true;
+    });
+});
+
+
 //when loading parameters windows
 //loads last saved parameters if it exists
 function loadExistingForm(){
@@ -17,10 +33,13 @@ function loadExistingForm(){
     }
 }
 
-document.getElementById('configForm').addEventListener('submit', function (event) {
+formElement.addEventListener('submit', (event) => {
     //default form submission makes submission reloads the page
     //so this prevents the page from reloading
     event.preventDefault();
+    
+    isFormSubmitted = true;
+    isFormChanged = false;
 
 
     // Get the input values
@@ -79,7 +98,17 @@ document.getElementById('configForm').addEventListener('submit', function (event
 });
 
 // When the windows page loads
-// Call the function to generate last written parameters
+// Call the function to generate last written parameters if it exists
 window.onload = function () {
     loadExistingForm();
 };
+
+// When leaving parameters page, if form has changed && is not submitted
+// -> Pop-up message
+window.addEventListener('beforeunload', (event) => {
+    if (isFormChanged && !isFormSubmitted) {
+        event.preventDefault();
+        //deprecated but old browsers still need a message
+        event.returnValue = "You have unsaved changes. Are you sure you want to leave?";
+    }
+});

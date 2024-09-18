@@ -4,7 +4,7 @@ let startTime; //starting time when questions are loaded
 
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
-    //get the form (localstorage) from parameters.html
+    //get the form (localStorage) from parameters.html
     //store in string for now to make sure there is something
     const formDataString = localStorage.getItem('formData');
 
