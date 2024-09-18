@@ -13,6 +13,7 @@ const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
+const mathDataRoute = require('../src/routes/math-data.js');
 
 
 app.use('/', homeRoute);
@@ -21,6 +22,7 @@ app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
+app.use('/math-data', mathDataRoute);
 
 
 // Handle 404 errors
