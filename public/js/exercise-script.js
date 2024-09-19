@@ -1,8 +1,6 @@
 let correctResult;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
 
-
-
 const exSubmitButton = document.getElementById('exSubmitButton');
 
 //TODO rename to left & right values
@@ -10,6 +8,23 @@ let value1 = 0
 let value2 = 0
 let operation = ""
 let formDataString = ""
+
+
+function getCurrentDateTime() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+
+
 
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
@@ -108,17 +123,18 @@ exSubmitButton.addEventListener('click', async (event) => {
         }
 
 
-        console.log(value1)
-        console.log(operation)
-        console.log(value2)
-        console.log(correctResult)
-        console.log(userAnswer)
-        console.log(userAnswer == correctResult)
 
-        console.log(timeTaken)
-        console.log("Done in db")
 
         if (formDataString) {
+            console.log(value1)
+            console.log(operation)
+            console.log(value2)
+            console.log(correctResult)
+            console.log(userAnswer)
+            console.log(userAnswer == correctResult)
+
+            console.log(timeTaken)
+            console.log(getCurrentDateTime())
             //parse the form in json
             const formData = JSON.parse(formDataString);
             console.log(formData.minNumber);
@@ -128,22 +144,49 @@ exSubmitButton.addEventListener('click', async (event) => {
             console.log(formData.additionCheck);
             console.log(formData.subtractionCheck);
             console.log(formData.multiplicationCheck);
+
+            createAnswer(value1, operation, value2,
+                correctResult, userAnswer, userAnswer == correctResult,
+                timeTaken, getCurrentDateTime(),
+                formData.minNumber, formData.maxNumber, formData.floatNumber, formData.nNumber,
+                formData.additionCheck, formData.subtractionCheck, formData.multiplicationCheck
+            )
+
         }
 
-        //createAnswer("bb1", "vv2");
+
     }
 });
 
-async function createAnswer(v1, v2){
+async function createAnswer(leftOperation, mathOperation, rightOperation,
+    qResult, qAnswer, isCorrect,
+    qTime, qDate,
+    minNumber, maxNumber, floatNumber, nNumber,
+    additionCheck, subtractionCheck, multiplicationCheck) {
     try {
-        const response = await fetch('/data/createLine', {
+        const response = await fetch('/math-data/createAnswer', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ name : v1, value : v2 }),
+            body: JSON.stringify({
+                leftOperation: leftOperation,
+                mathOperation: mathOperation,
+                rightOperation: rightOperation,
+                qResult: qResult,
+                qAnswer: qAnswer,
+                isCorrect: isCorrect,
+                qTime: qTime,
+                qDate: qDate,
+                minNumber: minNumber,
+                maxNumber: maxNumber,
+                floatNumber: floatNumber,
+                nNumber: nNumber,
+                additionCheck: additionCheck,
+                subtractionCheck: subtractionCheck,
+                multiplicationCheck: multiplicationCheck
+            })
         });
-    
         if (response.ok) {
             const result = await response.json();
             console.log('My line has been created:', result);
@@ -153,7 +196,7 @@ async function createAnswer(v1, v2){
     } catch (error) {
         console.error('Error:', error);
     }
-    
+
 }
 
 

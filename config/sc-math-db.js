@@ -37,4 +37,44 @@ async function getAnswer(id) {
 }
 
 
-module.exports = { getAnswers };
+async function createAnswer(
+  leftOperation, mathOperation, rightOperation,
+  qResult, qAnswer, isCorrect,
+  qTime, qDate,
+  minNumber, maxNumber, floatNumber, nNumber,
+  additionCheck, subtractionCheck, multiplicationCheck) {
+
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO Answers (
+        leftOperation, mathOperation, rightOperation, 
+        qResult, qAnswer, isCorrect, 
+        qTime, qDate, 
+        minNumber, maxNumber, floatNumber, nNumber,
+        additionCheck, subtractionCheck, multiplicationCheck)
+      VALUES (
+        ?, ?, ?,
+        ?, ?, ?,
+        ?, ?,
+        ?, ?, ?, ?,
+        ?, ?, ?
+      )
+    `, [
+      leftOperation, mathOperation, rightOperation,
+      qResult, qAnswer, isCorrect,
+      qTime, qDate,
+      minNumber, maxNumber, floatNumber, nNumber,
+      additionCheck, subtractionCheck, multiplicationCheck
+    ]);
+
+    return getAnswer(result.insertId); // Return the result if needed
+
+  } catch (error) {
+    console.error("Error creating answer:", error);
+    throw error; // Rethrow the error if you want it to propagate
+  }
+}
+
+
+
+module.exports = { getAnswers, getAnswer, createAnswer };
