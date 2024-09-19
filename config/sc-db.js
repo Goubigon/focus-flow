@@ -55,6 +55,7 @@ async function createLine(name, value){
         `, [name, value]
     )
     //return the line that just got created
+    //insertId is a property of object returned by mySQL
     return getLine(result.insertId)
 }
 
