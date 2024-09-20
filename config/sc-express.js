@@ -14,6 +14,7 @@ const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
 const mathDataRoute = require('../src/routes/math-data.js');
+const visualizationRoute = require('../src/routes/visualization.js');
 
 
 app.use('/', homeRoute);
@@ -23,6 +24,7 @@ app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
 app.use('/math-data', mathDataRoute);
+app.use('/visualization', visualizationRoute);
 
 
 // Handle 404 errors
