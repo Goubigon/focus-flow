@@ -7,7 +7,7 @@ const exSubmitButton = document.getElementById('exSubmitButton');
 let value1 = 0
 let value2 = 0
 let operation = ""
-let formDataString = ""
+let formData
 
 
 function getCurrentDateTime() {
@@ -24,61 +24,62 @@ function getCurrentDateTime() {
 };
 
 
+function loadParameters() {
+
+    const formDataString = localStorage.getItem('formData');
+
+    if (formDataString) {
+        formData = JSON.parse(formDataString);
+        console.log('Form from parameters :', formData);
+        return true;
+    } else {
+        console.log('No form data found in localStorage.');
+        return false;
+    }
+}
 
 
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
-    //get the form (localStorage) from parameters.html
-    //store in string for now to make sure there is something
-    formDataString = localStorage.getItem('formData');
-
-    if (formDataString) {
-        //parse the form in json
-        const formData = JSON.parse(formDataString);
-        console.log(formData);
-
-        //values between min and max
-        value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
-        value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+    //values between min and max
+    value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+    value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
 
 
-        //adding () if negative
-        if (value1 < 0) {
-            document.getElementById('value1').textContent = `(${value1})`;
-        } else {
-            document.getElementById('value1').textContent = value1;
-        }
-
-        if (value2 < 0) {
-            document.getElementById('value2').textContent = `(${value2})`;
-        } else {
-            document.getElementById('value2').textContent = value2;
-        }
-
-
-        //adding the selected operations to a list
-        let operations = [];
-        if (formData.additionCheck) { operations.push("+"); }
-        if (formData.subtractionCheck) { operations.push("-"); }
-        if (formData.multiplicationCheck) { operations.push("x"); }
-
-        //select a random operation from the list
-        const randomIndex = Math.floor(Math.random() * operations.length);
-        operation = operations[randomIndex];
-        document.getElementById('randomOperation').textContent = operation;
-
-        // Calculate the correct answer based on the operation
-        if (operation === "+") {
-            correctResult = value1 + value2;
-        } else if (operation === "-") {
-            correctResult = value1 - value2;
-        } else if (operation === "x") {
-            correctResult = value1 * value2;
-        }
-
+    //adding () if negative
+    if (value1 < 0) {
+        document.getElementById('value1').textContent = `(${value1})`;
     } else {
-        console.log('No form data found in localStorage.');
+        document.getElementById('value1').textContent = value1;
     }
+
+    if (value2 < 0) {
+        document.getElementById('value2').textContent = `(${value2})`;
+    } else {
+        document.getElementById('value2').textContent = value2;
+    }
+
+
+    //adding the selected operations to a list
+    let operations = [];
+    if (formData.additionCheck) { operations.push("+"); }
+    if (formData.subtractionCheck) { operations.push("-"); }
+    if (formData.multiplicationCheck) { operations.push("x"); }
+
+    //select a random operation from the list
+    const randomIndex = Math.floor(Math.random() * operations.length);
+    operation = operations[randomIndex];
+    document.getElementById('randomOperation').textContent = operation;
+
+    // Calculate the correct answer based on the operation
+    if (operation === "+") {
+        correctResult = value1 + value2;
+    } else if (operation === "-") {
+        correctResult = value1 - value2;
+    } else if (operation === "x") {
+        correctResult = value1 * value2;
+    }
+
 
     clearAnswers()
 
@@ -124,37 +125,12 @@ exSubmitButton.addEventListener('click', async (event) => {
 
 
 
-
-        if (formDataString) {
-            console.log(value1)
-            console.log(operation)
-            console.log(value2)
-            console.log(correctResult)
-            console.log(userAnswer)
-            console.log(userAnswer == correctResult)
-
-            console.log(timeTaken)
-            console.log(getCurrentDateTime())
-            //parse the form in json
-            const formData = JSON.parse(formDataString);
-            console.log(formData.minNumber);
-            console.log(formData.maxNumber);
-            console.log(formData.floatNumber);
-            console.log(formData.nNumber);
-            console.log(formData.additionCheck);
-            console.log(formData.subtractionCheck);
-            console.log(formData.multiplicationCheck);
-
-            createAnswer(value1, operation, value2,
-                correctResult, userAnswer, userAnswer == correctResult,
-                timeTaken, getCurrentDateTime(),
-                formData.minNumber, formData.maxNumber, formData.floatNumber, formData.nNumber,
-                formData.additionCheck, formData.subtractionCheck, formData.multiplicationCheck
-            )
-
-        }
-
-
+        createAnswer(value1, operation, value2,
+            correctResult, userAnswer, userAnswer == correctResult,
+            timeTaken, getCurrentDateTime(),
+            formData.minNumber, formData.maxNumber, formData.floatNumber, formData.nNumber,
+            formData.additionCheck, formData.subtractionCheck, formData.multiplicationCheck
+        )
     }
 });
 
@@ -213,6 +189,7 @@ function setupEnterKeyListener() {
 // When the windows page loads
 // Call the function to generate random numbers 
 window.onload = function () {
+    loadParameters();
     generateExercise();
     setupEnterKeyListener();  // Add this line to set up the Enter key listener
 };
