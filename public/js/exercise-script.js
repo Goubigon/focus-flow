@@ -1,85 +1,40 @@
 let correctResult;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
 
-const exSubmitButton = document.getElementById('exSubmitButton');
+import {
+    getCurrentDateTime, displayNumber, clearAnswers,
+    loadParameters, randomNumber, loadOperationList,
+    randomOperation, getCorrectResult, createAnswer
+} from './utils.js';
+
 
 //TODO rename to left & right values
-let value1 = 0
-let value2 = 0
-let operation = ""
-let formData
+let value1 = 0;
+let value2 = 0;
+let operationList = [];
+let operation = "";
+let formData;
 
 
-function getCurrentDateTime() {
-    const now = new Date();
-
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-};
-
-
-function loadParameters() {
-
-    const formDataString = localStorage.getItem('formData');
-
-    if (formDataString) {
-        formData = JSON.parse(formDataString);
-        console.log('Form from parameters :', formData);
-        return true;
-    } else {
-        console.log('No form data found in localStorage.');
-        return false;
-    }
-}
+const exSubmitButton = document.getElementById('exSubmitButton');
 
 
 //generates the numbers and the operation on exercise.html
 function generateExercise() {
+
     //values between min and max
-    value1 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
-    value2 = Math.floor(Math.random() * (formData.maxNumber - formData.minNumber + 1)) + formData.minNumber;
+    value1 = randomNumber(formData.minNumber, formData.maxNumber);
+    value2 = randomNumber(formData.minNumber, formData.maxNumber);
 
+    displayNumber('value1', value1);
+    displayNumber('value2', value2);
 
-    //adding () if negative
-    if (value1 < 0) {
-        document.getElementById('value1').textContent = `(${value1})`;
-    } else {
-        document.getElementById('value1').textContent = value1;
-    }
-
-    if (value2 < 0) {
-        document.getElementById('value2').textContent = `(${value2})`;
-    } else {
-        document.getElementById('value2').textContent = value2;
-    }
-
-
-    //adding the selected operations to a list
-    let operations = [];
-    if (formData.additionCheck) { operations.push("+"); }
-    if (formData.subtractionCheck) { operations.push("-"); }
-    if (formData.multiplicationCheck) { operations.push("x"); }
-
+    operation = randomOperation(operationList)
     //select a random operation from the list
-    const randomIndex = Math.floor(Math.random() * operations.length);
-    operation = operations[randomIndex];
     document.getElementById('randomOperation').textContent = operation;
 
     // Calculate the correct answer based on the operation
-    if (operation === "+") {
-        correctResult = value1 + value2;
-    } else if (operation === "-") {
-        correctResult = value1 - value2;
-    } else if (operation === "x") {
-        correctResult = value1 * value2;
-    }
-
+    correctResult = getCorrectResult(value1, value2, operation);
 
     clearAnswers()
 
@@ -88,24 +43,24 @@ function generateExercise() {
 }
 
 
-// Clear previous feedback and user input
-function clearAnswers() {
-    document.getElementById('feedback').textContent = '';
-    document.getElementById('userAnswer').value = '';
 
-    document.getElementById('timeTaken').textContent = '';
-}
 
 // When pressing Submit or Enter.key
 exSubmitButton.addEventListener('click', async (event) => {
     //get user's answer
     const userAnswer = parseFloat(document.getElementById('userAnswer').value);
-    //display feedback to user
-    const feedbackElement = document.getElementById('feedback');
 
     // Calculate time taken
     const endTime = new Date();
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
+
+    handleSubmission(userAnswer, timeTaken)
+});
+
+
+function handleSubmission(userAnswer, timeTaken) {
+    //display feedback to user
+    const feedbackElement = document.getElementById('feedback');
 
     if (isNaN(userAnswer)) {
         feedbackElement.textContent = "Please enter a valid number.";
@@ -123,8 +78,6 @@ exSubmitButton.addEventListener('click', async (event) => {
             document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
         }
 
-
-
         createAnswer(value1, operation, value2,
             correctResult, userAnswer, userAnswer == correctResult,
             timeTaken, getCurrentDateTime(),
@@ -132,49 +85,7 @@ exSubmitButton.addEventListener('click', async (event) => {
             formData.additionCheck, formData.subtractionCheck, formData.multiplicationCheck
         )
     }
-});
-
-async function createAnswer(leftOperation, mathOperation, rightOperation,
-    qResult, qAnswer, isCorrect,
-    qTime, qDate,
-    minNumber, maxNumber, floatNumber, nNumber,
-    additionCheck, subtractionCheck, multiplicationCheck) {
-    try {
-        const response = await fetch('/math-data/createAnswer', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                leftOperation: leftOperation,
-                mathOperation: mathOperation,
-                rightOperation: rightOperation,
-                qResult: qResult,
-                qAnswer: qAnswer,
-                isCorrect: isCorrect,
-                qTime: qTime,
-                qDate: qDate,
-                minNumber: minNumber,
-                maxNumber: maxNumber,
-                floatNumber: floatNumber,
-                nNumber: nNumber,
-                additionCheck: additionCheck,
-                subtractionCheck: subtractionCheck,
-                multiplicationCheck: multiplicationCheck
-            })
-        });
-        if (response.ok) {
-            const result = await response.json();
-            console.log('My line has been created:', result);
-        } else {
-            console.error('Failed to create line.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-
 }
-
 
 //Pressing the 'Enter' key also submit the answer
 function setupEnterKeyListener() {
@@ -186,10 +97,12 @@ function setupEnterKeyListener() {
     });
 }
 
+
 // When the windows page loads
 // Call the function to generate random numbers 
 window.onload = function () {
-    loadParameters();
+    formData = loadParameters();
+    operationList = loadOperationList(formData);
     generateExercise();
     setupEnterKeyListener();  // Add this line to set up the Enter key listener
 };
