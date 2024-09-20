@@ -75,12 +75,16 @@ async function createAnswer(
   }
 }
 
-async function countOperations() {
+async function countOperation(operation) {
 
   try {
-    const [result] = await pool.query("SELECT mathOperation, COUNT(*) as count FROM answers GROUP BY mathOperation");
-    //console.log(result);
-    return result;
+    const [result] = await pool.query(`
+      SELECT COUNT(id)
+      AS count
+      FROM answers 
+      WHERE mathOperation = ?;
+      `, [operation]);
+    return result[0].count;
 
   } catch (error) {
     console.error('Error:', error);
@@ -93,9 +97,25 @@ async function averageSuccessWithOperation(operation) {
         SELECT AVG(isCorrect) AS average_isCorrect
         FROM answers
         WHERE mathOperation = ?;
-      `,[operation]);
-    //console.log(result);
-    return result[0];
+      `, [operation]);
+    return result[0].average_isCorrect;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+async function medianTimeWithOperation(operation) {
+  try {
+    const [result] = await pool.query(`
+        SELECT * 
+        FROM answers 
+        WHERE mathOperation = ? 
+        ORDER BY qTime;
+      `, [operation]);
+
+    const count = await countOperation(operation)
+    return result[Math.floor(count / 2)].qTime;
   } catch (error) {
     console.error('Error:', error);
   }
@@ -104,5 +124,6 @@ async function averageSuccessWithOperation(operation) {
 
 module.exports = {
   getAnswers, getAnswer, createAnswer,
-  countOperations, averageSuccessWithOperation
+  countOperation, averageSuccessWithOperation,
+  medianTimeWithOperation
 };
