@@ -18,7 +18,7 @@ body {
     line-height: 1.6;
 }
 
-#home a {
+button {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 15px;
@@ -28,6 +28,6 @@ body {
     border-radius: 5px;
 }
 
-#home a:hover {
+button:hover {
     background-color: #003d7a;
 }
