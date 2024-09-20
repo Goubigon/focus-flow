@@ -75,6 +75,34 @@ async function createAnswer(
   }
 }
 
+async function countOperations() {
+
+  try {
+    const [result] = await pool.query("SELECT mathOperation, COUNT(*) as count FROM answers GROUP BY mathOperation");
+    //console.log(result);
+    return result;
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function averageSuccessWithOperation(operation) {
+  try {
+    const [result] = await pool.query(`
+        SELECT AVG(isCorrect) AS average_isCorrect
+        FROM answers
+        WHERE mathOperation = ?;
+      `,[operation]);
+    //console.log(result);
+    return result[0];
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 
-module.exports = { getAnswers, getAnswer, createAnswer };
+module.exports = {
+  getAnswers, getAnswer, createAnswer,
+  countOperations, averageSuccessWithOperation
+};

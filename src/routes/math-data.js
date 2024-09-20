@@ -3,7 +3,9 @@ const router = express.Router();
 
 router.use(express.json())
 
-const { getAnswers, getAnswer, createAnswer } = require('../../config/sc-math-db.js');
+const { getAnswers, getAnswer, createAnswer ,
+    countOperations, averageSuccessWithOperation
+} = require('../../config/sc-math-db.js');
 
 router.get('/', (req, res) => {
     res.send('This is the Math Data page')
@@ -39,5 +41,17 @@ router.post("/createAnswer", async (req, res) =>{
 
     res.status(201).send(data)
 })
+
+router.get("/countOperations", async (req, res) =>{
+    const data = await countOperations();
+    res.send(data)
+})
+
+router.get("/averageSbO/:operation", async (req, res) =>{
+    const operation = req.params.operation
+    const data = await averageSuccessWithOperation(operation);
+    res.send(data)
+})
+
 
 module.exports = router;
