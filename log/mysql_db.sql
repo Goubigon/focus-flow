@@ -37,3 +37,15 @@ VALUES (
     '1', '1', '0');
 
 SELECT * FROM Answers\G --vertical output
+
+SELECT 
+    CONCAT(leftOperation, mathOperation, rightOperation) AS expression,
+    COUNT(*) AS totalCount,
+    SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS correctCount,
+    SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS incorrectCount
+FROM 
+    answers
+WHERE 
+    qResult = 72
+GROUP BY 
+    expression;
