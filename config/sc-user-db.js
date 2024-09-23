@@ -24,6 +24,27 @@ async function getUsers() {
   }
 }
 
+async function createUser(name, email, hashedPassword, role) {
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO math_users (
+        mUsername, mEmail, 
+        mHashedPassword, mRole)
+      VALUES (?, ?, 
+        ?, ?)
+      `, [
+      name, email,
+      hashedPassword, role
+    ]);
+
+    return [{ "success": "true" }]
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
 module.exports = {
-  getUsers
+  getUsers, createUser
 };
