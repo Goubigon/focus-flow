@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/sign.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="signup-form">
+            <h2>Create Account</h2>
+            <form action="/signup" method="POST" onsubmit="return validateForm()">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required value="12">
+                </div>
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required value="12@45">
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required value="12">
+                </div>
+                <div class="input-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required value="123">
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            
+            <p>Already have an account? <a href="#">Sign in</a></p>
+            
+        <div id="errorMessage" class="error-message"></div>
+        </div>
+    </div>
+    <script src="/js/sign-script.js"></script>
+</body>
+
+</html>
