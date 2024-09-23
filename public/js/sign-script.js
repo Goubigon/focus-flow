@@ -52,11 +52,11 @@ async function createUser(name, email, password) {
             })
         });
 
+        const result = await response.json();
         if (response.ok) {
-            const result = await response.json();
             console.log(result); 
         } else {
-            console.error('Failed to retrieve answers.');
+            document.getElementById('errorMessage').innerHTML = result.message;
         }
     } catch (error) {
         console.error('Error:', error);

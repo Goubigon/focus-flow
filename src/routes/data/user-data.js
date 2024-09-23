@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 router.use(express.json())
 
-const { getUsers, getUser, createUser,
+const { getUsers, getUser, createUser, checkDuplicateEmail
 } = require('../../../config/sc-user-db.js');
 
 router.get('/', (req, res) => {
@@ -31,10 +31,20 @@ router.get("/getUser/:id", async (req, res) => {
 router.post("/createUser", async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
-        const hashedPassword = await bcrypt.hash(password, 10)
 
-        const data = await createUser(name, email, hashedPassword, role);
-        res.status(201).send(data)
+        const isDuplicate = await checkDuplicateEmail(email);
+        if (!isDuplicate) {
+            const hashedPassword = await bcrypt.hash(password, 10)
+            const data = await createUser(name, email, hashedPassword, role);
+            res.status(201).send(data)
+        }
+        else {
+            res.status(400).send({ message: 'Email already exists' });
+
+        }
+
+
+
     } catch {
         res.status(500).send()
     }
