@@ -12,7 +12,7 @@
     <div class="container">
         <div class="signup-form">
             <h2>Create Account</h2>
-            <form action="/signup" method="POST" onsubmit="return validateForm()">
+            <form id="signForm" action="/signup" method="POST" >
                 <div class="input-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required value="12">
@@ -29,7 +29,7 @@
                     <label for="confirm_password">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password" required value="123">
                 </div>
-                <button type="submit">Sign Up</button>
+                <button id="signButton" type="submit">Sign Up</button>
             </form>
             
             <p>Already have an account? <a href="#">Sign in</a></p>

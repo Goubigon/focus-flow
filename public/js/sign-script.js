@@ -36,3 +36,41 @@ function validateForm() {
 
     return true; // Allow form submission if all validations pass
 }
+
+async function createUser(name, email, password) {
+    try {
+        const response = await fetch(`/user-data/createUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+                name : name,
+                email : email,
+                password : password,
+                role : "user"
+            })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result); 
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+document.getElementById('signForm').addEventListener('submit', async (event) =>{
+    event.preventDefault();
+
+    if (validateForm()){
+        const name = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        createUser(name, email, password);
+    }
+})

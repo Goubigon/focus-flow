@@ -24,6 +24,20 @@ async function getUsers() {
   }
 }
 
+async function getUser(id){
+  try{
+    const [result] = await pool.query(`
+      SELECT *
+      FROM math_users
+      WHERE id = ?
+      `, [id]);
+      return result[0];
+  }
+  catch(error){
+    console.error('Error : ', error);
+  }
+}
+
 async function createUser(name, email, hashedPassword, role) {
   try {
     const [result] = await pool.query(`
@@ -37,7 +51,7 @@ async function createUser(name, email, hashedPassword, role) {
       hashedPassword, role
     ]);
 
-    return [{ "success": "true" }]
+    return getUser(result.insertId);
   }
   catch (error) {
     console.error("Error creating user:", error);
@@ -46,5 +60,5 @@ async function createUser(name, email, hashedPassword, role) {
 }
 
 module.exports = {
-  getUsers, createUser
+  getUsers, getUser, createUser, 
 };
