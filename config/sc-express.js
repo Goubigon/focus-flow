@@ -17,6 +17,7 @@ const mathDataRoute = require('../src/routes/math-data.js');
 const dashboardRoute = require('../src/routes/dashboard.js');
 
 const signRoute = require('../src/routes/sign.js');
+const userRoute = require('../src/routes/user-data.js');
 
 
 app.use('/', homeRoute);
@@ -29,6 +30,7 @@ app.use('/math-data', mathDataRoute);
 app.use('/dashboard', dashboardRoute);
 
 app.use('/sign', signRoute);
+app.use('/user-data', userRoute);
 
 
 // Handle 404 errors
