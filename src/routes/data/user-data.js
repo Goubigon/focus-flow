@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 router.use(express.json())
 
 const { getUsers, getUser, createUser,
-} = require('../../config/sc-user-db.js');
+} = require('../../../config/sc-user-db.js');
 
 router.get('/', (req, res) => {
     res.send('This is the User Data page')

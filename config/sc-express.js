@@ -13,11 +13,11 @@ const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
-const mathDataRoute = require('../src/routes/math-data.js');
+const mathDataRoute = require('../src/routes/data/math-data.js');
 const dashboardRoute = require('../src/routes/dashboard.js');
 
 const signRoute = require('../src/routes/sign.js');
-const userRoute = require('../src/routes/user-data.js');
+const userRoute = require('../src/routes/data/user-data.js');
 
 
 app.use('/', homeRoute);
