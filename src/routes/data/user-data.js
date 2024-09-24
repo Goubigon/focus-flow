@@ -13,7 +13,6 @@ router.get('/', (req, res) => {
 
 
 router.get("/getUsers", async (req, res) => {
-    console.log("users")
     const data = await getUsers();
     res.send(data)
 })
@@ -31,7 +30,6 @@ router.get("/getUser/:id", async (req, res) => {
 router.post("/createUser", async (req, res) => {
     try {
         const { name, email, password, role } = req.body;
-
         const isDuplicate = await checkDuplicateEmail(email);
         if (!isDuplicate) {
             const hashedPassword = await bcrypt.hash(password, 10)
@@ -40,11 +38,7 @@ router.post("/createUser", async (req, res) => {
         }
         else {
             res.status(400).send({ message: 'Email already exists' });
-
         }
-
-
-
     } catch {
         res.status(500).send()
     }

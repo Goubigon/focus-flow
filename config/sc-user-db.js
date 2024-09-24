@@ -40,7 +40,6 @@ async function getUser(id){
 
 async function createUser(name, email, hashedPassword, role) {
   try {
-    console.log("Trying to create a User")
     const [result] = await pool.query(`
       INSERT INTO math_users (
         mUsername, mEmail, 
@@ -62,8 +61,6 @@ async function createUser(name, email, hashedPassword, role) {
 
 async function checkDuplicateEmail(email){
   try{
-    
-    console.log("is There a duplicate?")
     const [result] = await pool.query(`
       SELECT *
       FROM math_users
