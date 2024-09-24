@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 require('dotenv').config()
 router.use(express.json())
 
-const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername
+const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail
 } = require('../../../config/sc-user-db.js');
 
 
@@ -44,11 +44,11 @@ const myList = [
     }
 ]
 router.get("/myList", authenticateToken, async (req, res) => {
-    res.json(myList.filter(l => l.email === req.user.email))
+    res.json(myList.filter(l => l.email === req.user.mEmail))
 })
 
-
-router.get("/getUser/:id", async (req, res) => {
+//PARAMS VERSION
+router.get("/getUser/:id",async (req, res) => {
     try {
         const id = req.params.id;
         const data = await getUser(id);
@@ -58,6 +58,16 @@ router.get("/getUser/:id", async (req, res) => {
     }
 })
 
+//AUTHENTICATE TOKEN
+router.get("/getUser", authenticateToken, async (req, res) => {
+    try {
+        const id = req.user.id;
+        const data = await getUser(id);
+        res.send(data);
+    } catch {
+        res.status(500)
+    }
+})
 
 router.post("/logUser", async (req, res) => {
     try {
@@ -69,7 +79,17 @@ router.post("/logUser", async (req, res) => {
         }
 
         if (await bcrypt.compare(password, hashedPassword)) {
-            const user = { email : email}
+            console.log("user : ")
+            
+            const response = await getUserWithEmail(email)
+
+            const user = { 
+                id : response.ID,
+                mUsername : response.mUsername,
+                mEmail : response.mEmail,
+                mRole : response.mRole,
+            }
+
             const accessToken = generateAccessToken(user)
 
             //const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
