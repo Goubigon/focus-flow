@@ -24,6 +24,19 @@ async function getUsers() {
   }
 }
 
+
+//Temp function for auth test
+async function getUsername(username){
+  try {
+    const [result] = await pool.query("SELECT * from math_users WHERE mUsername=?",[username]);
+    //console.log(result);
+    return result;
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 async function getUser(id){
   try{
     const [result] = await pool.query(`
@@ -90,5 +103,5 @@ async function checkDuplicateEmail(email){
 
 
 module.exports = {
-  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword
+  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername
 };

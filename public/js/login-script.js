@@ -16,6 +16,8 @@ async function logUser(email, password) {
         const result = await response.json();
         if (response.ok) {
             console.log(result.message);
+            console.log(result.accessToken);
+            console.log(result.refreshToken);
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
         }
