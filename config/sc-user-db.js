@@ -38,6 +38,20 @@ async function getUser(id){
   }
 }
 
+async function getHashedPassword(email){
+  try{
+    const [result] = await pool.query(`
+      SELECT mHashedPassword
+      FROM math_users 
+      WHERE mEmail=? 
+      `, [email]);
+    return result[0].mHashedPassword;
+  }
+  catch(error){
+    console.error('Error : ', error);
+  }
+}
+
 async function createUser(name, email, hashedPassword, role) {
   try {
     const [result] = await pool.query(`
@@ -76,5 +90,5 @@ async function checkDuplicateEmail(email){
 
 
 module.exports = {
-  getUsers, getUser, createUser, checkDuplicateEmail
+  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword
 };

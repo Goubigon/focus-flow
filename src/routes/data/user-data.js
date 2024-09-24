@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 router.use(express.json())
 
-const { getUsers, getUser, createUser, checkDuplicateEmail
+const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword
 } = require('../../../config/sc-user-db.js');
 
 router.get('/', (req, res) => {
@@ -24,6 +24,27 @@ router.get("/getUser/:id", async (req, res) => {
         res.send(data);
     } catch {
         res.status(500)
+    }
+})
+
+
+router.post("/logUser", async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await getHashedPassword(email);
+
+        if (!hashedPassword) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (await bcrypt.compare(password, hashedPassword)) {
+            res.status(200).json({ message: "Login successful" });
+        } else {
+            res.status(401).json({ message: "Invalid credentials" });
+        }
+
+    } catch {
+        res.status(500).json({ message: "Server error" });
     }
 })
 
