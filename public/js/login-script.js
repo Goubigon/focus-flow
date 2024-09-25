@@ -3,6 +3,7 @@
 let authToken;
 let refreshToken;
 
+//Check data base
 async function logUser(email, password) {
     try {
         const response = await fetch('/user-data/logUser', {
@@ -16,6 +17,7 @@ async function logUser(email, password) {
             })
         });
 
+        //contains message, access token, refresh token
         const result = await response.json();
         if (response.ok) {
             console.log(result.message);
@@ -34,23 +36,20 @@ async function logUser(email, password) {
 }
 
 
-async function getNewToken(refreshToken) {
+async function getNewToken() {
     try {
         const response = await fetch('/user-data/token', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                token: refreshToken
-            })
+            }
         });
 
         const result = await response.json();
         if (response.ok) {
             console.log("Token Refreshed");
             console.log(result.message)
-            console.log(result.accessToken)
+            console.log("new generated access token : "+ result.accessToken)
             authToken = result.accessToken;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
@@ -92,7 +91,6 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const password = document.getElementById('password').value;
 
     const response = await logUser(email, password);
-
 })
 
 document.getElementById('refreshTokenButton').addEventListener('click', async (event) => {
@@ -103,5 +101,4 @@ document.getElementById('refreshTokenButton').addEventListener('click', async (e
 document.getElementById('userInfoButton').addEventListener('click', async (event) => {
     console.log("trying to get user info with authToken: " + authToken);
     const response = await getUserInfo(authToken)
-
 })
