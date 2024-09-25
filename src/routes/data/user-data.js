@@ -163,10 +163,17 @@ router.get('/token', (req, res) => {
 })
 
 
+
+router.delete("/logout", authenticateToken ,(req, res) =>{
+    res.clearCookie('refreshTokenCookie', { path: '/' }); // Specify the path if needed
+    res.status(204).send({ message: 'Logout successful, cookie cleared.' });
+})
+
 //middleware function
 function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log("Authentication cookie : " + token);
     if (token == null) {
         console.log("Token is null")
         return res.sendStatus(401)
@@ -179,6 +186,7 @@ function authenticateToken(req, res, next) {
         req.user = user
         next()
     })
+    
 }
 function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });

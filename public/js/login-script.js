@@ -1,8 +1,6 @@
 
 
 let authToken;
-let refreshToken;
-
 //Check data base
 async function logUser(email, password) {
     try {
@@ -83,6 +81,29 @@ async function getUserInfo(authToken) {
     }
 }
 
+async function logoutUser(authToken) {
+    try {
+        const response = await fetch(`/user-data/logout`, {
+            method: 'DELETE',
+            
+            headers: {
+                'Content-Type': "application/json",
+                'Authorization': `Bearer ${authToken}`
+            },
+            
+        });
+
+        if (response.ok) {
+            console.log('Logout successful, cookie cleared.');
+        } else {
+            const errorData = await response.json();
+            console.error('Error during logout:', errorData.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -94,11 +115,13 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
 })
 
 document.getElementById('refreshTokenButton').addEventListener('click', async (event) => {
-    console.log("trying to get a new token using this refresh token: " + refreshToken);
-    const response = await getNewToken(refreshToken);
+    const response = await getNewToken();
 
 })
 document.getElementById('userInfoButton').addEventListener('click', async (event) => {
     console.log("trying to get user info with authToken: " + authToken);
     const response = await getUserInfo(authToken)
+})
+document.getElementById('logoutButton').addEventListener('click', async (event) => {
+    const response = await logoutUser(authToken)
 })
