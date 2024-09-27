@@ -20,6 +20,7 @@ const signRoute = require('../src/routes/sign.js');
 const userRoute = require('../src/routes/data/user-data.js');
 
 const loginRoute = require('../src/routes/login.js');
+const logoutRoute = require('../src/routes/logout.js');
 
 app.get('/', (req, res) => {
     res.redirect('/login');
@@ -37,6 +38,8 @@ app.use('/dashboard', dashboardRoute);
 app.use('/sign', signRoute);
 app.use('/user-data', userRoute);
 app.use('/login', loginRoute);
+
+app.use('/logout', logoutRoute);
 
 
 // Handle 404 errors
