@@ -19,6 +19,7 @@ async function logUser(email, password) {
         const result = await response.json();
         if (response.ok) {
             console.log(result.message);
+
             authToken = result.accessToken
             console.log("auth : " + authToken);
 
@@ -112,6 +113,9 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const password = document.getElementById('password').value;
 
     const response = await logUser(email, password);
+    if(authToken){
+        window.location.href = 'home';
+    }
 })
 
 document.getElementById('refreshTokenButton').addEventListener('click', async (event) => {
