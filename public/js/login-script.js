@@ -13,9 +13,6 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     const password = document.getElementById('password').value;
 
     const isLogged = await logUser(email, password);
-    if(isLogged){
-        window.location.href = 'home';
-    }
 })
 
 document.getElementById('refreshTokenButton').addEventListener('click', async (event) => {

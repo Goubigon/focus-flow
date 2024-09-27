@@ -17,11 +17,10 @@ export async function logUser(email, password) {
         if (response.ok) {
             const result = await response.json();
             console.log(result.message);
-            return true;
+            window.location.href = '/home';
         } else {
             const errorResult = await response.json();
             document.getElementById('errorMessage').innerHTML = errorResult.message;
-            return false;
         }
 
     } catch (error) {
@@ -44,16 +43,13 @@ export async function refreshingToken() {
             const result = await response.json();
             console.log("Token Refreshed");
             console.log(result.message)
-            return true;
         } else {
             const errorResult = await response.json();
             document.getElementById('errorMessage').innerHTML = errorResult.message;
-            return false;
         }
 
     } catch (error) {
         console.error('Error logging in:', error);
-        return false;
     }
 }
 
@@ -70,15 +66,12 @@ export async function getUserInfo() {
         if (response.ok) {
             const result = await response.json();
             console.log(result);
-            return true;
         } else {            
             const errorResult = await response.json();
             document.getElementById('errorMessage').innerHTML = errorResult.message;
-            return false;
         }
     } catch (error) {
         console.error('Error:', error);
-        return false;
     }
 }
 
@@ -95,15 +88,12 @@ export async function logoutUser() {
 
         if (response.ok) {
             console.log('Logout successful, cookie cleared.');
-            return true;
         } else {
             const errorData = await response.json();
             console.error('Error during logout:', errorData.message);
-            return false;
         }
     } catch (error) {
         console.error('Error:', error);
-        return false;
     }
 }
 
