@@ -115,7 +115,7 @@ router.post("/logUser", async (req, res) => {
 
             console.log("Auth & Refresh cookies created")
             //returns (access token + refresh token)
-            res.status(200).json({ message: "Login successful", authToken: authToken });
+            res.status(200).json({ message: "Login successful" });
         } else {
             res.status(401).json({ message: "Invalid credentials" });
         }
@@ -142,18 +142,14 @@ router.post("/createUser", async (req, res) => {
     }
 })
 
-router.get('/token', (req, res) => {
-
+router.get('/RefreshingToken', (req, res) => {
     const refreshTokenCookie = req.cookies.refreshTokenCookie;
-    console.log("Cookie got : " + refreshTokenCookie)
-    if (refreshTokenCookie == null) {
-        return res.status(401)
-    }
-    if (!refreshTokenCookie.includes(refreshTokenCookie)) {
-        return res.status(403)
+    console.log("RefreshingToken with Cookie : " + refreshTokenCookie)
+    if (refreshTokenCookie == null || refreshTokenCookie === undefined) {
+        return res.status(401).send({ message: "Refresh Token is null or undefined" })
     }
     jwt.verify(refreshTokenCookie, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.sendStatus(403)
+        if (err) return res.status(403).send({ message: "Refresh Token is invalid" })
 
         const newUser = {
             ID: user.ID,
@@ -162,36 +158,39 @@ router.get('/token', (req, res) => {
             mRole: user.mRole,
         }
         const authToken = generateAuthToken(newUser)
-        res.status(200).send({ message: "Token successfully refreshed", authToken: authToken })
+        createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
+
+        res.status(200).send({ message: "Auth Token successfully refreshed" })
     })
 })
 
 
 
 router.delete("/logout", authenticateToken, (req, res) => {
-    res.clearCookie('refreshTokenCookie', { path: '/' }); // Specify the path if needed
+    res.clearCookie('refreshTokenCookie', { path: '/' });
+    res.clearCookie('authTokenCookie', { path: '/' });
     res.status(204).send({ message: 'Logout successful, cookie cleared.' });
 })
 
 //middleware function
 function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
-    console.log("Authentication cookie : " + token);
-    if (token == null) {
+    //const authHeader = req.headers['authorization'];
+    const authToken = req.cookies.authTokenCookie;
+    console.log("Checking Authentication cookie : " + authToken);
+    if (authToken == null) {
         console.log("Token is null")
-        return res.sendStatus(401)
+        return res.status(401).send({ message: 'Not Authentication Token' });
     }
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) {
             console.log("Token exists but is invalid")
-            return res.sendStatus(403)
+            return res.status(403).send({ message: 'Authentication Token is invalid' });
         }
         req.user = user
         next()
     })
-
 }
+
 function generateAuthToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
 }
