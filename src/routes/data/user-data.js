@@ -72,7 +72,8 @@ router.get("/getUser", authenticateToken, async (req, res) => {
         const data = await getUser(id);
         res.send(data);
     } catch {
-        res.status(500)
+        console.error('Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'Internal Server Error' });
     }
 })
 
@@ -164,6 +165,27 @@ router.get('/RefreshingToken', (req, res) => {
     })
 })
 
+function refreshToken(req, res, refreshTokenCookie) {
+    console.log("RefreshingToken with Cookie : " + refreshTokenCookie)
+    if (refreshTokenCookie == null || refreshTokenCookie === undefined) {
+        return res.status(401).send({ message: "Refresh Token is null or undefined" })
+    }
+    jwt.verify(refreshTokenCookie, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+        if (err) return res.status(403).send({ message: "Refresh Token is invalid" })
+
+        const newUser = {
+            ID: user.ID,
+            mUsername: user.mUsername,
+            mEmail: user.mEmail,
+            mRole: user.mRole,
+        }
+        const authToken = generateAuthToken(newUser)
+        createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
+
+        res.status(200).send({ message: "Auth Token successfully refreshed" })
+    })
+}
+
 
 
 router.delete("/logout", authenticateToken, (req, res) => {
@@ -174,22 +196,38 @@ router.delete("/logout", authenticateToken, (req, res) => {
 
 //middleware function
 function authenticateToken(req, res, next) {
-    //const authHeader = req.headers['authorization'];
     const authToken = req.cookies.authTokenCookie;
-    console.log("Checking Authentication cookie : " + authToken);
-    if (authToken == null) {
-        console.log("Token is null")
-        return res.status(401).send({ message: 'Not Authentication Token' });
+    console.log("Checking Authentication cookie: " + authToken);
+
+    // Function to attempt refreshing the token
+    const attemptTokenRefresh = () => {
+        const refreshTokenCookie = req.cookies.refreshTokenCookie;
+        if (refreshTokenCookie) {
+            // Try refreshing the auth token
+            return refreshToken(req, res, refreshTokenCookie);
+        }
+        return res.status(401).send({ message: 'Not authenticated: No auth token and no refresh token.' });
+    };
+
+    // Case 1: Auth token doesn't exist
+    if (!authToken) {
+        console.log("No Authentication Token");
+        return attemptTokenRefresh();
     }
+
+    // Case 2: Auth token exists, verify it
     jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
         if (err) {
-            console.log("Token exists but is invalid")
-            return res.status(403).send({ message: 'Authentication Token is invalid' });
+            console.log("Authentication Token is invalid");
+            return attemptTokenRefresh(); // Attempt to refresh token
         }
-        req.user = user
-        next()
-    })
+
+        // Token is valid; attach user to the request
+        req.user = user;
+        next();
+    });
 }
+
 
 function generateAuthToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
@@ -205,15 +243,15 @@ function generateAuthToken(user) {
  * @param {number} expiresIn - The expiration time for the cookie in milliseconds.
  */
 function createSecureCookie(req, res, name, value, expiresIn) {
-    if(req.cookies[name] === undefined){
-        console.log("["+ name + "] Cookie doesn't exist yet")
+    if (req.cookies[name] === undefined) {
+        console.log("[" + name + "] Cookie doesn't exist yet")
         res.cookie(name, value, {
             httpOnly: true,
             secure: true, //https
             maxAge: expiresIn
         })
-        console.log("["+ name + "] Cookie created")
-    }else{
+        console.log("[" + name + "] Cookie created")
+    } else {
         console.log("Cookie [" + name + "] already exists, nothing to do")
     }
 }

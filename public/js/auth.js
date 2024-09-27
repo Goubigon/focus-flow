@@ -66,9 +66,15 @@ export async function getUserInfo() {
         if (response.ok) {
             const result = await response.json();
             console.log(result);
-        } else {            
+        } else {
             const errorResult = await response.json();
-            document.getElementById('errorMessage').innerHTML = errorResult.message;
+            console.log("Error: " + errorResult.message);
+
+            if (response.status === 401 || response.status === 403) {
+                window.location.href = '/logout'; 
+            } else {
+                document.getElementById('errorMessage').innerHTML = errorResult.message;
+            }
         }
     } catch (error) {
         console.error('Error:', error);
