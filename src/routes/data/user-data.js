@@ -93,31 +93,35 @@ router.post("/logUser", async (req, res) => {
             //get other information from user using email
             const response = await getUserWithEmail(email)
 
-            const user = {
+            const currentUser = {
                 ID: response.ID,
                 mUsername: response.mUsername,
                 mEmail: response.mEmail,
                 mRole: response.mRole,
             }
+
+            console.log("User retrieved by email : " + JSON.stringify(currentUser, null, 2));
+
             //generate (access token + refresh token) using user information
-            const accessToken = generateAccessToken(user)
-            const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET)
+            const accessToken = generateAccessToken(currentUser)
+            const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET)
+
+            console.log("Created accessToken : " + accessToken);
+            console.log("Created refreshToken : " + refreshToken);
 
             //insert refresh token into cookies
-            res.cookie('refreshTokenCookie', refreshToken, {
-                httpOnly: true,
-                secure: true, //https
-                maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-            })
+            createSecureCookie(req, res, "authTokenCookie", accessToken, 15 * 1000); //15 sec
+            createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
 
+            console.log("Auth & Refresh cookies created")
             //returns (access token + refresh token)
-            res.status(200).json({ message: "Login successful", accessToken: accessToken, refreshToken: refreshToken });
+            res.status(200).json({ message: "Login successful", accessToken: accessToken });
         } else {
             res.status(401).json({ message: "Invalid credentials" });
         }
 
     } catch {
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ message: "/LogUser error" });
     }
 })
 
@@ -139,8 +143,8 @@ router.post("/createUser", async (req, res) => {
 })
 
 router.get('/token', (req, res) => {
-    
-    const refreshTokenCookie = req.cookies.refreshTokenCookie; 
+
+    const refreshTokenCookie = req.cookies.refreshTokenCookie;
     console.log("Cookie got : " + refreshTokenCookie)
     if (refreshTokenCookie == null) {
         return res.status(401)
@@ -158,13 +162,13 @@ router.get('/token', (req, res) => {
             mRole: user.mRole,
         }
         const accessToken = generateAccessToken(newUser)
-        res.status(200).send({ message : "Token successfully refreshed", accessToken: accessToken })
+        res.status(200).send({ message: "Token successfully refreshed", accessToken: accessToken })
     })
 })
 
 
 
-router.delete("/logout", authenticateToken ,(req, res) =>{
+router.delete("/logout", authenticateToken, (req, res) => {
     res.clearCookie('refreshTokenCookie', { path: '/' }); // Specify the path if needed
     res.status(204).send({ message: 'Logout successful, cookie cleared.' });
 })
@@ -186,10 +190,33 @@ function authenticateToken(req, res, next) {
         req.user = user
         next()
     })
-    
+
 }
 function generateAccessToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
+}
+
+/**
+ * Creates a secure, HTTP-only cookie if it does not already exist.
+ *
+ * @param {Object} req - The request object, which contains cookies.
+ * @param {Object} res - The response object, used to set the cookie.
+ * @param {string} name - The name of the cookie to create.
+ * @param {string} value - The value of the cookie to set.
+ * @param {number} expiresIn - The expiration time for the cookie in milliseconds.
+ */
+function createSecureCookie(req, res, name, value, expiresIn) {
+    if(req.cookies[name] === undefined){
+        console.log("["+ name + "] Cookie doesn't exist yet")
+        res.cookie(name, value, {
+            httpOnly: true,
+            secure: true, //https
+            maxAge: expiresIn
+        })
+        console.log("["+ name + "] Cookie created")
+    }else{
+        console.log("Cookie [" + name + "] already exists, nothing to do")
+    }
 }
 
 
