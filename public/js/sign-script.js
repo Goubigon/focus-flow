@@ -1,3 +1,5 @@
+import { logUser } from './auth.js';
+
 function validateForm() {
     const username = document.getElementById('username').value;
     const email = document.getElementById('email').value;
@@ -55,6 +57,7 @@ async function createUser(name, email, password) {
         const result = await response.json();
         if (response.ok) {
             console.log(result); 
+            await logUser(email, password);
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
         }
