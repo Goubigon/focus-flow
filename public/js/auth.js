@@ -45,6 +45,7 @@ export async function refreshingToken() {
             console.log(result.message)
         } else {
             const errorResult = await response.json();
+            console.log("error : " + errorResult.message);
             document.getElementById('errorMessage').innerHTML = errorResult.message;
         }
 
@@ -64,8 +65,9 @@ export async function getUserInfo() {
         });
 
         if (response.ok) {
+            //should be a user json
             const result = await response.json();
-            console.log(result);
+            return result;
         } else {
             const errorResult = await response.json();
             console.log("Error: " + errorResult.message);

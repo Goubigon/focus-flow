@@ -70,10 +70,10 @@ router.get("/getUser", authenticateToken, async (req, res) => {
     try {
         const id = req.user.ID;
         const data = await getUser(id);
-        res.send(data);
-    } catch {
-        console.error('Error retrieving user data:', error); // Log the error
-        res.status(500).send({ message: 'Internal Server Error' });
+        res.status(201).send(data);
+    } catch (error){
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })
 
@@ -165,25 +165,30 @@ router.get('/RefreshingToken', (req, res) => {
     })
 })
 
-function refreshToken(req, res, refreshTokenCookie) {
-    console.log("RefreshingToken with Cookie : " + refreshTokenCookie)
-    if (refreshTokenCookie == null || refreshTokenCookie === undefined) {
-        return res.status(401).send({ message: "Refresh Token is null or undefined" })
+function refreshingToken(req, res, refreshTokenCookie) {
+    console.log("RefreshingToken with Cookie: " + refreshTokenCookie);
+    if (!refreshTokenCookie) {
+        console.log("No Refresh Cookie")
+        return null;
     }
-    jwt.verify(refreshTokenCookie, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(403).send({ message: "Refresh Token is invalid" })
+    return new Promise((resolve, reject) => {
+        jwt.verify(refreshTokenCookie, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                reject({ status: 403, message: "Refresh Token is invalid" });
+                return;
+            }
 
-        const newUser = {
-            ID: user.ID,
-            mUsername: user.mUsername,
-            mEmail: user.mEmail,
-            mRole: user.mRole,
-        }
-        const authToken = generateAuthToken(newUser)
-        createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
-
-        res.status(200).send({ message: "Auth Token successfully refreshed" })
-    })
+            const newUser = {
+                ID: user.ID,
+                mUsername: user.mUsername,
+                mEmail: user.mEmail,
+                mRole: user.mRole,
+            };
+            const authToken = generateAuthToken(newUser);
+            createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); // 15 sec
+            resolve(authToken); // Resolve with the new auth token
+        });
+    });
 }
 
 
@@ -195,37 +200,51 @@ router.delete("/logout", authenticateToken, (req, res) => {
 })
 
 //middleware function
-function authenticateToken(req, res, next) {
+async function authenticateToken(req, res, next) {
     const authToken = req.cookies.authTokenCookie;
     console.log("Checking Authentication cookie: " + authToken);
 
-    // Function to attempt refreshing the token
-    const attemptTokenRefresh = () => {
-        const refreshTokenCookie = req.cookies.refreshTokenCookie;
-        if (refreshTokenCookie) {
-            // Try refreshing the auth token
-            return refreshToken(req, res, refreshTokenCookie);
-        }
-        return res.status(401).send({ message: 'Not authenticated: No auth token and no refresh token.' });
-    };
 
-    // Case 1: Auth token doesn't exist
-    if (!authToken) {
+    //if token doesn't exists -> refresh
+    if(!authToken){
         console.log("No Authentication Token");
-        return attemptTokenRefresh();
+        try{
+            const refreshTokenCookie = req.cookies.refreshTokenCookie;
+            if (!refreshTokenCookie){
+                return res.status(401).send({ message: "Failed to refresh auth token." });
+            }
+            const newAuthToken = await refreshingToken(req, res, refreshTokenCookie);
+            req.user = jwt.decode(newAuthToken);
+            return next();
+        }
+        catch(err){
+            return res.status(error.status || 401).send({ message: error.message });
+        }
     }
 
-    // Case 2: Auth token exists, verify it
-    jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+
+    //if token exists -> verify
+     jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
         if (err) {
             console.log("Authentication Token is invalid");
-            return attemptTokenRefresh(); // Attempt to refresh token
+            try {
+                const refreshTokenCookie = req.cookies.refreshTokenCookie;
+                if (!refreshTokenCookie){
+                    return res.status(401).send({ message: "Failed to refresh auth token." });
+                }
+                const newAuthToken = await refreshToken(req, res, refreshTokenCookie);
+                req.user = jwt.decode(newAuthToken);
+                return next();
+            } catch (error) {
+                return res.status(error.status || 403).send({ message: error.message });
+            }
         }
 
-        // Token is valid; attach user to the request
+        // Token is valid
         req.user = user;
         next();
     });
+
 }
 
 
