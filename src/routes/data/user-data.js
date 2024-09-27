@@ -103,19 +103,19 @@ router.post("/logUser", async (req, res) => {
             console.log("User retrieved by email : " + JSON.stringify(currentUser, null, 2));
 
             //generate (access token + refresh token) using user information
-            const accessToken = generateAccessToken(currentUser)
+            const authToken = generateAuthToken(currentUser)
             const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET)
 
-            console.log("Created accessToken : " + accessToken);
+            console.log("Created authToken : " + authToken);
             console.log("Created refreshToken : " + refreshToken);
 
             //insert refresh token into cookies
-            createSecureCookie(req, res, "authTokenCookie", accessToken, 15 * 1000); //15 sec
+            createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
             createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
 
             console.log("Auth & Refresh cookies created")
             //returns (access token + refresh token)
-            res.status(200).json({ message: "Login successful", accessToken: accessToken });
+            res.status(200).json({ message: "Login successful", authToken: authToken });
         } else {
             res.status(401).json({ message: "Invalid credentials" });
         }
@@ -161,8 +161,8 @@ router.get('/token', (req, res) => {
             mEmail: user.mEmail,
             mRole: user.mRole,
         }
-        const accessToken = generateAccessToken(newUser)
-        res.status(200).send({ message: "Token successfully refreshed", accessToken: accessToken })
+        const authToken = generateAuthToken(newUser)
+        res.status(200).send({ message: "Token successfully refreshed", authToken: authToken })
     })
 })
 
@@ -192,7 +192,7 @@ function authenticateToken(req, res, next) {
     })
 
 }
-function generateAccessToken(user) {
+function generateAuthToken(user) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
 }
 

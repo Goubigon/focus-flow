@@ -16,7 +16,7 @@ export async function logUser(email, password) {
         const result = await response.json();
         if (response.ok) {
             console.log(result.message);
-            return result.accessToken;
+            return result.authToken;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
         }
@@ -41,8 +41,8 @@ export async function getNewToken() {
         if (response.ok) {
             console.log("Token Refreshed");
             console.log(result.message)
-            console.log("new generated access token : " + result.accessToken)
-            return result.accessToken;
+            console.log("new generated access token : " + result.authToken)
+            return result.authToken;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
         }
