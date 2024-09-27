@@ -21,8 +21,11 @@ const userRoute = require('../src/routes/data/user-data.js');
 
 const loginRoute = require('../src/routes/login.js');
 
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
 
-app.use('/', homeRoute);
+app.use('/home', homeRoute);
 app.use('/about', aboutRoute);
 app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
