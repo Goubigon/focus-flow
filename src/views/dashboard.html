@@ -13,25 +13,31 @@
     <script>
         fetch('/partial/navbar.html')
             .then(response => response.text())
-            .then(data => document.getElementById('navbar').innerHTML = data);
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                // Load your navbar script here after the navbar is inserted
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
     </script>
+
 
     <div id="home">
         <h1>Welcome to the Dashboard Page!</h1>
         <button id=getAnswersButton>Get Answers</button>
         <button id=countOperation>Count Operation +</button>
-        
+
         <button id=plusAverageButton>Average score for +</button>
         <button id=minusAverageButton>Average score for -</button>
         <button id=timesAverageButton>Average score for x</button>
-        
+
         <button id=plusMedianButton>Median Time for +</button>
         <button id=minusMedianButton>Median Time for -</button>
         <button id=timesMedianButton>Median Time for x</button>
 
     </div>
 
-    
+
     <script type="module" src="/js/ui-script/dashboard-script.js"></script>
 </body>
 
