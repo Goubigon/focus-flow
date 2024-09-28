@@ -87,18 +87,18 @@ export async function logoutUser() {
     try {
         const response = await fetch(`/user-data/logout`, {
             method: 'DELETE',
-
             headers: {
                 'Content-Type': "application/json"
             },
-
         });
 
         if (response.ok) {
             console.log('Logout successful, cookie cleared.');
+            return true;
         } else {
             const errorData = await response.json();
             console.error('Error during logout:', errorData.message);
+            return false;
         }
     } catch (error) {
         console.error('Error:', error);
