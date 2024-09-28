@@ -5,7 +5,7 @@ import {
     getCurrentDateTime, displayNumber, clearAnswers,
     loadParameters, randomNumber, loadOperationList,
     randomOperation, getCorrectResult, createAnswer
-} from './utils.js';
+} from '../client-api/utils.js';
 
 
 //TODO rename to left & right values

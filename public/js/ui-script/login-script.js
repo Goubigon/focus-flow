@@ -1,7 +1,8 @@
 
 
 
-import { logUser, refreshingToken, getUserInfo, logoutUser } from './auth.js';
+import { logUser, refreshingToken, getUserInfo, logoutUser } from '../client-api/auth.js';
+
 
 
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
@@ -20,7 +21,8 @@ document.getElementById('refreshTokenButton').addEventListener('click', async (e
 
 })
 document.getElementById('userInfoButton').addEventListener('click', async (event) => {
-    const response = await getUserInfo()
+    const userJson = await getUserInfo()
+    console.log("userJson : " + userJson.mUsername)
 })
 document.getElementById('logoutButton').addEventListener('click', async (event) => {
     const response = await logoutUser()

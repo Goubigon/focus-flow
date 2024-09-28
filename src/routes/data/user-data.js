@@ -14,12 +14,6 @@ const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, g
 
 
 
-
-
-let refreshTokenList = [];
-
-
-
 router.get('/', (req, res) => {
     res.send('This is the User Data page')
 })

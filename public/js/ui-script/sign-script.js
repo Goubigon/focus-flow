@@ -1,4 +1,5 @@
-import { logUser } from './auth.js';
+import { logUser } from '../client-api/auth.js';
+
 
 function validateForm() {
     const username = document.getElementById('username').value;

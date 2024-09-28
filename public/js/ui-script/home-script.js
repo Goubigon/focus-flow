@@ -1,4 +1,4 @@
-import { getUserInfo } from './auth.js';
+import { getUserInfo } from '../client-api/auth.js';
 
 
 window.onload = async function () {
