@@ -175,7 +175,7 @@ router.get('/RefreshingToken', (req, res) => {
 })
 
 router.get('/keepAuthenticate', authenticateToken, (req, res) => {
-    res.status(201).json({ message: 'Authentication successfully kep' })
+    res.status(201).json({ message: 'Authentication successfully kept' })
 })
 
 
