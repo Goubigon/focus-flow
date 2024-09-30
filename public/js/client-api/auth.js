@@ -46,6 +46,7 @@ export async function refreshingToken() {
         } else {
             const errorResult = await response.json();
             console.log("error : " + errorResult.message);
+            console.log("status : " + JSON.stringify(errorResult));
             document.getElementById('errorMessage').innerHTML = errorResult.message;
         }
 
@@ -105,3 +106,25 @@ export async function logoutUser() {
     }
 }
 
+export async function keepAuthenticate() {
+    try {
+        const response = await fetch(`/user-data/keepAuthenticate`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': "application/json"
+            },
+        });
+
+        if (response.ok) {
+            console.log('kept auth');
+            return true;
+        } else {
+            const errorData = await response.json();
+            console.error('Error during logout:', errorData.message);
+            window.location.href = '/logout'; 
+            return false;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
