@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 const request = require('supertest');
-const app = require('../app'); // Import your Express app
+const app = require('../config/sc-express'); // Import your Express app
 
 describe('GET /about', () => {
     it('should return the About page message', async () => {
