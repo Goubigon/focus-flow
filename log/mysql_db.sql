@@ -49,3 +49,23 @@ WHERE
     qResult = 72
 GROUP BY 
     expression;
+
+
+-----------------
+
+CREATE TABLE math_users (
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+
+    mUsername VARCHAR(255) NOT NULL,
+    mEmail VARCHAR(255) NOT NULL UNIQUE,
+    mHashedPassword VARCHAR(255) NOT NULL,
+    mRole ENUM('admin', 'user') NOT NULL DEFAULT 'user',
+    mCreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO math_user (mUsername, mEmail, mHashedPassword, mRole)
+VALUES ('john_doe', 'john@example.com', 'hashedPassword123', 'user');
+
+
+INSERT INTO math_user (mUsername, mEmail, mHashedPassword, mRole)
+VALUES ('leo', 'leo@example.com', 'ppp123', 'admin');

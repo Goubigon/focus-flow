@@ -13,16 +13,24 @@
     <script>
         fetch('/partial/navbar.html')
             .then(response => response.text())
-            .then(data => document.getElementById('navbar').innerHTML = data);
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                // Load your navbar script here after the navbar is inserted
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
     </script>
-
 
     <div id="home">
 
         <h1>Welcome to the Home Page!</h1>
+        
+            <p id="user-name"></p>
+
+
         <p>This is the main landing page of our website.</p>
-        <p>Explore our services and feel free to contact us.</p>
-        <a href="/exercise">Exercises</a> | <a href="/about">About Us</a>
+
+        <script type="module" src="/js/ui-script/home-script.js"></script>
     </div>
 </body>
 

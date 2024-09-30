@@ -1,12 +1,13 @@
-let correctResult;  // Global variable to store the correct answer
-let startTime; //starting time when questions are loaded
-
 import {
     getCurrentDateTime, displayNumber, clearAnswers,
     loadParameters, randomNumber, loadOperationList,
     randomOperation, getCorrectResult, createAnswer
-} from './utils.js';
+} from '../client-api/utils.js';
 
+import { keepAuthenticate } from '../client-api/auth.js';
+
+let correctResult;  // Global variable to store the correct answer
+let startTime; //starting time when questions are loaded
 
 //TODO rename to left & right values
 let value1 = 0;
@@ -101,6 +102,7 @@ function setupEnterKeyListener() {
 // When the windows page loads
 // Call the function to generate random numbers 
 window.onload = function () {
+    keepAuthenticate()
     formData = loadParameters();
     operationList = loadOperationList(formData);
     generateExercise();

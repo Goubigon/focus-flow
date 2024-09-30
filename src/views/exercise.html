@@ -14,7 +14,12 @@
     <script>
         fetch('/partial/navbar.html')
             .then(response => response.text())
-            .then(data => document.getElementById('navbar').innerHTML = data);
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                // Load your navbar script here after the navbar is inserted
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
     </script>
     
 
@@ -36,7 +41,7 @@
         
     </div>
 
-    <script type="module" src="/js/exercise-script.js"></script>
+    <script type="module" src="/js/ui-script/exercise-script.js"></script>
 </body>
 
 </html>

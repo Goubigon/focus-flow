@@ -1,9 +1,9 @@
 //All express routes
 const express = require('express');
-
 const app = express();
-const path = require('path');
 
+//static files are put in /public
+const path = require('path');
 app.use(express.static(path.join(__dirname, '../public')));
 
 
@@ -13,11 +13,22 @@ const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
-const mathDataRoute = require('../src/routes/math-data.js');
+const mathDataRoute = require('../src/routes/data/math-data.js');
 const dashboardRoute = require('../src/routes/dashboard.js');
 
+const signRoute = require('../src/routes/sign.js');
+const userRoute = require('../src/routes/data/user-data.js');
 
-app.use('/', homeRoute);
+const loginRoute = require('../src/routes/login.js');
+const logoutRoute = require('../src/routes/logout.js');
+
+
+//default / redirects to /login
+app.get('/', (req, res) => {
+    res.redirect('/login');
+});
+
+app.use('/home', homeRoute);
 app.use('/about', aboutRoute);
 app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
@@ -25,6 +36,12 @@ app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
 app.use('/math-data', mathDataRoute);
 app.use('/dashboard', dashboardRoute);
+
+app.use('/sign', signRoute);
+app.use('/user-data', userRoute);
+app.use('/login', loginRoute);
+
+app.use('/logout', logoutRoute);
 
 
 // Handle 404 errors

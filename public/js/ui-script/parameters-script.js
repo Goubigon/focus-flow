@@ -1,6 +1,9 @@
 //script used by parameters.html
 //handles form submission
 
+import { keepAuthenticate } from '../client-api/auth.js';
+
+
 //boolean true if anything in the inputs of the form has changed
 let isFormChanged = false;
 let isFormSubmitted = false;
@@ -101,6 +104,7 @@ formElement.addEventListener('submit', (event) => {
 // When the windows page loads
 // Call the function to generate last written parameters if it exists
 window.onload = function () {
+    keepAuthenticate();
     loadExistingForm();
 };
 
