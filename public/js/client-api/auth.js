@@ -95,6 +95,7 @@ export async function logoutUser() {
 
         if (response.ok) {
             console.log('Logout successful, cookie cleared.');
+            window.location.href = '/logout'; 
             return true;
         } else {
             const errorData = await response.json();
