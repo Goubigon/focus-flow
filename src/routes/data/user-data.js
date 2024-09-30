@@ -9,7 +9,7 @@ router.use(express.json())
 router.use(cookieParser());
 
 
-const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail
+const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
 } = require('../../../config/sc-user-db.js');
 
 
@@ -127,6 +127,8 @@ router.post("/createUser", async (req, res) => {
         if (!isDuplicate) {
             const hashedPassword = await bcrypt.hash(password, 10)
             const data = await createUser(name, email, hashedPassword, role);
+            console.log("CREATING USER DATA : ")
+            console.log(data)
             res.status(201).send(data)
         }
         else {
@@ -136,6 +138,17 @@ router.post("/createUser", async (req, res) => {
         res.status(500).send()
     }
 })
+
+router.delete("/deleteUser/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const data = await deleteUser(id);
+        res.status(200).json(data);
+    } catch {
+        res.status(500)
+    }
+})
+
 
 //Try to get refreshToken from cookies
 //refreshes authToken if possible
@@ -162,7 +175,7 @@ router.get('/RefreshingToken', (req, res) => {
 })
 
 router.get('/keepAuthenticate', authenticateToken, (req, res) => {
-    res.status(201).json({message : 'Authentication successfully kep'})
+    res.status(201).json({ message: 'Authentication successfully kept' })
 })
 
 
@@ -229,7 +242,7 @@ async function authenticateToken(req, res, next) {
             console.log("Valid Authentication -> proceed")
             next();
         });
-    }else{
+    } else {
         console.log("No Authentication Cookie");
         try {
             const refreshTokenCookie = req.cookies.refreshTokenCookie;

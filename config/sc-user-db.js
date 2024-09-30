@@ -26,9 +26,9 @@ async function getUsers() {
 
 
 //Temp function for auth test
-async function getUsername(username){
+async function getUsername(username) {
   try {
-    const [result] = await pool.query("SELECT * from math_users WHERE mUsername=?",[username]);
+    const [result] = await pool.query("SELECT * from math_users WHERE mUsername=?", [username]);
     //console.log(result);
     return result;
 
@@ -38,9 +38,9 @@ async function getUsername(username){
 }
 
 //temp function for auth test
-async function getUserWithEmail(email){
+async function getUserWithEmail(email) {
   try {
-    const [result] = await pool.query("SELECT * from math_users WHERE mEmail=?",[email]);
+    const [result] = await pool.query("SELECT * from math_users WHERE mEmail=?", [email]);
     //console.log(result);
     return result[0];
 
@@ -49,22 +49,36 @@ async function getUserWithEmail(email){
   }
 }
 
-async function getUser(id){
-  try{
+async function getUser(id) {
+  try {
     const [result] = await pool.query(`
       SELECT *
       FROM math_users
       WHERE id = ?
       `, [id]);
-      return result[0];
+    return result[0];
   }
-  catch(error){
+  catch (error) {
     console.error('Error : ', error);
   }
 }
 
-async function getHashedPassword(email){
-  try{
+async function deleteUser(id) {
+  try {
+    const [result] = await pool.query(`
+      DELETE 
+      FROM math_users 
+      WHERE id = ?
+      `, [id]);
+    return result.affectedRows > 0;
+  }
+  catch (error) {
+    console.error('Error : ', error);
+  }
+}
+
+async function getHashedPassword(email) {
+  try {
     const [result] = await pool.query(`
       SELECT mHashedPassword
       FROM math_users 
@@ -72,7 +86,7 @@ async function getHashedPassword(email){
       `, [email]);
     return result[0].mHashedPassword;
   }
-  catch(error){
+  catch (error) {
     console.error('Error : ', error);
   }
 }
@@ -98,22 +112,22 @@ async function createUser(name, email, hashedPassword, role) {
   }
 }
 
-async function checkDuplicateEmail(email){
-  try{
+async function checkDuplicateEmail(email) {
+  try {
     const [result] = await pool.query(`
       SELECT *
       FROM math_users
       WHERE mEmail = ?
       `, [email]);
-      return result.length > 0;
+    return result.length > 0;
   }
-  catch(error){
+  catch (error) {
     console.error('Error : ', error);
-    throw error; 
+    throw error;
   }
 }
 
 
 module.exports = {
-  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail
+  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
 };
