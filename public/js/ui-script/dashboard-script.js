@@ -1,3 +1,6 @@
+import { keepAuthenticate } from '../client-api/auth.js';
+
+
 async function getAnswers() {
     try {
         const response = await fetch('/math-data/getAnswers', {
@@ -108,3 +111,7 @@ document.getElementById('minusMedianButton').addEventListener('click', async (ev
 document.getElementById('timesMedianButton').addEventListener('click', async (event) =>{
     medianTimeByOperation("x");
 })
+
+window.onload = function () {
+    keepAuthenticate()
+}
