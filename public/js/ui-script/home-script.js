@@ -1,4 +1,4 @@
-import { getUserInfo, keepAuthenticate } from '../client-api/auth.js';
+import { getUserInfo, keepAuthenticate } from '../client-api/auth_api.js';
 
 
 window.onload = async function () {
