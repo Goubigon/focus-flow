@@ -12,6 +12,7 @@ const pool = mysql.createPool({
 });
 
 
+//PARAMETERS
 
 async function getExactParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount) {
   try {
@@ -70,6 +71,37 @@ async function createParam(minNumber, maxNumber, floatNumber, nNumber, additionC
   }
 }
 
+
+
+//SESSIONS
+async function createSession(userID, paramID, sessionDate) {
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO math_session (mUserIdentifier, mParametersIdentifier, mSessionDate) 
+      VALUES (?, ?, ?)
+      `, [userID, paramID, sessionDate]);
+
+    return getSessionWithID(result.insertId);
+
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function getSessionWithID(id){
+  try{
+    const [result] = await pool.query(`
+      SELECT * FROM math_session 
+      WHERE mSessionIdentifier = ?
+      `, [id]);
+
+    return result[0];
+
+  }catch(err){
+    console.error('Error : ', err);
+  }
+}
+
 module.exports = {
-  getExactParams, getParamWithID, createParam
+  getExactParams, getParamWithID, createParam, createSession, getSessionWithID
 };

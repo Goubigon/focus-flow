@@ -1,7 +1,8 @@
 //script used by parameters.html
 //handles form submission
 
-import { keepAuthenticate } from '../client-api/auth.js';
+import { keepAuthenticate } from '../client-api/auth_api.js';
+import { getCurrentDateTime } from '../client-api/utils.js';
 
 
 //boolean true if anything in the inputs of the form has changed
@@ -68,7 +69,29 @@ async function createParams(minNumber, maxNumber, floatNumber, nNumber, addition
     }
 }
 
+async function createSession(paramID, sessionDate) {
+    try {
+        const response = await fetch(`/session-data/createSession`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                paramID: paramID,
+                sessionDate: sessionDate
+            })
+        });
 
+        const result = await response.json();
+        if (response.ok) {
+            return result;
+        } else {
+            document.getElementById('errorMessage').innerHTML = result.message;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 
@@ -120,6 +143,10 @@ formElement.addEventListener('submit', async (event) => {
 
         console.log(paramJson)
 
+        const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
+        
+        console.log(sessionJson)
+        //window.location.href = 'exercise';
 
         
         /*
@@ -144,7 +171,6 @@ formElement.addEventListener('submit', async (event) => {
         
         
         
-        window.location.href = 'exercise';
         */
     }
 });

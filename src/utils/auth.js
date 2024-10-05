@@ -15,7 +15,7 @@ function refreshingToken(req, res, refreshTokenCookie) {
             }
 
             const newUser = {
-                ID: user.ID,
+                mUserIdentifier: user.mUserIdentifier,
                 mUsername: user.mUsername,
                 mEmail: user.mEmail,
                 mRole: user.mRole,

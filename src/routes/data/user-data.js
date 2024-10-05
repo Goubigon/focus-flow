@@ -13,7 +13,7 @@ const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, g
 } = require('../../../config/database/sc-user-db.js');
 
 
-const {createSecureCookie, authenticateToken } = require ('../../utils/auth.js')
+const { createSecureCookie, authenticateToken } = require('../../utils/auth.js')
 
 
 router.get('/', (req, res) => {
@@ -91,7 +91,7 @@ router.post("/logUser", async (req, res) => {
             const response = await getUserWithEmail(email)
 
             const currentUser = {
-                ID: response.ID,
+                mUserIdentifier: response.mUserIdentifier,
                 mUsername: response.mUsername,
                 mEmail: response.mEmail,
                 mRole: response.mRole,
@@ -164,7 +164,7 @@ router.get('/RefreshingToken', (req, res) => {
         if (err) return res.status(403).send({ message: "Refresh Token is invalid" })
 
         const newUser = {
-            ID: user.ID,
+            mUserIdentifier: user.mUserIdentifier,
             mUsername: user.mUsername,
             mEmail: user.mEmail,
             mRole: user.mRole,
