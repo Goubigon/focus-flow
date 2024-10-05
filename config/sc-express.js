@@ -9,7 +9,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const homeRoute = require('../src/routes/home.js');
 const aboutRoute = require('../src/routes/about.js');
-const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
@@ -30,7 +29,6 @@ app.get('/', (req, res) => {
 
 app.use('/home', homeRoute);
 app.use('/about', aboutRoute);
-app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
