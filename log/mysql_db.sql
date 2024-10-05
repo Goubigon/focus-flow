@@ -82,3 +82,33 @@ VALUES ('john_doe', 'john@example.com', 'hashedPassword123', 'user');
 
 INSERT INTO math_user (mUsername, mEmail, mHashedPassword, mRole)
 VALUES ('leo', 'leo@example.com', 'ppp123', 'admin');
+
+-----------------
+CREATE TABLE math_user_stat (
+    mUserIdentifier INT NOT NULL,
+    mSessionCount INT DEFAULT 0,
+    mLastSessionDate DATE,
+    mTotalSessionTime INT DEFAULT 0, -- in milliseconds
+    PRIMARY KEY (mUserIdentifier),
+    FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
++-------------------+------+------+-----+---------+-------+
+| Field             | Type | Null | Key | Default | Extra |
++-------------------+------+------+-----+---------+-------+
+| mUserIdentifier   | int  | NO   | PRI | NULL    |       |
+| mSessionCount     | int  | YES  |     | 0       |       |
+| mLastSessionDate  | date | YES  |     | NULL    |       |
+| mTotalSessionTime | int  | YES  |     | 0       |       |
++-------------------+------+------+-----+---------+-------+
+
+
+--- mUserIdentifier is foreign key, so it needs to exist in math_user_credential
+--- if that user is deleted in math_user_credential, all its lines in math_user_stat will be deleted (On DELETE/UPDATE CASCADE) 
+INSERT INTO math_user_stat (mUserIdentifier, mSessionCount, mLastSessionDate, mTotalSessionTime)
+VALUES (36, 5, '2024-10-05', 3600000);
+
+
+
