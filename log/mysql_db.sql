@@ -55,7 +55,7 @@ GROUP BY
 -----------------
 
 CREATE TABLE math_user_credential (
-    mUser_ID INT AUTO_INCREMENT PRIMARY KEY,
+    mUserIdentifier INT AUTO_INCREMENT PRIMARY KEY,
 
     mUsername VARCHAR(255) NOT NULL,
     mEmail VARCHAR(255) NOT NULL UNIQUE,
@@ -63,6 +63,18 @@ CREATE TABLE math_user_credential (
     mRole ENUM('admin', 'user') NOT NULL DEFAULT 'user',
     mCreationDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
++-----------------+----------------------+------+-----+-------------------+-------------------+
+| Field           | Type                 | Null | Key | Default           | Extra             |
++-----------------+----------------------+------+-----+-------------------+-------------------+
+| mUserIdentifier | int                  | NO   | PRI | NULL              | auto_increment    |
+| mUsername       | varchar(255)         | NO   |     | NULL              |                   |
+| mEmail          | varchar(255)         | NO   | UNI | NULL              |                   |
+| mHashedPassword | varchar(255)         | NO   |     | NULL              |                   |
+| mRole           | enum('admin','user') | NO   |     | user              |                   |
+| mCreationDate   | timestamp            | YES  |     | CURRENT_TIMESTAMP | DEFAULT_GENERATED |
++-----------------+----------------------+------+-----+-------------------+-------------------+
+
 
 INSERT INTO math_user (mUsername, mEmail, mHashedPassword, mRole)
 VALUES ('john_doe', 'john@example.com', 'hashedPassword123', 'user');

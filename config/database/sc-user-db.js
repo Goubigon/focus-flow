@@ -54,7 +54,7 @@ async function getUser(id) {
     const [result] = await pool.query(`
       SELECT *
       FROM math_user_credential
-      WHERE mUser_ID = ?
+      WHERE mUserIdentifier = ?
       `, [id]);
     return result[0];
   }
@@ -68,7 +68,7 @@ async function deleteUser(id) {
     const [result] = await pool.query(`
       DELETE 
       FROM math_user_credential 
-      WHERE mUser_ID = ?
+      WHERE mUserIdentifier = ?
       `, [id]);
     return result.affectedRows > 0;
   }
