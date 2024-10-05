@@ -10,7 +10,7 @@ router.use(cookieParser());
 
 
 const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
-} = require('../../../config/sc-user-db.js');
+} = require('../../../config/database/sc-user-db.js');
 
 
 

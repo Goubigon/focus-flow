@@ -1,4 +1,5 @@
 CREATE DATABASE math_db;
+
 CREATE TABLE answers (
     ID INT AUTO_INCREMENT PRIMARY KEY, 
 
@@ -53,8 +54,8 @@ GROUP BY
 
 -----------------
 
-CREATE TABLE math_users (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE math_user_credential (
+    mUser_ID INT AUTO_INCREMENT PRIMARY KEY,
 
     mUsername VARCHAR(255) NOT NULL,
     mEmail VARCHAR(255) NOT NULL UNIQUE,
