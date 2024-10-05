@@ -162,8 +162,8 @@ CREATE TABLE math_session (
 +-----------------------+----------+------+-----+---------+----------------+
 
 
-INSERT INTO math_session (mUserIdentifier, mSessionDuration, mSessionDate)
-VALUES (35, 3600000, '2024-10-05 00:00:00');
+INSERT INTO math_session (mUserIdentifier, mParametersIdentifier, mSessionDuration, mSessionDate)
+VALUES (35, 1, 3600000, '2024-10-05 00:00:00');
 
 -----------------
 
