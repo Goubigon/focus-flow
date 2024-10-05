@@ -86,6 +86,7 @@ VALUES ('leo', 'leo@example.com', 'ppp123', 'admin');
 -----------------
 CREATE TABLE math_user_stat (
     mUserIdentifier INT NOT NULL,
+    mUserIdentifier INT NOT NULL PRIMARY KEY,
     mSessionCount INT DEFAULT 0,
     mLastSessionDate DATE,
     mTotalSessionTime INT DEFAULT 0, -- in milliseconds
@@ -112,3 +113,18 @@ VALUES (36, 5, '2024-10-05', 3600000);
 
 
 
+
+-----------------
+
+CREATE TABLE math_session (
+    mSessionIdentifier INT AUTO_INCREMENT PRIMARY KEY,
+    mUserIdentifier INT NOT NULL,
+    mSessionDuration INT DEFAULT 0, -- in milliseconds
+    mSessionDate DATE,
+    FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+INSERT INTO math_session (mUserIdentifier, mSessionDuration, mSessionDate)
+VALUES (35, 3600000, '2024-10-05');
