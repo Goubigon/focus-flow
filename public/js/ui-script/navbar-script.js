@@ -1,4 +1,4 @@
-import { logoutUser } from '../client-api/auth.js';
+import { logoutUser } from '../client-api/auth_api.js';
 
 
 document.getElementById("logoutButton").addEventListener('click', async () =>{

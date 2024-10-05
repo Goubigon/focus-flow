@@ -1,7 +1,7 @@
 
 
 
-import { logUser, refreshingToken, getUserInfo, logoutUser } from '../client-api/auth.js';
+import { logUser, refreshingToken, getUserInfo, logoutUser } from '../client-api/auth_api.js';
 
 
 

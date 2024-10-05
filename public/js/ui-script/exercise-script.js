@@ -4,7 +4,7 @@ import {
     randomOperation, getCorrectResult, createAnswer
 } from '../client-api/utils.js';
 
-import { keepAuthenticate } from '../client-api/auth.js';
+import { keepAuthenticate } from '../client-api/auth_api.js';
 
 let correctResult;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
