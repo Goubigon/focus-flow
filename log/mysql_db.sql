@@ -115,20 +115,20 @@ CREATE TABLE math_user_stat (
         ON UPDATE CASCADE
 );
 
-+-------------------+------+------+-----+---------+-------+
-| Field             | Type | Null | Key | Default | Extra |
-+-------------------+------+------+-----+---------+-------+
-| mUserIdentifier   | int  | NO   | PRI | NULL    |       |
-| mSessionCount     | int  | YES  |     | 0       |       |
-| mLastSessionDate  | date | YES  |     | NULL    |       |
-| mTotalSessionTime | int  | YES  |     | 0       |       |
-+-------------------+------+------+-----+---------+-------+
++-------------------+----------+------+-----+---------+-------+
+| Field             | Type     | Null | Key | Default | Extra |
++-------------------+----------+------+-----+---------+-------+
+| mUserIdentifier   | int      | NO   | PRI | NULL    |       |
+| mSessionCount     | int      | YES  |     | 0       |       |
+| mLastSessionDate  | datetime | YES  |     | NULL    |       |
+| mTotalSessionTime | int      | YES  |     | 0       |       |
++-------------------+----------+------+-----+---------+-------+
 
 
 --- mUserIdentifier is foreign key, so it needs to exist in math_user_credential
 --- if that user is deleted in math_user_credential, all its lines in math_user_stat will be deleted (On DELETE/UPDATE CASCADE) 
 INSERT INTO math_user_stat (mUserIdentifier, mSessionCount, mLastSessionDate, mTotalSessionTime)
-VALUES (36, 5, '2024-10-05', 3600000);
+VALUES (36, 5, '2024-10-05 00:00:00', 3600000);
 
 
 
@@ -140,7 +140,7 @@ CREATE TABLE math_session (
     mUserIdentifier INT NOT NULL,
     mParametersIdentifier INT NOT NULL,  -- New foreign key column
     mSessionDuration INT DEFAULT 0, -- in milliseconds
-    mSessionDate DATE,
+    mSessionDate DATETIME,
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
         ON UPDATE CASCADE,
@@ -148,19 +148,22 @@ CREATE TABLE math_session (
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-+-----------------------+------+------+-----+---------+----------------+
-| Field                 | Type | Null | Key | Default | Extra          |
-+-----------------------+------+------+-----+---------+----------------+
-| mSessionIdentifier    | int  | NO   | PRI | NULL    | auto_increment |
-| mUserIdentifier       | int  | NO   | MUL | NULL    |                |
-| mParametersIdentifier | int  | NO   | MUL | NULL    |                |
-| mSessionDuration      | int  | YES  |     | 0       |                |
-| mSessionDate          | date | YES  |     | NULL    |                |
-+-----------------------+------+------+-----+---------+----------------+
+
+
+
++-----------------------+----------+------+-----+---------+----------------+
+| Field                 | Type     | Null | Key | Default | Extra          |
++-----------------------+----------+------+-----+---------+----------------+
+| mSessionIdentifier    | int      | NO   | PRI | NULL    | auto_increment |
+| mUserIdentifier       | int      | NO   | MUL | NULL    |                |
+| mParametersIdentifier | int      | NO   | MUL | NULL    |                |
+| mSessionDuration      | int      | YES  |     | 0       |                |
+| mSessionDate          | datetime | YES  |     | NULL    |                |
++-----------------------+----------+------+-----+---------+----------------+
 
 
 INSERT INTO math_session (mUserIdentifier, mSessionDuration, mSessionDate)
-VALUES (35, 3600000, '2024-10-05');
+VALUES (35, 3600000, '2024-10-05 00:00:00');
 
 -----------------
 
