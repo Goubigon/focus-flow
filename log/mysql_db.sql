@@ -24,6 +24,27 @@ CREATE TABLE answers (
     multiplicationCheck BOOLEAN NOT NULL
 );
 
++---------------------+------------+------+-----+---------+----------------+
+| Field               | Type       | Null | Key | Default | Extra          |
++---------------------+------------+------+-----+---------+----------------+
+| ID                  | int        | NO   | PRI | NULL    | auto_increment |
+| leftOperation       | int        | NO   |     | NULL    |                |
+| mathOperation       | char(1)    | NO   |     | NULL    |                |
+| rightOperation      | int        | NO   |     | NULL    |                |
+| qResult             | float      | NO   |     | NULL    |                |
+| qAnswer             | float      | NO   |     | NULL    |                |
+| isCorrect           | tinyint(1) | NO   |     | NULL    |                |
+| qTime               | float(5,2) | NO   |     | NULL    |                |
+| qDate               | datetime   | NO   |     | NULL    |                |
+| minNumber           | float      | NO   |     | NULL    |                |
+| maxNumber           | float      | NO   |     | NULL    |                |
+| floatNumber         | int        | NO   |     | NULL    |                |
+| nNumber             | int        | NO   |     | NULL    |                |
+| additionCheck       | tinyint(1) | NO   |     | NULL    |                |
+| subtractionCheck    | tinyint(1) | NO   |     | NULL    |                |
+| multiplicationCheck | tinyint(1) | NO   |     | NULL    |                |
++---------------------+------------+------+-----+---------+----------------+
+
 INSERT INTO Answers (
     leftOperation, mathOperation, rightOperation, 
     qResult, qAnswer, isCorrect, 
@@ -85,12 +106,10 @@ VALUES ('leo', 'leo@example.com', 'ppp123', 'admin');
 
 -----------------
 CREATE TABLE math_user_stat (
-    mUserIdentifier INT NOT NULL,
     mUserIdentifier INT NOT NULL PRIMARY KEY,
     mSessionCount INT DEFAULT 0,
     mLastSessionDate DATE,
     mTotalSessionTime INT DEFAULT 0, -- in milliseconds
-    PRIMARY KEY (mUserIdentifier),
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
         ON UPDATE CASCADE
@@ -128,3 +147,20 @@ CREATE TABLE math_session (
 
 INSERT INTO math_session (mUserIdentifier, mSessionDuration, mSessionDate)
 VALUES (35, 3600000, '2024-10-05');
+
+-----------------
+
+CREATE TABLE math_session_parameters (
+    mSessionParameter INT AUTO_INCREMENT PRIMARY KEY,
+    mMinNumber INT DEFAULT 0,
+    mMaxNumber INT DEFAULT 10,
+    mFloatNumber INT DEFAULT 0,
+    mNumber INT DEFAULT 2,
+    mAdditionCheck BOOLEAN DEFAULT TRUE,
+    mSubtractionCheck BOOLEAN DEFAULT TRUE,
+    mMultiplicationCheck BOOLEAN DEFAULT TRUE,
+    mMaxAnswerCount INT DEFAULT 0
+);
+
+INSERT INTO math_session_parameters (mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
+VALUES (-10, 10, 0, 2, TRUE, TRUE, FALSE, 20);
