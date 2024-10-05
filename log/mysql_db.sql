@@ -138,12 +138,26 @@ VALUES (36, 5, '2024-10-05', 3600000);
 CREATE TABLE math_session (
     mSessionIdentifier INT AUTO_INCREMENT PRIMARY KEY,
     mUserIdentifier INT NOT NULL,
+    mParametersIdentifier INT NOT NULL,  -- New foreign key column
     mSessionDuration INT DEFAULT 0, -- in milliseconds
     mSessionDate DATE,
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    FOREIGN KEY (mParametersIdentifier) REFERENCES math_session_parameters(mParametersIdentifier)
+        ON DELETE CASCADE
         ON UPDATE CASCADE
 );
++-----------------------+------+------+-----+---------+----------------+
+| Field                 | Type | Null | Key | Default | Extra          |
++-----------------------+------+------+-----+---------+----------------+
+| mSessionIdentifier    | int  | NO   | PRI | NULL    | auto_increment |
+| mUserIdentifier       | int  | NO   | MUL | NULL    |                |
+| mParametersIdentifier | int  | NO   | MUL | NULL    |                |
+| mSessionDuration      | int  | YES  |     | 0       |                |
+| mSessionDate          | date | YES  |     | NULL    |                |
++-----------------------+------+------+-----+---------+----------------+
+
 
 INSERT INTO math_session (mUserIdentifier, mSessionDuration, mSessionDate)
 VALUES (35, 3600000, '2024-10-05');
@@ -161,6 +175,20 @@ CREATE TABLE math_session_parameters (
     mMultiplicationCheck BOOLEAN DEFAULT TRUE,
     mMaxAnswerCount INT DEFAULT 0
 );
+
++-----------------------+------------+------+-----+---------+----------------+
+| Field                 | Type       | Null | Key | Default | Extra          |
++-----------------------+------------+------+-----+---------+----------------+
+| mParametersIdentifier | int        | NO   | PRI | NULL    | auto_increment |
+| mMinNumber            | int        | YES  |     | 0       |                |
+| mMaxNumber            | int        | YES  |     | 10      |                |
+| mFloatNumber          | int        | YES  |     | 0       |                |
+| mNumber               | int        | YES  |     | 2       |                |
+| mAdditionCheck        | tinyint(1) | YES  |     | 1       |                |
+| mSubtractionCheck     | tinyint(1) | YES  |     | 1       |                |
+| mMultiplicationCheck  | tinyint(1) | YES  |     | 1       |                |
+| mMaxAnswerCount       | int        | YES  |     | 0       |                |
++-----------------------+------------+------+-----+---------+----------------+
 
 INSERT INTO math_session_parameters (mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
 VALUES (-10, 10, 0, 2, TRUE, TRUE, FALSE, 20);
