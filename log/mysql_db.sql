@@ -192,3 +192,16 @@ CREATE TABLE math_session_parameters (
 
 INSERT INTO math_session_parameters (mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
 VALUES (-10, 10, 0, 2, TRUE, TRUE, FALSE, 20);
+
+INSERT INTO math_session_parameters (mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
+VALUES (-10, 10, 0, 2, TRUE, TRUE, FALSE, 20);
+
+SELECT mParametersIdentifier FROM math_session_parameters
+WHERE mMinNumber = -10 AND
+ mMaxNumber = 10 AND
+ mFloatNumber = 0 AND
+ mNumber = 2 AND
+ mAdditionCheck = TRUE AND
+ mSubtractionCheck = TRUE AND
+ mMultiplicationCheck = FALSE AND
+ mMaxAnswerCount = 20;

@@ -22,9 +22,9 @@ inputList.forEach(currentInput => {
 
 //when loading parameters windows
 //loads last saved parameters if it exists
-function loadExistingForm(){
+function loadExistingForm() {
     const formDataString = localStorage.getItem('formData');
-    if(formDataString){
+    if (formDataString) {
         const formData = JSON.parse(formDataString);
         console.log(formData);
         document.getElementById('minNumber').value = formData.minNumber;
@@ -36,11 +36,47 @@ function loadExistingForm(){
     }
 }
 
-formElement.addEventListener('submit', (event) => {
+
+async function createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount) {
+    try {
+        const response = await fetch(`/session-data/createParams`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                minNumber: minNumber,
+                maxNumber: maxNumber,
+                floatNumber: floatNumber,
+                nNumber: nNumber,
+
+                additionCheck: additionCheck,
+                subtractionCheck: subtractionCheck,
+                multiplicationCheck: multiplicationCheck,
+                maxAnswerCount: maxAnswerCount,
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            return result;
+        } else {
+            document.getElementById('errorMessage').innerHTML = result.message;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
+
+formElement.addEventListener('submit', async (event) => {
     //default form submission makes submission reloads the page
     //so this prevents the page from reloading
     event.preventDefault();
-    
+
     isFormSubmitted = true;
     isFormChanged = false;
 
@@ -57,6 +93,8 @@ formElement.addEventListener('submit', (event) => {
     const subtractionCheck = document.getElementById('subtractionCheck').checked;
     const multiplicationCheck = document.getElementById('multiplicationCheck').checked;
 
+    const maxAnswerCount = parseFloat(document.getElementById('maxAnswerCount').value);
+
     const errorMessage = document.getElementById('errorMessage');
 
     // Clear previous error message
@@ -69,7 +107,7 @@ formElement.addEventListener('submit', (event) => {
         errorMessage.style.color = 'red';
     }
     //at least one operation is selected
-    else if ((additionCheck||subtractionCheck||multiplicationCheck) == false){
+    else if ((additionCheck || subtractionCheck || multiplicationCheck) == false) {
         errorMessage.textContent = "Must check at least one operation.";
         errorMessage.style.color = 'red';
     }
@@ -78,7 +116,13 @@ formElement.addEventListener('submit', (event) => {
         errorMessage.textContent = "Successfully saved";
         errorMessage.style.color = 'green';
 
+        const paramJson = await createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
 
+        console.log(paramJson)
+
+
+        
+        /*
         // Create JSON object
         const formData = {
             minNumber: minNumber,
@@ -97,7 +141,11 @@ formElement.addEventListener('submit', (event) => {
         document.getElementById('jsonOutput').textContent = jsonString;
 
         localStorage.setItem('formData', JSON.stringify(formData));
+        
+        
+        
         window.location.href = 'exercise';
+        */
     }
 });
 
