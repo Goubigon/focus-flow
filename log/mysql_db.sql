@@ -151,7 +151,7 @@ VALUES (35, 3600000, '2024-10-05');
 -----------------
 
 CREATE TABLE math_session_parameters (
-    mSessionParameter INT AUTO_INCREMENT PRIMARY KEY,
+    mParametersIdentifier INT AUTO_INCREMENT PRIMARY KEY,
     mMinNumber INT DEFAULT 0,
     mMaxNumber INT DEFAULT 10,
     mFloatNumber INT DEFAULT 0,
