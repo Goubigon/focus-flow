@@ -68,11 +68,9 @@ export function randomNumber(minVal, maxVal){
     return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal
 }
 
-export async function createAnswer(leftOperation, mathOperation, rightOperation,
+export async function createAnswer(mSessionIdentifier, leftOperation, mathOperation, rightOperation,
     qResult, qAnswer, isCorrect,
-    qTime, qDate,
-    minNumber, maxNumber, floatNumber, nNumber,
-    additionCheck, subtractionCheck, multiplicationCheck) {
+    qTime, qDate) {
     try {
         const response = await fetch('/math-data/createAnswer', {
             method: 'POST',
@@ -80,6 +78,7 @@ export async function createAnswer(leftOperation, mathOperation, rightOperation,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                mSessionIdentifier: mSessionIdentifier,
                 leftOperation: leftOperation,
                 mathOperation: mathOperation,
                 rightOperation: rightOperation,
@@ -87,14 +86,7 @@ export async function createAnswer(leftOperation, mathOperation, rightOperation,
                 qAnswer: qAnswer,
                 isCorrect: isCorrect,
                 qTime: qTime,
-                qDate: qDate,
-                minNumber: minNumber,
-                maxNumber: maxNumber,
-                floatNumber: floatNumber,
-                nNumber: nNumber,
-                additionCheck: additionCheck,
-                subtractionCheck: subtractionCheck,
-                multiplicationCheck: multiplicationCheck
+                qDate: qDate
             })
         });
         if (response.ok) {

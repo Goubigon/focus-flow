@@ -79,11 +79,10 @@ function handleSubmission(userAnswer, timeTaken) {
             document.getElementById('timeTaken').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
         }
 
-        createAnswer(value1, operation, value2,
+        createAnswer( formData.mSessionIdentifier,
+            value1, operation, value2,
             correctResult, userAnswer, userAnswer == correctResult,
-            timeTaken, getCurrentDateTime(),
-            formData.minNumber, formData.maxNumber, formData.floatNumber, formData.nNumber,
-            formData.additionCheck, formData.subtractionCheck, formData.multiplicationCheck
+            timeTaken, getCurrentDateTime()
         )
     }
 }

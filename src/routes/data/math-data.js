@@ -26,19 +26,17 @@ router.get("/getAnswer/:id", async (req, res) =>{
 
 router.post("/createAnswer", async (req, res) =>{
     const {
+        mSessionIdentifier,
         leftOperation, mathOperation, rightOperation,
         qResult, qAnswer, isCorrect,
-        qTime, qDate,
-        minNumber, maxNumber, floatNumber, nNumber,
-        additionCheck, subtractionCheck, multiplicationCheck
+        qTime, qDate
     } = req.body
 
     const data = await createAnswer(
+        mSessionIdentifier,
         leftOperation, mathOperation, rightOperation,
         qResult, qAnswer, isCorrect,
-        qTime, qDate,
-        minNumber, maxNumber, floatNumber, nNumber,
-        additionCheck, subtractionCheck, multiplicationCheck)
+        qTime, qDate)
 
     res.status(201).send(data)
 })

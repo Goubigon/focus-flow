@@ -144,14 +144,13 @@ formElement.addEventListener('submit', async (event) => {
         console.log(paramJson)
 
         const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
-        
-        console.log(sessionJson)
-        //window.location.href = 'exercise';
 
-        
-        /*
+        console.log(sessionJson)
+
+
         // Create JSON object
         const formData = {
+            mSessionIdentifier : sessionJson.mSessionIdentifier,
             minNumber: minNumber,
             maxNumber: maxNumber,
             floatNumber: floatNumber,
@@ -160,6 +159,7 @@ formElement.addEventListener('submit', async (event) => {
             additionCheck: additionCheck,
             subtractionCheck: subtractionCheck,
             multiplicationCheck: multiplicationCheck,
+            maxAnswerCount: maxAnswerCount
         };
 
         //null -> no placeholder function
@@ -168,10 +168,10 @@ formElement.addEventListener('submit', async (event) => {
         document.getElementById('jsonOutput').textContent = jsonString;
 
         localStorage.setItem('formData', JSON.stringify(formData));
+
         
-        
-        
-        */
+        window.location.href = 'exercise';
+
     }
 });
 

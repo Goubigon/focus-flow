@@ -13,7 +13,7 @@ const pool = mysql.createPool({
 
 async function getAnswers() {
   try {
-    const [result] = await pool.query("SELECT * from answers");
+    const [result] = await pool.query("SELECT * from math_answer");
     //console.log(result);
     return result;
 
@@ -26,8 +26,8 @@ async function getAnswer(id) {
   try {
     const [result] = await pool.query(
       `SELECT * 
-          from Answers 
-          WHERE id = ?`
+          from math_answer 
+          WHERE mAnswerIdentifier = ?`
       , [id]);
     return result[0];
 
@@ -37,34 +37,27 @@ async function getAnswer(id) {
 }
 
 
-async function createAnswer(
+async function createAnswer(mSessionIdentifier,
   leftOperation, mathOperation, rightOperation,
   qResult, qAnswer, isCorrect,
-  qTime, qDate,
-  minNumber, maxNumber, floatNumber, nNumber,
-  additionCheck, subtractionCheck, multiplicationCheck) {
+  qTime, qDate) {
 
   try {
     const [result] = await pool.query(`
-      INSERT INTO Answers (
+      INSERT INTO math_answer (mSessionIdentifier,
         leftOperation, mathOperation, rightOperation, 
         qResult, qAnswer, isCorrect, 
-        qTime, qDate, 
-        minNumber, maxNumber, floatNumber, nNumber,
-        additionCheck, subtractionCheck, multiplicationCheck)
-      VALUES (
+        qTime, qDate)
+      VALUES (?,
         ?, ?, ?,
         ?, ?, ?,
-        ?, ?,
-        ?, ?, ?, ?,
-        ?, ?, ?
+        ?, ?
       )
     `, [
+      mSessionIdentifier,
       leftOperation, mathOperation, rightOperation,
       qResult, qAnswer, isCorrect,
-      qTime, qDate,
-      minNumber, maxNumber, floatNumber, nNumber,
-      additionCheck, subtractionCheck, multiplicationCheck
+      qTime, qDate
     ]);
 
     return getAnswer(result.insertId); // Return the result if needed
@@ -81,7 +74,7 @@ async function countOperation(operation) {
     const [result] = await pool.query(`
       SELECT COUNT(id)
       AS count
-      FROM answers 
+      FROM math_answer 
       WHERE mathOperation = ?;
       `, [operation]);
     return result[0].count;
@@ -95,7 +88,7 @@ async function averageSuccessWithOperation(operation) {
   try {
     const [result] = await pool.query(`
         SELECT AVG(isCorrect) AS average_isCorrect
-        FROM answers
+        FROM math_answer
         WHERE mathOperation = ?;
       `, [operation]);
     return result[0].average_isCorrect;
@@ -109,7 +102,7 @@ async function medianTimeWithOperation(operation) {
   try {
     const [result] = await pool.query(`
         SELECT * 
-        FROM answers 
+        FROM math_answer 
         WHERE mathOperation = ? 
         ORDER BY qTime;
       `, [operation]);
