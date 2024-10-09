@@ -1,7 +1,7 @@
 CREATE DATABASE math_db;
 
 CREATE TABLE answers (
-    ID INT AUTO_INCREMENT PRIMARY KEY, 
+    mAnswerIdentifier INT AUTO_INCREMENT PRIMARY KEY, 
 
     leftOperation INT(10) NOT NULL,
     mathOperation CHAR(1) NOT NULL CHECK (mathOperation IN ('+', '-', 'x')),
@@ -22,12 +22,17 @@ CREATE TABLE answers (
     additionCheck BOOLEAN NOT NULL,
     subtractionCheck BOOLEAN NOT NULL,
     multiplicationCheck BOOLEAN NOT NULL
+
+    mSessionIdentifier INT 
+    FOREIGN KEY (mSessionIdentifier) REFERENCES math_session(mSessionIdentifier)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
 );
 
 +---------------------+------------+------+-----+---------+----------------+
 | Field               | Type       | Null | Key | Default | Extra          |
 +---------------------+------------+------+-----+---------+----------------+
-| ID                  | int        | NO   | PRI | NULL    | auto_increment |
+| mAnswerIdentifier   | int        | NO   | PRI | NULL    | auto_increment |
 | leftOperation       | int        | NO   |     | NULL    |                |
 | mathOperation       | char(1)    | NO   |     | NULL    |                |
 | rightOperation      | int        | NO   |     | NULL    |                |
@@ -43,6 +48,7 @@ CREATE TABLE answers (
 | additionCheck       | tinyint(1) | NO   |     | NULL    |                |
 | subtractionCheck    | tinyint(1) | NO   |     | NULL    |                |
 | multiplicationCheck | tinyint(1) | NO   |     | NULL    |                |
+| mSessionIdentifier  | int        | YES  | MUL | NULL    |                |
 +---------------------+------------+------+-----+---------+----------------+
 
 INSERT INTO Answers (
