@@ -1,55 +1,34 @@
 CREATE DATABASE math_db;
 
-CREATE TABLE answers (
-    mAnswerIdentifier INT AUTO_INCREMENT PRIMARY KEY, 
-
-    leftOperation INT(10) NOT NULL,
-    mathOperation CHAR(1) NOT NULL CHECK (mathOperation IN ('+', '-', 'x')),
-    rightOperation INT(10) NOT NULL,
-
-    qResult FLOAT(24) NOT NULL,
-    qAnswer FLOAT(24) NOT NULL,
-    isCorrect BOOLEAN NOT NULL, -- 0 == False, anything else == True
-
-    qTime FLOAT(5, 2) NOT NULL, -- Stores time with 2 decimal places (e.g., 5.65 seconds)
-    qDate DATETIME NOT NULL, -- Stores the date and time (format: yyyy:mm:dd hh:mm:ss)
-
-    minNumber FLOAT(24) NOT NULL,
-    maxNumber FLOAT(24) NOT NULL,
-    floatNumber INT(10) NOT NULL,
-    nNumber INT(10) NOT NULL,
-
-    additionCheck BOOLEAN NOT NULL,
-    subtractionCheck BOOLEAN NOT NULL,
-    multiplicationCheck BOOLEAN NOT NULL
-
-    mSessionIdentifier INT 
+CREATE TABLE math_answer (
+    mAnswerIdentifier INT AUTO_INCREMENT PRIMARY KEY,
+    mSessionIdentifier INT,
+    leftOperation INT NOT NULL,
+    mathOperation CHAR(1) NOT NULL,
+    rightOperation INT NOT NULL,
+    qResult FLOAT NOT NULL,
+    qAnswer FLOAT NOT NULL,
+    isCorrect BOOLEAN NOT NULL,
+    qTime FLOAT(5,2) NOT NULL,
+    qDate DATETIME NOT NULL,
     FOREIGN KEY (mSessionIdentifier) REFERENCES math_session(mSessionIdentifier)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
-
-+---------------------+------------+------+-----+---------+----------------+
-| Field               | Type       | Null | Key | Default | Extra          |
-+---------------------+------------+------+-----+---------+----------------+
-| mAnswerIdentifier   | int        | NO   | PRI | NULL    | auto_increment |
-| leftOperation       | int        | NO   |     | NULL    |                |
-| mathOperation       | char(1)    | NO   |     | NULL    |                |
-| rightOperation      | int        | NO   |     | NULL    |                |
-| qResult             | float      | NO   |     | NULL    |                |
-| qAnswer             | float      | NO   |     | NULL    |                |
-| isCorrect           | tinyint(1) | NO   |     | NULL    |                |
-| qTime               | float(5,2) | NO   |     | NULL    |                |
-| qDate               | datetime   | NO   |     | NULL    |                |
-| minNumber           | float      | NO   |     | NULL    |                |
-| maxNumber           | float      | NO   |     | NULL    |                |
-| floatNumber         | int        | NO   |     | NULL    |                |
-| nNumber             | int        | NO   |     | NULL    |                |
-| additionCheck       | tinyint(1) | NO   |     | NULL    |                |
-| subtractionCheck    | tinyint(1) | NO   |     | NULL    |                |
-| multiplicationCheck | tinyint(1) | NO   |     | NULL    |                |
-| mSessionIdentifier  | int        | YES  | MUL | NULL    |                |
-+---------------------+------------+------+-----+---------+----------------+
++--------------------+------------+------+-----+---------+----------------+
+| Field              | Type       | Null | Key | Default | Extra          |
++--------------------+------------+------+-----+---------+----------------+
+| mAnswerIdentifier  | int        | NO   | PRI | NULL    | auto_increment |
+| mSessionIdentifier | int        | YES  | MUL | NULL    |                |
+| leftOperation      | int        | NO   |     | NULL    |                |
+| mathOperation      | char(1)    | NO   |     | NULL    |                |
+| rightOperation     | int        | NO   |     | NULL    |                |
+| qResult            | float      | NO   |     | NULL    |                |
+| qAnswer            | float      | NO   |     | NULL    |                |
+| isCorrect          | tinyint(1) | NO   |     | NULL    |                |
+| qTime              | float(5,2) | NO   |     | NULL    |                |
+| qDate              | datetime   | NO   |     | NULL    |                |
++--------------------+------------+------+-----+---------+----------------+
 
 INSERT INTO Answers (
     leftOperation, mathOperation, rightOperation, 
