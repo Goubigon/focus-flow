@@ -1,4 +1,4 @@
-import { logUser } from '../client-api/auth.js';
+import { logUser } from '../client-api/auth_api.js';
 
 
 function validateForm() {
