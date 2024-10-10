@@ -93,18 +93,17 @@ answerInputTextArea.addEventListener('keypress', (event) => {
 
 
 window.onload = async () => {
+    keepAuthenticate()
     localStorageParametersJson = loadParamsFromLocalStorage();
-
-    
     console.log("localStorageParametersJson : " + JSON.stringify(localStorageParametersJson))
-    questionJsonList = await askGenerateQuestions(localStorageParametersJson)
 
+    questionJsonList = await askGenerateQuestions(localStorageParametersJson)
     console.log("FRONT questionJsonList : " + JSON.stringify(questionJsonList))
+
     generateExerciseDiv(questionJsonList)
 
     numberOfLines = localStorageParametersJson.mMaxAnswerCount;
     answerInputTextArea.focus()
     linesContainerElement.children[currentLine].classList.add('current');
     startTime = new Date();
-
 };
