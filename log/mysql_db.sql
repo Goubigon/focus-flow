@@ -92,13 +92,15 @@ VALUES ('leo', 'leo@example.com', 'ppp123', 'admin');
 -----------------
 CREATE TABLE math_user_stat (
     mUserIdentifier INT NOT NULL PRIMARY KEY,
+    mLogNumber INT DEFAULT 0,
     mSessionCount INT DEFAULT 0,
     mLastSessionDate DATE,
-    mTotalSessionTime INT DEFAULT 0, -- in milliseconds
+    mTotalSessionTime FLOAT DEFAULT 0,
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
         ON UPDATE CASCADE
 );
+
 
 +-------------------+----------+------+-----+---------+-------+
 | Field             | Type     | Null | Key | Default | Extra |
