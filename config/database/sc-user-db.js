@@ -159,7 +159,6 @@ async function checkDuplicateEmail(email) {
 
 async function incrementSessionCountInStat(mUserIdentifier) {
   try {
-    console.log("mUserIdentifier : " + mUserIdentifier)
     const [result] = await pool.query(`
       UPDATE math_user_stat
       SET mSessionCount = mSessionCount + 1
@@ -172,8 +171,24 @@ async function incrementSessionCountInStat(mUserIdentifier) {
   }
 }
 
+
+
+async function changeLastSessionDateInStat(mSessionIdentifier, lastDate) {
+  try {
+    const [result] = await pool.query(`
+        UPDATE math_user_stat
+        SET mLastSessionDate = ?
+        WHERE mUserIdentifier = ?
+      `, [lastDate, mSessionIdentifier]);
+
+    return true;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
-  getUserWithEmail, deleteUser, createUserStat, 
-  incrementLogNumber, incrementSessionCountInStat
+  getUserWithEmail, deleteUser, createUserStat,
+  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat
 };

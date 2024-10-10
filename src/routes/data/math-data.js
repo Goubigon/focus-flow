@@ -8,8 +8,8 @@ const { getAnswers, getAnswer, createAnswer,
     medianTimeWithOperation
 } = require('../../../config/database/sc-math-db.js');
 
-const { updateSessionDuration } = require('../../../config/database/sc-session-db.js');
-const { incrementSessionCountInStat } = require('../../../config/database/sc-user-db.js');
+const { updateSessionDuration, getSessionWithID } = require('../../../config/database/sc-session-db.js');
+const { incrementSessionCountInStat, changeLastSessionDateInStat } = require('../../../config/database/sc-user-db.js');
 
 
 const { middleAuthentication } = require('../../utils/auth.js')
@@ -140,6 +140,10 @@ router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
 
     //get user id from auth token
     await incrementSessionCountInStat(req.user.mUserIdentifier)
+
+    //get session id to get its date
+    const sessionJson = await getSessionWithID(mSessionIdentifier);
+    await changeLastSessionDateInStat(req.user.mUserIdentifier, sessionJson.mSessionDate)
 
     res.status(201)
 })
