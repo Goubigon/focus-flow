@@ -124,7 +124,7 @@ CREATE TABLE math_session (
     mSessionIdentifier INT AUTO_INCREMENT PRIMARY KEY,
     mUserIdentifier INT NOT NULL,
     mParametersIdentifier INT NOT NULL,  -- New foreign key column
-    mSessionDuration INT DEFAULT 0, -- in milliseconds
+    mSessionDuration FLOAT DEFAULT 0,
     mSessionDate DATETIME,
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
@@ -142,13 +142,13 @@ CREATE TABLE math_session (
 | mSessionIdentifier    | int      | NO   | PRI | NULL    | auto_increment |
 | mUserIdentifier       | int      | NO   | MUL | NULL    |                |
 | mParametersIdentifier | int      | NO   | MUL | NULL    |                |
-| mSessionDuration      | int      | YES  |     | 0       |                |
+| mSessionDuration      | float    | YES  |     | NULL    |                |
 | mSessionDate          | datetime | YES  |     | NULL    |                |
 +-----------------------+----------+------+-----+---------+----------------+
 
 
 INSERT INTO math_session (mUserIdentifier, mParametersIdentifier, mSessionDuration, mSessionDate)
-VALUES (35, 1, 3600000, '2024-10-05 00:00:00');
+VALUES (35, 1, 4.02, '2024-10-05 00:00:00');
 
 -----------------
 
