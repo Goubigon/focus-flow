@@ -6,7 +6,7 @@ router.use(express.json())
 const { getAnswers, getAnswer, createAnswer,
     countOperation, averageSuccessWithOperation,
     medianTimeWithOperation
-} = require('../../../config/sc-math-db.js');
+} = require('../../../config/database/sc-math-db.js');
 
 router.get('/', (req, res) => {
     res.send('This is the Math Data page')
