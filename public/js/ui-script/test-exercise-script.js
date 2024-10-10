@@ -38,5 +38,8 @@ document.addEventListener('keypress', (event) => {
 });
 
 // Focus on the first line initially
-//linesContainerElement.children[currentLine].focus();
-answerInputTextArea.focus()
+//
+window.onload = () => {
+    answerInputTextArea.focus()
+    linesContainerElement.children[currentLine].classList.add('current');
+};
