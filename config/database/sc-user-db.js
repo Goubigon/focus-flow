@@ -157,8 +157,23 @@ async function checkDuplicateEmail(email) {
   }
 }
 
+async function incrementSessionCountInStat(mUserIdentifier) {
+  try {
+    console.log("mUserIdentifier : " + mUserIdentifier)
+    const [result] = await pool.query(`
+      UPDATE math_user_stat
+      SET mSessionCount = mSessionCount + 1
+      WHERE mUserIdentifier = ?
+      `, [mUserIdentifier]);
+
+    return true;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
-  getUserWithEmail, deleteUser, createUserStat, incrementLogNumber
+  getUserWithEmail, deleteUser, createUserStat, 
+  incrementLogNumber, incrementSessionCountInStat
 };
