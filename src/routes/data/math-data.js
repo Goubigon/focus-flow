@@ -8,6 +8,8 @@ const { getAnswers, getAnswer, createAnswer,
     medianTimeWithOperation
 } = require('../../../config/database/sc-math-db.js');
 
+const { updateSessionDuration } = require('../../../config/database/sc-session-db.js');
+
 router.get('/', (req, res) => {
     res.send('This is the Math Data page')
 })
@@ -112,18 +114,22 @@ router.post("/generateQuestions", async (req, res) => {
 })
 
 router.post("/insertAllAnswers", async (req, res) => {
+    const mSessionIdentifier = req.body[0].mSessionIdentifier;
+
     for(let i = 0 ; i < req.body.length; i++){
         console.log(i + " : " + JSON.stringify(req.body[i]))
         const { leftOperation, mathOperation,
             rightOperation,qResult, qAnswer, isCorrect, 
-            qTime, qDate, mSessionIdentifier
+            qTime, qDate
         } = req.body[i]
 
-        createAnswer(mSessionIdentifier,
+        await createAnswer(mSessionIdentifier,
             leftOperation, mathOperation, rightOperation,
             qResult, qAnswer, isCorrect,
             qTime, qDate)
     }
+
+    await updateSessionDuration(mSessionIdentifier)
 
     res.status(201)
 })

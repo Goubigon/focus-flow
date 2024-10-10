@@ -102,6 +102,25 @@ async function getSessionWithID(id){
   }
 }
 
+async function updateSessionDuration(mSessionIdentifier) {
+  try {
+    console.log("---- mSessionIdentifier : " + mSessionIdentifier)
+    const [result] = await pool.query(`
+        UPDATE math_session
+        SET mSessionDuration = (
+            SELECT SUM(qTime)
+            FROM math_answer
+            WHERE mSessionIdentifier = ?
+        )
+        WHERE mSessionIdentifier = ?;
+      `, [mSessionIdentifier, mSessionIdentifier]);
+
+    return getSessionWithID(mSessionIdentifier);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 module.exports = {
-  getExactParams, getParamWithID, createParam, createSession, getSessionWithID
+  getExactParams, getParamWithID, createParam, createSession, getSessionWithID, updateSessionDuration
 };
