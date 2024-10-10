@@ -31,11 +31,10 @@ function refreshingToken(req, res, refreshTokenCookie) {
 //middleware function
 async function middleAuthentication(req, res, next) {
     console.log("-[Request authentication]-")
-    const authToken = req.cookies.authTokenCookie;
-    console.log("Checking Authentication Cookie: " + authToken);
-
-    //if auth exists -> verify
-    if (authToken) {
+    try{
+        const authToken = req.cookies.authTokenCookie;
+        console.log("Checking Authentication Cookie: " + authToken);
+        
         jwt.verify(authToken, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
             if (err) { // if auth error
                 console.log("Authentication Token is invalid");
@@ -56,7 +55,8 @@ async function middleAuthentication(req, res, next) {
             console.log("Valid Authentication -> proceed")
             next();
         });
-    } else {
+    }
+    catch (err){
         console.log("No Authentication Cookie");
         try {
             const refreshTokenCookie = req.cookies.refreshTokenCookie;
@@ -71,6 +71,7 @@ async function middleAuthentication(req, res, next) {
             return next();
         }
         catch (err) {
+            console.log("Failed to use refresh cookie")
             return res.status(err.status || 401).send({ message: err.message });
         }
     }
