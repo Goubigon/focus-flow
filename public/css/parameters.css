@@ -27,3 +27,30 @@ label {
     color: red;
     font-size: 0.9em;
 }
+
+/* General button styles */
+button {
+    background-color: #4CAF50; /* Green background */
+    border: none; /* Remove borders */
+    color: white; /* White text color */
+    padding: 10px 20px; /* Add padding */
+    text-align: center; /* Center the text */
+    text-decoration: none; /* Remove underline */
+    display: inline-block; /* Allow block display */
+    font-size: 16px; /* Increase font size */
+    margin: 10px; /* Add margin */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+    transform: scale(1.05); /* Slightly increase size */
+}
+
+/* Button active effect */
+button:active {
+    transform: scale(0.95); /* Slightly decrease size when active */
+}

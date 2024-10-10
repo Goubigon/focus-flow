@@ -15,7 +15,7 @@ const pool = mysql.createPool({
 
 async function getUsers() {
   try {
-    const [result] = await pool.query("SELECT * from math_users");
+    const [result] = await pool.query("SELECT * from math_user_credential");
     //console.log(result);
     return result;
 
@@ -28,7 +28,7 @@ async function getUsers() {
 //Temp function for auth test
 async function getUsername(username) {
   try {
-    const [result] = await pool.query("SELECT * from math_users WHERE mUsername=?", [username]);
+    const [result] = await pool.query("SELECT * from math_user_credential WHERE mUsername=?", [username]);
     //console.log(result);
     return result;
 
@@ -40,7 +40,7 @@ async function getUsername(username) {
 //temp function for auth test
 async function getUserWithEmail(email) {
   try {
-    const [result] = await pool.query("SELECT * from math_users WHERE mEmail=?", [email]);
+    const [result] = await pool.query("SELECT * from math_user_credential WHERE mEmail=?", [email]);
     //console.log(result);
     return result[0];
 
@@ -53,8 +53,8 @@ async function getUser(id) {
   try {
     const [result] = await pool.query(`
       SELECT *
-      FROM math_users
-      WHERE id = ?
+      FROM math_user_credential
+      WHERE mUserIdentifier = ?
       `, [id]);
     return result[0];
   }
@@ -67,8 +67,8 @@ async function deleteUser(id) {
   try {
     const [result] = await pool.query(`
       DELETE 
-      FROM math_users 
-      WHERE id = ?
+      FROM math_user_credential 
+      WHERE mUserIdentifier = ?
       `, [id]);
     return result.affectedRows > 0;
   }
@@ -81,7 +81,7 @@ async function getHashedPassword(email) {
   try {
     const [result] = await pool.query(`
       SELECT mHashedPassword
-      FROM math_users 
+      FROM math_user_credential 
       WHERE mEmail=? 
       `, [email]);
     return result[0].mHashedPassword;
@@ -94,7 +94,7 @@ async function getHashedPassword(email) {
 async function createUser(name, email, hashedPassword, role) {
   try {
     const [result] = await pool.query(`
-      INSERT INTO math_users (
+      INSERT INTO math_user_credential (
         mUsername, mEmail, 
         mHashedPassword, mRole)
       VALUES (?, ?, 
@@ -116,7 +116,7 @@ async function checkDuplicateEmail(email) {
   try {
     const [result] = await pool.query(`
       SELECT *
-      FROM math_users
+      FROM math_user_credential
       WHERE mEmail = ?
       `, [email]);
     return result.length > 0;

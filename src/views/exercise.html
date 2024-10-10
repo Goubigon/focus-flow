@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Page Title</title>
-    
+    <title>Exercise</title>
+
     <link rel="stylesheet" href="/css/exercise.css">
 </head>
+
 
 <body>
     <div id="navbar"></div>
@@ -21,24 +22,11 @@
             })
             .catch(error => console.error("Error loading navbar:", error));
     </script>
-    
-
-    <div class="middle-rounded-container">
-        <h1>Exercise</h1>
-        <div class="numbers-container">
-            <p id="value1" class="random-number"></p>
-            <p id="randomOperation" class="random-number"></p>
-            <p id="value2" class="random-number"></p>
-        </div>
-
-        <p>Enter your answer below:</p>
-        <input type="text" id="userAnswer" class="answer-input" placeholder="Type your answer here" />
 
 
-        <button id=exSubmitButton>Submit</button>
-        <p id="feedback" class="feedback"></p>
-        <p id="timeTaken" class="time-taken"></p>
-        
+    <div class="main-container">
+        <div class="lines-container" id="linesContainer"></div>
+        <textarea class="big-input" id="answer-input" placeholder="Type here..."></textarea>
     </div>
 
     <script type="module" src="/js/ui-script/exercise-script.js"></script>

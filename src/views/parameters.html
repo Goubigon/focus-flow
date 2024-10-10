@@ -4,8 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parameters</title>
+    <title>parameters</title>
     <link rel="stylesheet" href="/css/parameters.css">
+    <style>
+        /* General button styles */
+        button {
+            background-color: #4CAF50; /* Green background */
+            border: none; /* Remove borders */
+            color: white; /* White text color */
+            padding: 10px 20px; /* Add padding */
+            text-align: center; /* Center the text */
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Allow block display */
+            font-size: 16px; /* Increase font size */
+            margin: 10px; /* Add margin */
+            cursor: pointer; /* Pointer cursor on hover */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+        }
+
+        /* Button hover effect */
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+            transform: scale(1.05); /* Slightly increase size */
+        }
+
+        /* Button active effect */
+        button:active {
+            transform: scale(0.95); /* Slightly decrease size when active */
+        }
+
+        #configForm {
+            display: none; /* Hide the form initially */
+        }
+
+        #levelButtons {
+            display: none; /* Hide level buttons initially */
+            margin-top: 20px; /* Add some margin above */
+        }
+
+        .level-button {
+            width: 100px; /* Fixed width for level buttons */
+            display: inline-block; /* Inline-block for spacing */
+        }
+    </style>
 </head>
 
 <body>
@@ -15,18 +57,20 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('navbar').innerHTML = data;
-                // Load your navbar script here after the navbar is inserted
                 return import('/js/ui-script/navbar-script.js');
             })
             .catch(error => console.error("Error loading navbar:", error));
     </script>
 
-
     <div id="params">
+        <h1>Welcome to the Parameters Page!</h1>
+        
+        <!-- Buttons for Levels and Custom -->
+        <button id="levelsButton">Levels</button>
+        <button id="customButton">Custom</button>
 
-        <h1>Welcome to the parameters Page!</h1>
-        <p>TODO add fields for parameters</p>
-
+        <!-- Container for Level Buttons -->
+        <div id="levelButtons"></div>
 
         <form id="configForm">
             <label for="minNumber">Min Number:</label>
@@ -35,42 +79,64 @@
             <label for="maxNumber">Max Number:</label>
             <input type="number" id="maxNumber" name="maxNumber" value="10" required>
 
-
             <label for="floatNumber">Numbers after comma:</label>
             <input type="number" id="floatNumber" name="floatNumber" value="0" disabled>
 
             <label for="nNumber">Number of Numbers:</label>
             <input type="number" id="nNumber" name="nNumber" value="2" disabled>
 
-
-
             <label for="operation">List of operations:</label>
 
             <label for="addition">+</label>
             <input type="checkbox" id="additionCheck" name="additionCheck" checked>
-            <label for="substraction">-</label>
+            <label for="subtraction">-</label>
             <input type="checkbox" id="subtractionCheck" name="subtractionCheck" checked>
             <label for="multiplication">x</label>
             <input type="checkbox" id="multiplicationCheck" name="multiplicationCheck" checked>
 
-
+            
+            <label for="maxAnswerCount">Number of questions:</label>
+            <input type="number" id="maxAnswerCount" name="maxAnswerCount" value="10">
 
             <button type="submit">Submit</button>
             <p class="error" id="errorMessage"></p>
 
-            <!--
-            <pre> -> preformatted text
-                preserves whitespace, linebreaks
-                used for code, text that doesn't get reformatted by the browser
-            -->
             <pre id="jsonOutput"></pre>
-
         </form>
-
-
     </div>
 
     <script type="module" src="/js/ui-script/parameters-script.js"></script>
+    <script>
+        const configForm = document.getElementById('configForm');
+        const levelsButton = document.getElementById('levelsButton');
+        const customButton = document.getElementById('customButton');
+        const levelButtonsContainer = document.getElementById('levelButtons');
+
+        // Show levels when the "Levels" button is clicked
+        levelsButton.addEventListener('click', () => {
+            configForm.style.display = 'none'; // Hide the form
+            levelButtonsContainer.style.display = 'block'; // Show level buttons
+            levelButtonsContainer.innerHTML = ''; // Clear any existing buttons
+
+            // Create level buttons dynamically
+            for (let i = 1; i <= 10; i++) {
+                const levelButton = document.createElement('button');
+                levelButton.className = 'level-button';
+                levelButton.innerText = `Level ${i}`;
+                levelButton.addEventListener('click', () => {
+                    alert(`You selected ${levelButton.innerText}`);
+                    // Add functionality for level selection here
+                });
+                levelButtonsContainer.appendChild(levelButton);
+            }
+        });
+
+        // Show custom form when the "Custom" button is clicked
+        customButton.addEventListener('click', () => {
+            levelButtonsContainer.style.display = 'none'; // Hide level buttons
+            configForm.style.display = 'block'; // Show the form
+        });
+    </script>
 </body>
 
 </html>

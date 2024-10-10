@@ -9,7 +9,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const homeRoute = require('../src/routes/home.js');
 const aboutRoute = require('../src/routes/about.js');
-const dataRoute = require('../src/routes/data.js');
 const fillerRoute = require('../src/routes/filler.js');
 const exerciseRoute = require('../src/routes/exercise.js');
 const parametersRoute = require('../src/routes/parameters.js');
@@ -23,6 +22,9 @@ const loginRoute = require('../src/routes/login.js');
 const logoutRoute = require('../src/routes/logout.js');
 
 
+const sessionDataRoute = require('../src/routes/data/session-data.js');
+
+
 //default / redirects to /login
 app.get('/', (req, res) => {
     res.redirect('/login');
@@ -30,7 +32,6 @@ app.get('/', (req, res) => {
 
 app.use('/home', homeRoute);
 app.use('/about', aboutRoute);
-app.use('/data', dataRoute);
 app.use('/filler', fillerRoute);
 app.use('/exercise', exerciseRoute);
 app.use('/parameters', parametersRoute);
@@ -42,6 +43,8 @@ app.use('/user-data', userRoute);
 app.use('/login', loginRoute);
 
 app.use('/logout', logoutRoute);
+
+app.use('/session-data', sessionDataRoute);
 
 
 // Handle 404 errors
