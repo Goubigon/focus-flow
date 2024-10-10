@@ -1,28 +1,22 @@
 import {
-    getCurrentDateTime, displayNumber, clearAnswers,
-    loadParamsFromLocalStorage, randomNumber, loadOperationList,
-    randomOperation, getCorrectResult, createAnswer, askGenerateQuestions, insertAllAnswers
+    getCurrentDateTime, 
+    loadParamsFromLocalStorage,
+    askGenerateQuestions, insertAllAnswers
 } from '../client-api/utils.js';
-
 
 import { keepAuthenticate } from '../client-api/auth_api.js';
 
 
-let correctResult;  // Global variable to store the correct answer
 let startTime; //starting time when questions are loaded
 
-let leftValue = 0;
-let rightValue = 0;
-let operationList = [];
-let operation = "";
 let localStorageParametersJson;
 let questionJsonList;
 
-let numberOfLines; // Variable to dictate how many lines to display
+let currentLine = 0;
+let numberOfLines; 
 
 const linesContainerElement = document.getElementById('linesContainer');
 const answerInputTextArea = document.getElementById('answer-input');
-let currentLine = 0;
 
 
 

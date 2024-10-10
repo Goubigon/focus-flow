@@ -11,22 +11,6 @@ export function getCurrentDateTime() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-export function displayNumber(element, val) {
-    //adding () if negative
-    if (val < 0) {
-        document.getElementById(element).textContent = `(${val})`;
-    } else {
-        document.getElementById(element).textContent = val;
-    }
-}
-
-// Clear previous feedback and user input
-export function clearAnswers() {
-    document.getElementById('feedback').textContent = '';
-    document.getElementById('userAnswer').value = '';
-    document.getElementById('timeTaken').textContent = '';
-}
-
 export function loadParamsFromLocalStorage() {
     const formDataString = localStorage.getItem('formData');
     if (formDataString) {
@@ -37,35 +21,6 @@ export function loadParamsFromLocalStorage() {
         console.log('No form data found in localStorage.');
         return null;
     }
-}
-
-export function loadOperationList(formData) {
-    const operations = []
-    //adding the selected operations to a list
-    if (formData.additionCheck) { operations.push("+"); }
-    if (formData.subtractionCheck) { operations.push("-"); }
-    if (formData.multiplicationCheck) { operations.push("x"); }
-    return operations;
-}
-
-export function randomOperation(operationList) {
-    const randomIndex = Math.floor(Math.random() * operationList.length);
-    return operationList[randomIndex];
-}
-
-
-export function getCorrectResult(value1, value2, operation) {
-    if (operation === "+") {
-        return value1 + value2;
-    } else if (operation === "-") {
-        return value1 - value2;
-    } else if (operation === "x") {
-        return value1 * value2;
-    }
-}
-//returns random number between minVal and maxVal
-export function randomNumber(minVal, maxVal) {
-    return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal
 }
 
 export async function createAnswer(mSessionIdentifier, leftOperation, mathOperation, rightOperation,
