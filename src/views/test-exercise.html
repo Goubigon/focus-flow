@@ -5,108 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Line Focus Scroll</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            /* Prevent page scroll */
-            display: flex;
-            /* Use flexbox to center content */
-            justify-content: center;
-            /* Align items to the left */
-            align-items: center;
-            /* Center vertically */
-            height: 100vh;
-            /* Full view height */
-        }
 
-
-        .lines-container {
-            width: 400px;
-            /* Set a fixed width for the container */
-            height: 400px;
-            /* Set a fixed height for the container */
-            overflow-y: hidden;
-            /* Hide scrollbars */
-            position: relative;
-            border: 1px solid #ccc;
-            /* Add border to the box */
-            background: #fff;
-            /* Set a background color */
-            box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
-            /* Add a shadow for depth */
-        }
-
-        .line {
-            height: 100px;
-            /* Example height for each line */
-            margin: 20px 0;
-            /* Spacing between lines */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            background: #f0f0f0;
-            transition: background 0.5s;
-            /* Smooth background change */
-        }
-
-        .line:focus {
-            outline: none;
-            /* Remove focus outline */
-            background: #d0e0f0;
-            /* Highlight the focused line */
-        }
-
-        .line.answer {
-            background: #e0ffe0;
-            /* Change background for answered lines */
-        }
-    </style>
+    <link rel="stylesheet" href="/css/test-exercise.css">
 </head>
+
 
 <body>
 
-    <div class="lines-container" id="linesContainer"></div>
 
+
+    <div id="navbar"></div>
     <script>
-        const numberOfLines = 20; // Variable to dictate how many lines to display
-        const linesContainer = document.getElementById('linesContainer');
-        let currentLine = 0;
-
-        // Create lines dynamically based on numberOfLines
-        for (let i = 1; i <= numberOfLines; i++) {
-            const line = document.createElement('div');
-            line.className = 'line';
-            line.tabIndex = 0; // Make it focusable
-            line.id = `line${i}`;
-            line.textContent = `Line ${i}`;
-            linesContainer.appendChild(line);
-        }
-
-        function scrollToNextLine() {
-            if (currentLine < numberOfLines - 1) {
-                // Mark the current line as answered
-                linesContainer.children[currentLine].classList.add('answer');
-                currentLine++;
-                // Scroll to the next line
-                linesContainer.children[currentLine - 1].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                linesContainer.children[currentLine].focus(); // Set focus to the next line
-            }
-        }
-
-        // Event listener for answering a line (using Enter key)
-        document.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                scrollToNextLine(); // Trigger scroll on pressing Enter
-            }
-        });
-
-        // Focus on the first line initially
-        linesContainer.children[currentLine].focus();
+        fetch('/partial/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+                // Load your navbar script here after the navbar is inserted
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
     </script>
+
+
+    <div class="main-container">
+        <div class="lines-container" id="linesContainer"></div>
+        <textarea class="big-input" id="answer-input" placeholder="Type here..."></textarea>
+    </div>
+
+    <script type="module" src="/js/ui-script/test-exercise-script.js"></script>
 
 </body>
 
