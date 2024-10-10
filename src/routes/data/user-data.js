@@ -10,11 +10,12 @@ router.use(cookieParser());
 
 
 const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, 
-    getUserWithEmail, deleteUser, createUserStat, incrementLogNumber
+    getUserWithEmail, deleteUser, createUserStat, 
+    incrementLogNumber
 } = require('../../../config/database/sc-user-db.js');
 
 
-const { createSecureCookie, authenticateToken } = require('../../utils/auth.js')
+const { createSecureCookie, middleAuthentication } = require('../../utils/auth.js')
 
 
 router.get('/', (req, res) => {
@@ -27,7 +28,7 @@ router.get("/getUsers", async (req, res) => {
     res.send(data)
 })
 
-router.get("/getUsername", authenticateToken, async (req, res) => {
+router.get("/getUsername", middleAuthentication, async (req, res) => {
     const data = await getUsername("Americano");
     res.send(data)
 })
@@ -47,7 +48,7 @@ const myList = [
     }
 ]
 
-router.get("/myList", authenticateToken, async (req, res) => {
+router.get("/myList", middleAuthentication, async (req, res) => {
     res.json(myList.filter(l => l.email === req.user.mEmail))
 })
 
@@ -63,7 +64,7 @@ router.get("/getUser/:id", async (req, res) => {
 })
 
 //AUTHENTICATE TOKEN
-router.get("/getUser", authenticateToken, async (req, res) => {
+router.get("/getUser", middleAuthentication, async (req, res) => {
     try {
         const id = req.user.ID;
         const data = await getUser(id);
@@ -189,13 +190,13 @@ router.get('/RefreshingToken', (req, res) => {
     })
 })
 
-router.get('/keepAuthenticate', authenticateToken, (req, res) => {
+router.get('/keepAuthenticate', middleAuthentication, (req, res) => {
     res.status(201).json({ message: 'Authentication successfully kept' })
 })
 
 
 
-router.delete("/logout", authenticateToken, (req, res) => {
+router.delete("/logout", middleAuthentication, (req, res) => {
     res.clearCookie('refreshTokenCookie', { path: '/' });
     res.clearCookie('authTokenCookie', { path: '/' });
     res.status(204).send({ message: 'Logout successful, cookie cleared.' });

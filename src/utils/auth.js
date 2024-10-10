@@ -29,7 +29,7 @@ function refreshingToken(req, res, refreshTokenCookie) {
 }
 
 //middleware function
-async function authenticateToken(req, res, next) {
+async function middleAuthentication(req, res, next) {
     console.log("-[Request authentication]-")
     const authToken = req.cookies.authTokenCookie;
     console.log("Checking Authentication Cookie: " + authToken);
@@ -103,5 +103,5 @@ function createSecureCookie(req, res, name, value, expiresIn) {
 
 module.exports = {
     createSecureCookie,
-    authenticateToken
+    middleAuthentication
 }
