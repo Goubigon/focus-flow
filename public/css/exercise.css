@@ -12,7 +12,7 @@ body {
     align-items: center;
     /* Center vertically */
     height: 100vh;
-    /* Full view height */
+    background-color: #f4f4f9;
 }
 
 .main-container {
