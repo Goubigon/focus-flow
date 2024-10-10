@@ -187,8 +187,27 @@ async function changeLastSessionDateInStat(mSessionIdentifier, lastDate) {
   }
 }
 
+async function updateTotalSessionTime(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        UPDATE math_user_stat
+        SET mTotalSessionTime = (
+            SELECT SUM(mSessionDuration)
+            FROM math_session
+            WHERE mUserIdentifier = ?
+        )
+        WHERE mUserIdentifier = ?;
+      `, [mUserIdentifier, mUserIdentifier]);
+
+      console.log("updated total session time")
+    return getUser(mUserIdentifier);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
   getUserWithEmail, deleteUser, createUserStat,
-  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat
+  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime
 };

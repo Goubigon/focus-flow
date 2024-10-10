@@ -9,7 +9,7 @@ const { getAnswers, getAnswer, createAnswer,
 } = require('../../../config/database/sc-math-db.js');
 
 const { updateSessionDuration, getSessionWithID } = require('../../../config/database/sc-session-db.js');
-const { incrementSessionCountInStat, changeLastSessionDateInStat } = require('../../../config/database/sc-user-db.js');
+const { incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime } = require('../../../config/database/sc-user-db.js');
 
 
 const { middleAuthentication } = require('../../utils/auth.js')
@@ -144,6 +144,8 @@ router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
     //get session id to get its date
     const sessionJson = await getSessionWithID(mSessionIdentifier);
     await changeLastSessionDateInStat(req.user.mUserIdentifier, sessionJson.mSessionDate)
+
+    await updateTotalSessionTime(req.user.mUserIdentifier)
 
     res.status(201)
 })
