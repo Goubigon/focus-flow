@@ -9,7 +9,8 @@ router.use(express.json())
 router.use(cookieParser());
 
 
-const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
+const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, 
+    getUserWithEmail, deleteUser, createUserStat, incrementLogNumber
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -111,6 +112,16 @@ router.post("/logUser", async (req, res) => {
             createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
 
             console.log("Auth & Refresh cookies created")
+
+
+            try{
+                await incrementLogNumber(currentUser.mUserIdentifier)
+
+            }catch(err){
+                res.status(500).json({ message: "update log error" });
+                
+            }
+
             //returns (access token + refresh token)
             res.status(200).json({ message: "Login successful" });
         } else {
@@ -129,6 +140,8 @@ router.post("/createUser", async (req, res) => {
         if (!isDuplicate) {
             const hashedPassword = await bcrypt.hash(password, 10)
             const data = await createUser(name, email, hashedPassword, role);
+            await createUserStat(data.mUserIdentifier)
+
             console.log("CREATING USER DATA : ")
             console.log(data)
             res.status(201).send(data)

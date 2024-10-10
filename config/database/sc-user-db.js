@@ -112,6 +112,36 @@ async function createUser(name, email, hashedPassword, role) {
   }
 }
 
+async function createUserStat(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO math_user_stat (mUserIdentifier) VALUES (?)
+      `, [mUserIdentifier]);
+
+    return true;
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
+async function incrementLogNumber(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+      UPDATE math_user_stat
+      SET mLogNumber = mLogNumber + 1
+      WHERE mUserIdentifier = ?
+      `, [mUserIdentifier]);
+
+    return true;
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
 async function checkDuplicateEmail(email) {
   try {
     const [result] = await pool.query(`
@@ -129,5 +159,6 @@ async function checkDuplicateEmail(email) {
 
 
 module.exports = {
-  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
+  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
+  getUserWithEmail, deleteUser, createUserStat, incrementLogNumber
 };
