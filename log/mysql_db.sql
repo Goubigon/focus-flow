@@ -94,7 +94,7 @@ CREATE TABLE math_user_stat (
     mUserIdentifier INT NOT NULL PRIMARY KEY,
     mLogNumber INT DEFAULT 0,
     mSessionCount INT DEFAULT 0,
-    mLastSessionDate DATE,
+    mLastSessionDate DATETIME,
     mTotalSessionTime FLOAT DEFAULT 0,
     FOREIGN KEY (mUserIdentifier) REFERENCES math_user_credential(mUserIdentifier)
         ON DELETE CASCADE
@@ -106,9 +106,10 @@ CREATE TABLE math_user_stat (
 | Field             | Type     | Null | Key | Default | Extra |
 +-------------------+----------+------+-----+---------+-------+
 | mUserIdentifier   | int      | NO   | PRI | NULL    |       |
+| mLogNumber        | int      | YES  |     | 0       |       |
 | mSessionCount     | int      | YES  |     | 0       |       |
 | mLastSessionDate  | datetime | YES  |     | NULL    |       |
-| mTotalSessionTime | int      | YES  |     | 0       |       |
+| mTotalSessionTime | float    | YES  |     | 0       |       |
 +-------------------+----------+------+-----+---------+-------+
 
 
