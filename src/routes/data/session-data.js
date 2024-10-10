@@ -12,7 +12,7 @@ const { getExactParams, getParamWithID, createParam, createSession, getSessionWi
 } = require('../../../config/database/sc-session-db.js');
 
 const { getUserWithEmail } = require('../../../config/database/sc-user-db.js');
-const { authenticateToken } = require('../../utils/auth.js')
+const { middleAuthentication } = require('../../utils/auth.js')
 
 router.get('/', (req, res) => {
     res.send('This is the session page')
@@ -63,7 +63,7 @@ router.post("/createParams", async (req, res) => {
 })
 
 
-router.post("/createSession", authenticateToken, async (req, res) => {
+router.post("/createSession", middleAuthentication, async (req, res) => {
     try {
 
         const { paramID, sessionDate } = req.body;

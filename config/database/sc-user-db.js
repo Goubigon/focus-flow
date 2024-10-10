@@ -112,6 +112,36 @@ async function createUser(name, email, hashedPassword, role) {
   }
 }
 
+async function createUserStat(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+      INSERT INTO math_user_stat (mUserIdentifier) VALUES (?)
+      `, [mUserIdentifier]);
+
+    return true;
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
+async function incrementLogNumber(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+      UPDATE math_user_stat
+      SET mLogNumber = mLogNumber + 1
+      WHERE mUserIdentifier = ?
+      `, [mUserIdentifier]);
+
+    return true;
+  }
+  catch (error) {
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
 async function checkDuplicateEmail(email) {
   try {
     const [result] = await pool.query(`
@@ -127,7 +157,57 @@ async function checkDuplicateEmail(email) {
   }
 }
 
+async function incrementSessionCountInStat(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+      UPDATE math_user_stat
+      SET mSessionCount = mSessionCount + 1
+      WHERE mUserIdentifier = ?
+      `, [mUserIdentifier]);
+
+    return true;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+
+async function changeLastSessionDateInStat(mSessionIdentifier, lastDate) {
+  try {
+    const [result] = await pool.query(`
+        UPDATE math_user_stat
+        SET mLastSessionDate = ?
+        WHERE mUserIdentifier = ?
+      `, [lastDate, mSessionIdentifier]);
+
+    return true;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function updateTotalSessionTime(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        UPDATE math_user_stat
+        SET mTotalSessionTime = (
+            SELECT SUM(mSessionDuration)
+            FROM math_session
+            WHERE mUserIdentifier = ?
+        )
+        WHERE mUserIdentifier = ?;
+      `, [mUserIdentifier, mUserIdentifier]);
+
+      console.log("updated total session time")
+    return getUser(mUserIdentifier);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 module.exports = {
-  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
+  getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
+  getUserWithEmail, deleteUser, createUserStat,
+  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime
 };

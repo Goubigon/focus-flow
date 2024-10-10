@@ -8,7 +8,14 @@ const { getAnswers, getAnswer, createAnswer,
     medianTimeWithOperation
 } = require('../../../config/database/sc-math-db.js');
 
-const { updateSessionDuration } = require('../../../config/database/sc-session-db.js');
+const { updateSessionDuration, getSessionWithID } = require('../../../config/database/sc-session-db.js');
+const { incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime } = require('../../../config/database/sc-user-db.js');
+
+
+const { middleAuthentication } = require('../../utils/auth.js')
+const cookieParser = require('cookie-parser');
+router.use(cookieParser());
+
 
 router.get('/', (req, res) => {
     res.send('This is the Math Data page')
@@ -113,7 +120,7 @@ router.post("/generateQuestions", async (req, res) => {
     res.status(201).send(questionJsonList)
 })
 
-router.post("/insertAllAnswers", async (req, res) => {
+router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
     const mSessionIdentifier = req.body[0].mSessionIdentifier;
 
     for(let i = 0 ; i < req.body.length; i++){
@@ -130,6 +137,15 @@ router.post("/insertAllAnswers", async (req, res) => {
     }
 
     await updateSessionDuration(mSessionIdentifier)
+
+    //get user id from auth token
+    await incrementSessionCountInStat(req.user.mUserIdentifier)
+
+    //get session id to get its date
+    const sessionJson = await getSessionWithID(mSessionIdentifier);
+    await changeLastSessionDateInStat(req.user.mUserIdentifier, sessionJson.mSessionDate)
+
+    await updateTotalSessionTime(req.user.mUserIdentifier)
 
     res.status(201)
 })

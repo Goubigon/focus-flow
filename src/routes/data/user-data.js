@@ -9,11 +9,13 @@ router.use(express.json())
 router.use(cookieParser());
 
 
-const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, getUserWithEmail, deleteUser
+const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, 
+    getUserWithEmail, deleteUser, createUserStat, 
+    incrementLogNumber
 } = require('../../../config/database/sc-user-db.js');
 
 
-const { createSecureCookie, authenticateToken } = require('../../utils/auth.js')
+const { createSecureCookie, middleAuthentication } = require('../../utils/auth.js')
 
 
 router.get('/', (req, res) => {
@@ -26,7 +28,7 @@ router.get("/getUsers", async (req, res) => {
     res.send(data)
 })
 
-router.get("/getUsername", authenticateToken, async (req, res) => {
+router.get("/getUsername", middleAuthentication, async (req, res) => {
     const data = await getUsername("Americano");
     res.send(data)
 })
@@ -46,7 +48,7 @@ const myList = [
     }
 ]
 
-router.get("/myList", authenticateToken, async (req, res) => {
+router.get("/myList", middleAuthentication, async (req, res) => {
     res.json(myList.filter(l => l.email === req.user.mEmail))
 })
 
@@ -62,7 +64,7 @@ router.get("/getUser/:id", async (req, res) => {
 })
 
 //AUTHENTICATE TOKEN
-router.get("/getUser", authenticateToken, async (req, res) => {
+router.get("/getUser", middleAuthentication, async (req, res) => {
     try {
         const id = req.user.ID;
         const data = await getUser(id);
@@ -111,6 +113,16 @@ router.post("/logUser", async (req, res) => {
             createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
 
             console.log("Auth & Refresh cookies created")
+
+
+            try{
+                await incrementLogNumber(currentUser.mUserIdentifier)
+
+            }catch(err){
+                res.status(500).json({ message: "update log error" });
+                
+            }
+
             //returns (access token + refresh token)
             res.status(200).json({ message: "Login successful" });
         } else {
@@ -129,6 +141,8 @@ router.post("/createUser", async (req, res) => {
         if (!isDuplicate) {
             const hashedPassword = await bcrypt.hash(password, 10)
             const data = await createUser(name, email, hashedPassword, role);
+            await createUserStat(data.mUserIdentifier)
+
             console.log("CREATING USER DATA : ")
             console.log(data)
             res.status(201).send(data)
@@ -176,13 +190,13 @@ router.get('/RefreshingToken', (req, res) => {
     })
 })
 
-router.get('/keepAuthenticate', authenticateToken, (req, res) => {
+router.get('/keepAuthenticate', middleAuthentication, (req, res) => {
     res.status(201).json({ message: 'Authentication successfully kept' })
 })
 
 
 
-router.delete("/logout", authenticateToken, (req, res) => {
+router.delete("/logout", middleAuthentication, (req, res) => {
     res.clearCookie('refreshTokenCookie', { path: '/' });
     res.clearCookie('authTokenCookie', { path: '/' });
     res.status(204).send({ message: 'Logout successful, cookie cleared.' });
