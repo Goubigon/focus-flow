@@ -116,7 +116,7 @@ formElement.addEventListener('submit', async (event) => {
     const subtractionCheck = document.getElementById('subtractionCheck').checked;
     const multiplicationCheck = document.getElementById('multiplicationCheck').checked;
 
-    const maxAnswerCount = parseFloat(document.getElementById('maxAnswerCount').value);
+    const mMaxAnswerCount = parseFloat(document.getElementById('maxAnswerCount').value);
 
     const errorMessage = document.getElementById('errorMessage');
 
@@ -139,7 +139,7 @@ formElement.addEventListener('submit', async (event) => {
         errorMessage.textContent = "Successfully saved";
         errorMessage.style.color = 'green';
 
-        const paramJson = await createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
+        const paramJson = await createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, mMaxAnswerCount)
 
         console.log(paramJson)
 
@@ -159,7 +159,7 @@ formElement.addEventListener('submit', async (event) => {
             additionCheck: additionCheck,
             subtractionCheck: subtractionCheck,
             multiplicationCheck: multiplicationCheck,
-            mMaxAnswerCount: maxAnswerCount
+            mMaxAnswerCount: mMaxAnswerCount
         };
 
         //null -> no placeholder function
