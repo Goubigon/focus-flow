@@ -34,6 +34,8 @@ function loadExistingForm() {
         document.getElementById('additionCheck').checked = formData.additionCheck;
         document.getElementById('subtractionCheck').checked = formData.subtractionCheck;
         document.getElementById('multiplicationCheck').checked = formData.multiplicationCheck;
+
+        document.getElementById('maxAnswerCount').value = formData.mMaxAnswerCount;
     }
 }
 

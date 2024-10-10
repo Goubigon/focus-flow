@@ -104,7 +104,7 @@ async function getSessionWithID(id){
 
 async function updateSessionDuration(mSessionIdentifier) {
   try {
-    console.log("---- mSessionIdentifier : " + mSessionIdentifier)
+    console.log("mSessionIdentifier : " + mSessionIdentifier)
     const [result] = await pool.query(`
         UPDATE math_session
         SET mSessionDuration = (
