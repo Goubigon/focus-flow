@@ -159,7 +159,7 @@ formElement.addEventListener('submit', async (event) => {
             additionCheck: additionCheck,
             subtractionCheck: subtractionCheck,
             multiplicationCheck: multiplicationCheck,
-            maxAnswerCount: maxAnswerCount
+            mMaxAnswerCount: maxAnswerCount
         };
 
         //null -> no placeholder function

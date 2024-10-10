@@ -11,7 +11,7 @@ export function getCurrentDateTime() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-export function displayNumber(element, val){
+export function displayNumber(element, val) {
     //adding () if negative
     if (val < 0) {
         document.getElementById(element).textContent = `(${val})`;
@@ -20,14 +20,14 @@ export function displayNumber(element, val){
     }
 }
 
- // Clear previous feedback and user input
+// Clear previous feedback and user input
 export function clearAnswers() {
     document.getElementById('feedback').textContent = '';
     document.getElementById('userAnswer').value = '';
     document.getElementById('timeTaken').textContent = '';
 }
 
-export function loadParameters() {
+export function loadParamsFromLocalStorage() {
     const formDataString = localStorage.getItem('formData');
     if (formDataString) {
         let formData = JSON.parse(formDataString);
@@ -39,7 +39,7 @@ export function loadParameters() {
     }
 }
 
-export function loadOperationList(formData){
+export function loadOperationList(formData) {
     const operations = []
     //adding the selected operations to a list
     if (formData.additionCheck) { operations.push("+"); }
@@ -48,13 +48,13 @@ export function loadOperationList(formData){
     return operations;
 }
 
-export function randomOperation(operationList){
+export function randomOperation(operationList) {
     const randomIndex = Math.floor(Math.random() * operationList.length);
     return operationList[randomIndex];
 }
 
 
-export function getCorrectResult(value1, value2, operation){
+export function getCorrectResult(value1, value2, operation) {
     if (operation === "+") {
         return value1 + value2;
     } else if (operation === "-") {
@@ -64,7 +64,7 @@ export function getCorrectResult(value1, value2, operation){
     }
 }
 //returns random number between minVal and maxVal
-export function randomNumber(minVal, maxVal){
+export function randomNumber(minVal, maxVal) {
     return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal
 }
 
@@ -101,3 +101,52 @@ export async function createAnswer(mSessionIdentifier, leftOperation, mathOperat
 
 }
 
+
+
+
+export async function askGenerateQuestions(parametersJson) {
+    try {
+        console.log("API parametersJson : " + JSON.stringify(parametersJson))
+        
+        const response = await fetch('/math-data/generateQuestions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(parametersJson)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('List of questions:', result);
+            return result;
+        } else {
+            console.error('Failed to create line.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+export async function insertAllAnswers(questionJsonList) {
+    try {
+        const response = await fetch('/math-data/insertAllAnswers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(questionJsonList)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            console.log('List of questions:', result);
+            return result;
+        } else {
+            console.error('Failed to create line.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
