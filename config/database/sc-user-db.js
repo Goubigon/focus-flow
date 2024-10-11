@@ -199,15 +199,41 @@ async function updateTotalSessionTime(mUserIdentifier) {
         WHERE mUserIdentifier = ?;
       `, [mUserIdentifier, mUserIdentifier]);
 
-      console.log("updated total session time")
+    console.log("updated total session time")
     return getUser(mUserIdentifier);
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
+async function getUserSessionData(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+            DATE(mSessionDate) AS sessionDateGroup, 
+            FORMAT(SUM(mSessionDuration), 2) AS durationSum
+        FROM 
+            math_session
+        WHERE 
+            mUserIdentifier = ?
+        GROUP BY 
+            sessionDateGroup
+        ORDER BY 
+            sessionDateGroup;
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
   getUserWithEmail, deleteUser, createUserStat,
-  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime
+  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
+  getUserSessionData
 };

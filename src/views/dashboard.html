@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="stylesheet" href="/css/dashboard.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" ></script>
+
 </head>
+
 
 <body>
     <div id="navbar"></div>
@@ -24,21 +28,17 @@
 
     <div id="home">
         <h1>Welcome to the Dashboard Page!</h1>
-        <button id=getAnswersButton>Get Answers</button>
-        <button id=countOperation>Count Operation +</button>
 
-        <button id=plusAverageButton>Average score for +</button>
-        <button id=minusAverageButton>Average score for -</button>
-        <button id=timesAverageButton>Average score for x</button>
+        <h2>Number of sessions by day</h2>
+        <canvas id="myChart" width="400" height="200"></canvas>
 
-        <button id=plusMedianButton>Median Time for +</button>
-        <button id=minusMedianButton>Median Time for -</button>
-        <button id=timesMedianButton>Median Time for x</button>
+        <script type="module" src="/js/ui-script/dashboard-script.js"></script>
+
 
     </div>
 
 
-    <script type="module" src="/js/ui-script/dashboard-script.js"></script>
+
 </body>
 
 </html>
