@@ -191,16 +191,13 @@ function generateGraph(duration, date) {
 }
 
 
+const loadGraphButton = document.getElementById('sessionDurationByDateButton');
+const h2Element = document.getElementById('titleOfGraph');
 
-window.onload = async () => {
-    keepAuthenticate()
+loadGraphButton.addEventListener('click', async () => {
+    h2Element.textContent = 'Number of sessions by day';
 
     const sessionDataJson = await getUserSessionData();
-
-
-    const sessionDataStr = JSON.stringify(sessionDataJson)
-
-    console.log("sessionDateJson : " + sessionDataStr)
 
     const sessionDates = sessionDataJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
@@ -208,4 +205,12 @@ window.onload = async () => {
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
     generateGraph(sessionDurations, sessionDates)
+
+    loadGraphButton.disabled = true;
+
+})
+
+window.onload = async () => {
+    keepAuthenticate()
+
 }
