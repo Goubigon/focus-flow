@@ -19,12 +19,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 50px;
+    gap: 20px;
+}
+
+.input-container {
+    display: flex; 
+    flex-direction: column; /* Stack children vertically */
+    align-items: flex-start; /* Align items to the start (left) */
 }
 
 .lines-container {
     width: 400px;
     /* Set a fixed width for the container */
-    height: 400px;
+    height: 500px;
     /* Set a fixed height for the container */
     overflow-y: hidden;
     /* Hide scrollbars */
@@ -43,11 +51,28 @@ body {
 .big-input {
     width: 300px; /* Width of the input field */
     height: 400px; /* Height to match the lines-container */
-    font-size: 24px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1); /* Add a shadow for depth */
+    font-size: 24px; /* Larger font for better readability */
+    padding: 10px; /* Padding inside the text area */
+    border: 1px solid #ccc; /* Border around the text area */
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    border-radius: 8px; /* Rounded corners for a softer look */
+    resize: none; /* Prevent the user from resizing the textarea */
+    outline: none; /* Remove default focus outline */
+    box-sizing: border-box; /* Include padding and border in width/height */
+    margin-bottom: 5px; /* Space between textarea and error message */
 }
+
+.error-message {
+    color: red;
+    margin-top: 30px;
+    margin-left: 20px;
+    font-size: 14px;
+    visibility: hidden; /* Hide by default */
+    width: 300px; /* Match the width of the textarea */
+    display: block; /* Ensure it occupies its own line */
+}
+
+
 
 .line {
     height: 100px;
@@ -78,3 +103,4 @@ body {
 .line.isIncorrect {
     background: #ffb3a3;
 }
+
