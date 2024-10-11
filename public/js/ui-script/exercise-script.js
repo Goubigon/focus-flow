@@ -1,5 +1,5 @@
 import {
-    getCurrentDateTime, 
+    getCurrentDateTime,
     loadParamsFromLocalStorage,
     askGenerateQuestions, insertAllAnswers
 } from '../client-api/utils.js';
@@ -13,10 +13,11 @@ let localStorageParametersJson;
 let questionJsonList;
 
 let currentLine = 0;
-let numberOfLines; 
+let numberOfLines;
 
 const linesContainerElement = document.getElementById('linesContainer');
 const answerInputTextArea = document.getElementById('answer-input');
+const errorMessageElement = document.getElementById('errorMessage');
 
 
 
@@ -47,7 +48,7 @@ function handleResult(userAnswer, questionJsonList) {
     questionJsonList[currentLine].qDate = getCurrentDateTime();
 
     startTime = new Date();
-    
+
     return userAnswer == questionJsonList[currentLine].qResult;
 }
 
@@ -55,35 +56,68 @@ function handleResult(userAnswer, questionJsonList) {
 answerInputTextArea.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
-        //Write the answer in div
-        const currentLineDiv = document.getElementById(`line${currentLine}`);
-        currentLineDiv.textContent += answerInputTextArea.value;
 
-        if( handleResult(answerInputTextArea.value, questionJsonList))
-            {linesContainerElement.children[currentLine].classList.add('isCorrect');}
-        else{linesContainerElement.children[currentLine].classList.add('isIncorrect');}
-        linesContainerElement.children[currentLine].classList.remove('current');
+        let minusCount = (answerInputTextArea.value.match(/-/g) || []).length;
+        let dotCount = (answerInputTextArea.value.match(/\./g) || []).length;
+        if (minusCount > 1 || (minusCount === 1 && answerInputTextArea.value.indexOf('-') !== 0) || dotCount > 1) {
+            errorMessageElement.textContent = 'Invalid input! Only one "-" and one "." allowed.';
+            errorMessageElement.style.visibility = 'visible';
+        }
+        else {
+            let answerValueFloat = parseFloat(answerInputTextArea.value)
 
-        linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
-        currentLine++;
+            if (!isNaN(parseFloat(answerValueFloat)) && answerValueFloat !== '') {
 
-        if (currentLine == numberOfLines) {
-            questionJsonList.forEach((item) => {
-                item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
-            });
-            
-            console.log("**** FINISHED ****")
-            console.log(questionJsonList)
+                // Remove unnecessary leading zeros and trailing zeros
+                answerInputTextArea.value = answerInputTextArea.value.replace(/^0+(?=\d)/, ''); // Remove leading zeros
+                answerInputTextArea.value = answerInputTextArea.value.replace(/(\.\d*?[1-9])0+$/, '$1'); // Remove trailing zeros after decimal point
+                answerInputTextArea.value = answerInputTextArea.value.replace(/(\.0+)$/, '.'); // Remove .0
 
-            insertAllAnswers(questionJsonList)
-        }else{
-            linesContainerElement.children[currentLine].classList.add('current');
+                //Write the answer in div
+                const currentLineDiv = document.getElementById(`line${currentLine}`);
+                currentLineDiv.textContent += answerValueFloat;
 
+                if (handleResult(answerValueFloat, questionJsonList)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
+                else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
+                linesContainerElement.children[currentLine].classList.remove('current');
+
+                linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
+                currentLine++;
+
+                if (currentLine == numberOfLines) {
+                    questionJsonList.forEach((item) => {
+                        item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
+                    });
+
+                    console.log("**** FINISHED ****")
+                    console.log(questionJsonList)
+
+                    insertAllAnswers(questionJsonList)
+                } else {
+                    linesContainerElement.children[currentLine].classList.add('current');
+
+                }
+            }
         }
         answerInputTextArea.value = '';
-        answerInputTextArea.focus();        
+        answerInputTextArea.focus();
     }
 });
+
+
+answerInputTextArea.addEventListener('input', function (e) {
+    const errorMessage = document.getElementById('errorMessage');
+    let value = e.target.value;
+
+    // Remove any character that is not a digit, '.', or '-' 
+    value = value.replace(/[^0-9.-]/g, '');
+    
+    errorMessageElement.innerHTML = '';
+
+    e.target.value = value;
+});
+
+
 
 
 window.onload = async () => {
