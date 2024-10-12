@@ -138,9 +138,9 @@ async function getUserSessionData() {
     }
 }
 
-async function getUserSessionCount() {
+async function callRoute(route) {
     try {
-        const response = await fetch('/user-data/getUserSessionCount', {
+        const response = await fetch('/user-data/' + route, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ const h2Element = document.getElementById('titleOfGraph');
 loadGraphButton.addEventListener('click', async () => {
     h2Element.textContent = 'Play time duration by day';
 
-    const sessionDataJson = await getUserSessionData();
+    const sessionDataJson = await callRoute('getUserSessionData');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
 
     const sessionDates = sessionDataJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
@@ -240,7 +240,7 @@ loadGraphButton.addEventListener('click', async () => {
 document.getElementById('sessionNumberByDateButton').addEventListener('click', async () => {
     h2Element.textContent = 'Number of session by day';
 
-    const sessionDataJson = await getUserSessionCount();
+    const sessionDataJson = await callRoute('getUserSessionCount');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
 
     const sessionDates = sessionDataJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
