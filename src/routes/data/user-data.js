@@ -13,7 +13,7 @@ const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, g
     getUserWithEmail, deleteUser, createUserStat, incrementLogNumber,
     getUserSessionData,
     getUserSessionCountByDay,
-    getLatestResults
+    getLatestResults, getResultsByDay
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -232,6 +232,18 @@ router.get('/getLatestResults', middleAuthentication, async (req, res) => {
     try {
         const id = req.user.mUserIdentifier;
         const data = await getLatestResults(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+
+router.get('/getResultsByDay', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getResultsByDay(id);
         res.status(201).send(data);
     } catch (error) {
         console.error('get User Error retrieving user data:', error); // Log the error

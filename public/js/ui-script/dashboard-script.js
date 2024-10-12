@@ -219,6 +219,69 @@ function generateBarGraphByDate(duration, date, label, yText) {
 }
 
 
+function generateDoubleLineGraphByDate(val1, val2, date, yText) {
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    if (myChart !== null) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'line',
+        
+        data: {
+            labels: date, // Labels for the bars
+            datasets: [{
+                label: 'Correct Answers',
+                data: val1, // Data for correct answers
+                backgroundColor: 'rgba(75, 192, 75, 0.2)', // Green for correct answers
+                borderColor: 'rgba(75, 192, 75, 1)', // Dark green border for correct answers
+                borderWidth: 1
+            }, {
+                label: 'Incorrect Answers',
+                data: val2, // Data for incorrect answers
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Red for incorrect answers
+                borderColor: 'rgba(255, 99, 132, 1)', // Dark red border for incorrect answers
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Day',
+                        font: {
+                            weight: 'bold'
+                        }
+
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: yText,
+                        font: {
+                            weight: 'bold'
+                        }
+
+                    },
+                    beginAtZero: true,
+
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+
+}
+
+
 
 function generateIsCorrectBarGraph(correct, incorrect) {
     const ctx = document.getElementById('myChart').getContext('2d');
@@ -331,6 +394,26 @@ async function displayLatest() {
     generateIsCorrectBarGraph(correct, incorrect)
 
 }
+
+document.getElementById('resultsByDayButton').addEventListener('click', async () => {
+    h2Element.textContent = 'Results by day';
+
+    const resJson = await callRoute('getResultsByDay');
+    console.log("sessionDataStr : " + JSON.stringify(resJson))
+
+    const sessionDates = resJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
+    
+    const correct = resJson.map(session => session.CorrectCount);
+    const incorrect = resJson.map(session => session.IncorrectCount);
+
+
+    console.log("sessionDates : " + sessionDates)
+    console.log("correct : " + correct)
+    console.log("incorrect : " + incorrect)
+
+    generateDoubleLineGraphByDate(correct, incorrect, sessionDates, 'Number of answers')
+})
+
 
 
 
