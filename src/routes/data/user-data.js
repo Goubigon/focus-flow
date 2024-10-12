@@ -11,7 +11,8 @@ router.use(cookieParser());
 
 const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, 
     getUserWithEmail, deleteUser, createUserStat, incrementLogNumber,
-    getUserSessionData
+    getUserSessionData,
+    getUserSessionCountByDay
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -212,7 +213,17 @@ router.get('/getUserSessionData', middleAuthentication, async (req, res) => {
         console.error('get User Error retrieving user data:', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
+})
 
+router.get('/getUserSessionCount', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getUserSessionCountByDay(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
 })
 
 

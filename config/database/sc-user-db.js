@@ -229,11 +229,33 @@ async function getUserSessionData(mUserIdentifier) {
   }
 }
 
+async function getUserSessionCountByDay(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+            DATE(mSessionDate) AS sessionDateGroup, 
+            COUNT(mSessionIdentifier) AS sessionCount
+        FROM 
+            math_session
+        WHERE 
+            mUserIdentifier = ?
+        GROUP BY 
+            sessionDateGroup
+        ORDER BY 
+            sessionDateGroup;
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
   getUserWithEmail, deleteUser, createUserStat,
   incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
-  getUserSessionData
+  getUserSessionData, getUserSessionCountByDay
 };
