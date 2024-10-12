@@ -162,7 +162,7 @@ async function callRoute(route) {
 
 let myChart = null;
 
-function generateBarGraphByDate(duration, date, label, yText) {
+function generateBarGraphByDate(duration, date, label, yText, chartType) {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     if (myChart !== null) {
@@ -170,7 +170,7 @@ function generateBarGraphByDate(duration, date, label, yText) {
     }
 
     myChart = new Chart(ctx, {
-        type: 'bar',
+        type: chartType,
         data: {
             labels: date,
             datasets: [{
@@ -356,7 +356,7 @@ loadGraphButton.addEventListener('click', async () => {
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
-    generateBarGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)')
+    generateBarGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
 })
 
 
@@ -371,7 +371,7 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
-    generateBarGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session')
+    generateBarGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
 })
 
 
