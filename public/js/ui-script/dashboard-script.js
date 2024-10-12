@@ -162,7 +162,7 @@ async function callRoute(route) {
 
 let myChart = null;
 
-function generateGraph(duration, date, label, yText) {
+function generateBarGraphByDate(duration, date, label, yText) {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     if (myChart !== null) {
@@ -219,6 +219,67 @@ function generateGraph(duration, date, label, yText) {
 }
 
 
+
+function generateIsCorrectBarGraph(correct, incorrect) {
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    if (myChart !== null) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Correct', 'Incorrect'], // Labels for the bars
+            datasets: [{
+                data: [correct, incorrect], // Data for the bars
+                backgroundColor: [
+                    'rgba(75, 192, 75, 0.2)', // Green for Correct
+                    'rgba(255, 99, 132, 0.2)' // Red for Incorrect
+                ],
+                borderColor: [
+                    'rgba(75, 192, 75, 1)', // Dark green border for Correct
+                    'rgba(255, 99, 132, 1)' // Dark red border for Incorrect
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Answers'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Number of answers'
+                    },
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: (tooltipItem) => {
+                            return `${tooltipItem.raw} answers`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+
+
+}
+
 const loadGraphButton = document.getElementById('sessionDurationByDateButton');
 const h2Element = document.getElementById('titleOfGraph');
 
@@ -232,7 +293,7 @@ loadGraphButton.addEventListener('click', async () => {
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
-    generateGraph(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)')
+    generateBarGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)')
 })
 
 
@@ -247,10 +308,33 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
-    generateGraph(sessionCount, sessionDates, 'Number of session', 'Number of session')
+    generateBarGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session')
 })
+
+
+
+document.getElementById('lastSessionResultsButton').addEventListener('click', async () => {
+    displayLatest()
+})
+
+
+async function displayLatest() {
+    h2Element.textContent = 'Your latest results :';
+
+    const resJson = await callRoute('getLatestResults');
+    console.log("sessionDataStr : " + JSON.stringify(resJson))
+
+    const correct = resJson.map(session => session.CorrectCount);
+    const incorrect = resJson.map(session => session.IncorrectCount);
+    console.log("correct : " + correct)
+    console.log("incorrect : " + incorrect)
+    generateIsCorrectBarGraph(correct, incorrect)
+
+}
+
+
 
 window.onload = async () => {
     keepAuthenticate()
-
+    displayLatest()
 }
