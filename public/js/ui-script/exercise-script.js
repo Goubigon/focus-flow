@@ -88,11 +88,9 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                     questionJsonList.forEach((item) => {
                         item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
                     });
-
-                    console.log("**** FINISHED ****")
-                    console.log(questionJsonList)
-
                     insertAllAnswers(questionJsonList)
+                    setTimeout(() => { window.location.href = '/dashboard' }, 500);
+                    
                 } else {
                     linesContainerElement.children[currentLine].classList.add('current');
 

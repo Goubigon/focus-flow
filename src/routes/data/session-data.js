@@ -71,7 +71,6 @@ router.post("/createSession", middleAuthentication, async (req, res) => {
         const user = await getUserWithEmail(req.user.mEmail)
         const userID = user.mUserIdentifier;
 
-
         const result = await createSession(userID, paramID, sessionDate);
 
         res.status(201).send(result)
@@ -80,4 +79,10 @@ router.post("/createSession", middleAuthentication, async (req, res) => {
         res.status(500).json({ message: "/createParams error" });
     }
 })
+
+
+
+
+
+
 module.exports = router;

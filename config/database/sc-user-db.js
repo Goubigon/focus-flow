@@ -199,15 +199,111 @@ async function updateTotalSessionTime(mUserIdentifier) {
         WHERE mUserIdentifier = ?;
       `, [mUserIdentifier, mUserIdentifier]);
 
-      console.log("updated total session time")
+    console.log("updated total session time")
     return getUser(mUserIdentifier);
   } catch (error) {
     console.error('Error:', error);
   }
 }
 
+async function getUserSessionData(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+            DATE(mSessionDate) AS sessionDateGroup, 
+            FORMAT(SUM(mSessionDuration), 2) AS durationSum
+        FROM 
+            math_session
+        WHERE 
+            mUserIdentifier = ?
+        GROUP BY 
+            sessionDateGroup
+        ORDER BY 
+            sessionDateGroup;
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function getUserSessionCountByDay(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+            DATE(mSessionDate) AS sessionDateGroup, 
+            COUNT(mSessionIdentifier) AS sessionCount
+        FROM 
+            math_session
+        WHERE 
+            mUserIdentifier = ?
+        GROUP BY 
+            sessionDateGroup
+        ORDER BY 
+            sessionDateGroup;
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function getLatestResults(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+            SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS CorrectCount,
+            SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS IncorrectCount
+        FROM 
+            math_answer
+        WHERE mSessionIdentifier = (
+              SELECT mSessionIdentifier 
+              FROM math_session 
+              WHERE mUserIdentifier = ? 
+              ORDER BY mSessionDate DESC LIMIT 1);
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+async function getResultsByDay(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+          DATE(ms.mSessionDate) AS sessionDateGroup,
+          SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS CorrectCount,
+            SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS IncorrectCount
+        FROM math_answer ma 
+        JOIN math_session ms ON ma.mSessionIdentifier = ms.mSessionIdentifier 
+        WHERE ms.mUserIdentifier = ?
+        GROUP BY 
+            sessionDateGroup
+        ORDER BY 
+            sessionDateGroup;
+      `, [mUserIdentifier]);
+
+
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
+
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
   getUserWithEmail, deleteUser, createUserStat,
-  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime
+  incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
+  getUserSessionData, getUserSessionCountByDay,
+  getLatestResults, getResultsByDay
 };

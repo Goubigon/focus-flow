@@ -10,8 +10,10 @@ router.use(cookieParser());
 
 
 const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername, 
-    getUserWithEmail, deleteUser, createUserStat, 
-    incrementLogNumber
+    getUserWithEmail, deleteUser, createUserStat, incrementLogNumber,
+    getUserSessionData,
+    getUserSessionCountByDay,
+    getLatestResults, getResultsByDay
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -200,6 +202,53 @@ router.delete("/logout", middleAuthentication, (req, res) => {
     res.clearCookie('refreshTokenCookie', { path: '/' });
     res.clearCookie('authTokenCookie', { path: '/' });
     res.status(204).send({ message: 'Logout successful, cookie cleared.' });
+})
+
+
+router.get('/getUserSessionData', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getUserSessionData(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+router.get('/getUserSessionCount', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getUserSessionCountByDay(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+
+router.get('/getLatestResults', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getLatestResults(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+
+router.get('/getResultsByDay', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const data = await getResultsByDay(id);
+        res.status(201).send(data);
+    } catch (error) {
+        console.error('get User Error retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
 })
 
 
