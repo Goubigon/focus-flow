@@ -83,6 +83,9 @@ router.get("/getUser", middleAuthentication, async (req, res) => {
 router.post("/logUser", async (req, res) => {
     try {
         const { email, password } = req.body;
+        
+        console.log("[Request to log in with email : '" +email + " ']")
+
         //get hashedPassword from user using email
         const hashedPassword = await getHashedPassword(email);
 
@@ -101,20 +104,21 @@ router.post("/logUser", async (req, res) => {
                 mRole: response.mRole,
             }
 
-            console.log("User retrieved by email : " + JSON.stringify(currentUser, null, 2));
+            console.log("[User retrieved by email] : ");
+            console.log(JSON.stringify(currentUser, null, 2));
 
             //generate (access token + refresh token) using user information
-            const authToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
-            const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET)
+            const authToken = jwt.sign(currentUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '12h' });
 
-            console.log("Created authToken : " + authToken);
-            console.log("Created refreshToken : " + refreshToken);
+            console.log("[AuthToken created during login] : " + authToken);
+            console.log("[RefreshToken created during login] : " + refreshToken);
 
             //insert refresh token into cookies
-            createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
-            createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
+            createSecureCookie(req, res, "authTokenCookie", authToken, 60 * 60 * 1000); //1 hour
+            createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 12 * 60 * 60 * 1000) // 12 hours
 
-            console.log("Auth & Refresh cookies created")
+            console.log("-[Auth & Refresh cookies created in login]-")
 
 
             try{
@@ -167,7 +171,8 @@ router.delete("/deleteUser/:id", async (req, res) => {
     }
 })
 
-
+// ---- Only used in login-script.js for debug -----
+// ---- cf. /keepAuthenticate ----
 //Try to get refreshToken from cookies
 //refreshes authToken if possible
 router.get('/RefreshingToken', (req, res) => {
@@ -186,14 +191,14 @@ router.get('/RefreshingToken', (req, res) => {
             mRole: user.mRole,
         }
         const authToken = generateAuthToken(newUser)
-        createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
+        createSecureCookie(req, res, "authTokenCookie", authToken, 60 * 60 * 1000); //1 hour
 
         res.status(200).send({ message: "Auth Token successfully refreshed" })
     })
 })
 
 router.get('/keepAuthenticate', middleAuthentication, (req, res) => {
-    res.status(201).json({ message: 'Authentication successfully kept' })
+    res.status(201).json({ message: 'Authentication successfully kept' , isAuth: true})
 })
 
 
@@ -211,7 +216,7 @@ router.get('/getUserSessionData', middleAuthentication, async (req, res) => {
         const data = await getUserSessionData(id);
         res.status(201).send(data);
     } catch (error) {
-        console.error('get User Error retrieving user data:', error); // Log the error
+        console.error('get User Session Data retrieving user data:', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })
@@ -222,7 +227,7 @@ router.get('/getUserSessionCount', middleAuthentication, async (req, res) => {
         const data = await getUserSessionCountByDay(id);
         res.status(201).send(data);
     } catch (error) {
-        console.error('get User Error retrieving user data:', error); // Log the error
+        console.error('get User Session Count retrieving user data:', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })
@@ -234,7 +239,7 @@ router.get('/getLatestResults', middleAuthentication, async (req, res) => {
         const data = await getLatestResults(id);
         res.status(201).send(data);
     } catch (error) {
-        console.error('get User Error retrieving user data:', error); // Log the error
+        console.error('get User Latest Results retrieving user data:', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })
@@ -246,7 +251,7 @@ router.get('/getResultsByDay', middleAuthentication, async (req, res) => {
         const data = await getResultsByDay(id);
         res.status(201).send(data);
     } catch (error) {
-        console.error('get User Error retrieving user data:', error); // Log the error
+        console.error('get User Results by Day retrieving user data:', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })
