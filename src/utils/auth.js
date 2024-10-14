@@ -21,7 +21,7 @@ function refreshingToken(req, res, refreshTokenCookie) {
                 mRole: user.mRole,
             };
             const authToken = jwt.sign(newUser, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s' });
-            createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); // 15 sec
+            createSecureCookie(req, res, "authTokenCookie", authToken, 60 * 60 * 1000); //1 hour
             console.log("Auth Token refreshed & put in cookies")
             resolve(authToken); // Resolve with the new auth token
         });

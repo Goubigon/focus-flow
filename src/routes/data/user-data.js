@@ -111,8 +111,8 @@ router.post("/logUser", async (req, res) => {
             console.log("Created refreshToken : " + refreshToken);
 
             //insert refresh token into cookies
-            createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
-            createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 7 * 24 * 60 * 60 * 1000) // 7 days
+            createSecureCookie(req, res, "authTokenCookie", authToken, 60 * 60 * 1000); //1 hour
+            createSecureCookie(req, res, 'refreshTokenCookie', refreshToken, 12 * 60 * 60 * 1000) // 12 hours
 
             console.log("Auth & Refresh cookies created")
 
@@ -186,7 +186,7 @@ router.get('/RefreshingToken', (req, res) => {
             mRole: user.mRole,
         }
         const authToken = generateAuthToken(newUser)
-        createSecureCookie(req, res, "authTokenCookie", authToken, 15 * 1000); //15 sec
+        createSecureCookie(req, res, "authTokenCookie", authToken, 60 * 60 * 1000); //1 hour
 
         res.status(200).send({ message: "Auth Token successfully refreshed" })
     })
