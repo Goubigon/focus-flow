@@ -68,7 +68,7 @@ router.get("/getUser/:id", async (req, res) => {
 //AUTHENTICATE TOKEN
 router.get("/getUser", middleAuthentication, async (req, res) => {
     try {
-        const id = req.user.ID;
+        const id = req.user.mUserIdentifier;
         const data = await getUser(id);
         res.status(201).send(data);
     } catch (error) {
