@@ -198,7 +198,7 @@ router.get('/RefreshingToken', (req, res) => {
 })
 
 router.get('/keepAuthenticate', middleAuthentication, (req, res) => {
-    res.status(201).json({ message: 'Authentication successfully kept' , isAuth: true})
+    res.status(201).json({ message: 'Authentication successfully kept' , isAuth: req.isAuth})
 })
 
 

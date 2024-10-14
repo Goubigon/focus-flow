@@ -15,7 +15,6 @@ async function alreadyConnected (){
         });
         if (response.ok) {
             const result = await response.json();
-            console.log(JSON.stringify(result));
             return result.isAuth;
         } else {
             console.error('Failed to retrieve answers.');
@@ -24,7 +23,7 @@ async function alreadyConnected (){
         console.error('Error:', error);
     }
 }
-
+ 
 document.getElementById('loginForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -49,5 +48,5 @@ document.getElementById('logoutButton').addEventListener('click', async (event) 
 })
 
 window.onload = async () => {
-    if(alreadyConnected()) window.location.href = '/home'; 
+    if(alreadyConnected()){window.location.href = '/home';} 
 }
