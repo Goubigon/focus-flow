@@ -129,3 +129,25 @@ export async function keepAuthenticate() {
         console.error('Error:', error);
     }
 }
+
+export async function alreadyConnected (){
+    try {
+        console.log("Checking if user is still connected")
+        const response = await fetch('/user-data/keepAuthenticate', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        if (response.ok) {
+            const result = await response.json();
+            console.log("is user still connected : " + result.isAuth)
+            if(result.isAuth) {window.location.href = '/home';}
+            return result.isAuth;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
