@@ -1,0 +1,63 @@
+#logbar {
+    background-color: #333;
+    padding: 10px 100px 10px 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    text-align: right; /* Center the content inside the navbar */
+}
+.logbar-list {
+    list-style-type: none;
+    display: inline-block; /* Make the ul inline-block to center it */
+    margin: 0;
+    padding: 0;
+}
+
+.logbar-list li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.logbar-list li a #signinButton {
+    text-decoration: none;
+    color: white;
+    padding: 8px 16px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+}
+
+.logbar-list li a:hover {
+    background-color: #575757;
+    border-radius: 4px;
+}
+
+
+
+
+
+#signinButton {
+    transform: translateY(-80%);
+    background-color: rgb(20, 135, 173);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+#loginButton {
+    transform: translateY(-80%);
+    background-color: rgb(55, 167, 42);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: darkred;
+}

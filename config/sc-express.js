@@ -24,6 +24,8 @@ const logoutRoute = require('../src/routes/logout.js');
 
 const sessionDataRoute = require('../src/routes/data/session-data.js');
 
+const previewRoute = require('../src/routes/preview.js');
+
 
 //default / redirects to /login
 app.get('/', (req, res) => {
@@ -45,6 +47,7 @@ app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 
 app.use('/session-data', sessionDataRoute);
+app.use('/preview', previewRoute);
 
 
 // Handle 404 errors

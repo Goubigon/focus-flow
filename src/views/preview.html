@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview</title>
+    <link rel="stylesheet" href="/css/preview.css">
+</head>
+
+<body>
+    <div id="logbar"></div>
+    <script>
+        fetch('/partial/logbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('logbar').innerHTML = data;
+                // Load your navbar script here after the navbar is inserted
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
+    </script>
+
+    <div id="preview">
+
+        <h1>Welcome to the preview page!</h1>
+
+        <p>Navigate using the top navbar</p>
+
+    </div>
+</body>
+
+</html>
