@@ -7,6 +7,7 @@ import { logUser, refreshingToken, getUserInfo, logoutUser } from '../client-api
 
 async function alreadyConnected (){
     try {
+        console.log("Checking if user is still connected")
         const response = await fetch('/user-data/keepAuthenticate', {
             method: 'GET',
             headers: {
@@ -15,6 +16,7 @@ async function alreadyConnected (){
         });
         if (response.ok) {
             const result = await response.json();
+            console.log("is user still connected : " + result.isAuth)
             return result.isAuth;
         } else {
             console.error('Failed to retrieve answers.');
@@ -48,5 +50,8 @@ document.getElementById('logoutButton').addEventListener('click', async (event) 
 })
 
 window.onload = async () => {
-    if(alreadyConnected()){window.location.href = '/home';} 
+    if(await alreadyConnected()){
+        console.log("On load, user is still connected")
+        window.location.href = '/home';
+    } 
 }
