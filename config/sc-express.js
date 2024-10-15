@@ -27,9 +27,9 @@ const sessionDataRoute = require('../src/routes/data/session-data.js');
 const previewRoute = require('../src/routes/preview.js');
 
 
-//default / redirects to /login
+//default / redirects to /preview
 app.get('/', (req, res) => {
-    res.redirect('/login');
+    res.redirect('/preview');
 });
 
 app.use('/home', homeRoute);
