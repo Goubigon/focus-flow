@@ -1,4 +1,4 @@
-import { logUser } from '../client-api/auth_api.js';
+import { logUser, alreadyConnected } from '../client-api/auth_api.js';
 
 
 function validateForm() {
@@ -78,3 +78,7 @@ document.getElementById('signForm').addEventListener('submit', async (event) =>{
         createUser(name, email, password);
     }
 })
+
+window.onload = async () => {
+    await alreadyConnected()
+}
