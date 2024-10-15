@@ -9,16 +9,16 @@ body {
     margin: 0;
 }
 
-#home h1 {
+#preview h1 {
     color: #00b395;
 }
 
-#home p {
+#preview p {
     font-size: 1.5em;
     line-height: 1.6;
 }
 
-#home a {
+#preview a {
     display: inline-block;
     margin: 10px 0;
     padding: 10px 15px;
@@ -28,6 +28,6 @@ body {
     border-radius: 5px;
 }
 
-#home a:hover {
+#preview a:hover {
     background-color: #003d7a;
 }
