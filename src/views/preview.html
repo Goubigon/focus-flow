@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logged out</title>
-    <link rel="stylesheet" href="/css/home.css">
+    <title>Preview</title>
+    <link rel="stylesheet" href="/css/preview.css">
 </head>
 
 <body>
@@ -19,13 +19,13 @@
             .catch(error => console.error("Error loading navbar:", error));
     </script>
 
+    <div id="preview">
 
-    <div id="home">
-
-        <h1>You have been logged out</h1>
-        <a href="/login" class="button">Go to Login</a>
-
+        <h1>Welcome to the Brain Clear Program!</h1>
+        <img src="/img/ex_exercise.png" width="50%" alt="Example image of an exercise">
     </div>
+
+    <script type="module" src="/js/ui-script/preview-script.js"></script>
 </body>
 
 </html>

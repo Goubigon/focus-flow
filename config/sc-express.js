@@ -24,10 +24,12 @@ const logoutRoute = require('../src/routes/logout.js');
 
 const sessionDataRoute = require('../src/routes/data/session-data.js');
 
+const previewRoute = require('../src/routes/preview.js');
 
-//default / redirects to /login
+
+//default / redirects to /preview
 app.get('/', (req, res) => {
-    res.redirect('/login');
+    res.redirect('/preview');
 });
 
 app.use('/home', homeRoute);
@@ -45,6 +47,7 @@ app.use('/login', loginRoute);
 app.use('/logout', logoutRoute);
 
 app.use('/session-data', sessionDataRoute);
+app.use('/preview', previewRoute);
 
 
 // Handle 404 errors

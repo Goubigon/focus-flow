@@ -9,6 +9,16 @@
 </head>
 
 <body>
+    <div id="logbar"></div>
+    <script>
+        fetch('/partial/logbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('logbar').innerHTML = data;
+            })
+            .catch(error => console.error("Error loading navbar:", error));
+    </script>
+
     <div class="container">
         <div class="signup-form">
             <h2>Create Account</h2>
