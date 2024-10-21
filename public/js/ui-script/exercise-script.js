@@ -112,6 +112,7 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                     const answerDivs = linesContainerElement.querySelectorAll('.answer');
                     answerDivs.forEach(answerDiv => {
                         answerDiv.style.visibility = 'visible'; 
+                        answerDiv.style.opacity = '1'; 
                     });
 
                     //Allow scrolling on the container

@@ -113,4 +113,7 @@ body {
     right: 0; /* Align to the right */
     margin: 5px; /* Optional: Add some margin for spacing */
     visibility: hidden;
+
+    opacity: 0; /* Start with opacity 0 */
+    transition: opacity 0.5s ease, visibility 0.5s ease; /* Fade effect */
 }
