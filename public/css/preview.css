@@ -9,7 +9,18 @@ body {
     margin: 0;
 }
 
+#preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* or any desired height */
+    text-align: center;
+}
+
+
 #preview h1 {
+    font-size: 3.5em;
     color: #00b395;
 }
 
@@ -17,17 +28,8 @@ body {
     font-size: 1.5em;
     line-height: 1.6;
 }
-
-#preview a {
-    display: inline-block;
-    margin: 10px 0;
-    padding: 10px 15px;
-    background-color: #0056b3;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-
-#preview a:hover {
-    background-color: #003d7a;
+#preview img {
+    margin: 10px;
+    border-radius: 15px;
+    border: 1px solid gray;
 }
