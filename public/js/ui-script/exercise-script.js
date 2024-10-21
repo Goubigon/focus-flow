@@ -61,7 +61,7 @@ function handleResult(userAnswer, currentQuestion) {
     return currentQuestion.isCorrect;
 }
 
-function handleViewResult(userAnswer, actualResult, duration){
+function handleViewResult(userAnswer, actualResult, duration) {
     //Write the answer in div
     const currentLineDiv = document.getElementById(`line${currentLine}`);
     const operationsSpan = currentLineDiv.querySelector('span');
@@ -111,9 +111,13 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                     // Make each answer div visible
                     const answerDivs = linesContainerElement.querySelectorAll('.answer');
                     answerDivs.forEach(answerDiv => {
-                        answerDiv.style.visibility = 'visible'; 
-                        answerDiv.style.opacity = '1'; 
+                        answerDiv.style.visibility = 'visible';
+                        answerDiv.style.opacity = '1';
                     });
+
+                    //show button
+                    const dashboardButton = document.getElementById('dashboardButton');
+                    dashboardButton.style.visibility = 'visible';
 
                     //Allow scrolling on the container
                     linesContainerElement.style.overflowY = 'auto';

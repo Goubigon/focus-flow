@@ -117,3 +117,22 @@ body {
     opacity: 0; /* Start with opacity 0 */
     transition: opacity 0.5s ease, visibility 0.5s ease; /* Fade effect */
 }
+
+
+.button {
+    display: inline-block; /* Make it behave like a button */
+    padding: 10px 20px; /* Add some padding */
+    background-color: #28a745; /* Green background color */
+    color: white; /* Text color */
+    text-decoration: none; /* Remove underline */
+    border-radius: 5px; /* Rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Show pointer cursor */
+    font-size: 16px; /* Adjust font size */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    visibility: hidden;
+}
+
+.button:hover {
+    background-color: #218838; /* Darker green on hover */
+}
