@@ -17,7 +17,6 @@ body {
 
 .main-container {
     display: flex;
-    align-items: center;
     justify-content: center;
     padding-top: 50px;
     gap: 20px;
@@ -35,6 +34,7 @@ body {
     overflow-y: hidden;
     /* Hide scrollbars */
     position: relative;
+    border-radius: 10px;
     border: 1px solid #ccc;
     /* Add border to the box */
     background: #fff;
@@ -48,7 +48,7 @@ body {
 
 .big-input {
     width: 300px; /* Width of the input field */
-    height: 400px; /* Height to match the lines-container */
+    height: 300px; /* Height to match the lines-container */
     font-size: 24px; /* Larger font for better readability */
     padding: 10px; /* Padding inside the text area */
     border: 1px solid #ccc; /* Border around the text area */
