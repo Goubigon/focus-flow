@@ -75,66 +75,78 @@ function handleViewResult(userAnswer, actualResult, duration) {
 
 }
 
+// Check if number is correct
+function inputIsCorrect(answerValue) {
+    let minusCount = (answerValue.match(/-/g) || []).length;
+    let dotCount = (answerValue.match(/\./g) || []).length;
+    if (minusCount > 1 || (minusCount === 1 && answerValue.indexOf('-') !== 0) || dotCount > 1 || isNaN(parseFloat(answerValue))) {
+        errorMessageElement.textContent = 'Invalid input! Only one "-" and one "." allowed.';
+        errorMessageElement.style.visibility = 'visible';
+        return false;
+    }
+    return true;
+}
+
+function formattedValue(answerValue) {
+    // Remove unnecessary leading zeros and trailing zeros
+    answerValue = answerValue.replace(/^0+(?=\d)/, ''); // Remove leading zeros
+    answerValue = answerValue.replace(/(\.\d*?[1-9])0+$/, '$1'); // Remove trailing zeros after decimal point
+    answerValue = answerValue.replace(/(\.0+)$/, '.'); // Remove .0
+    return answerValue
+}
+
+function handleEndOfSession() {
+    // Insert the sessionIdentifier to each items of the json
+    questionJsonList.forEach((item) => {
+        item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
+    });
+
+    // Make each answer div visible
+    const answerDivs = linesContainerElement.querySelectorAll('.answer');
+    answerDivs.forEach(answerDiv => {
+        answerDiv.style.visibility = 'visible';
+        answerDiv.style.opacity = '1';
+    });
+
+    //Show Dashboard button
+    document.getElementById('dashboardButton').style.visibility = 'visible';
+
+    //Allow scrolling on the container
+    linesContainerElement.style.overflowY = 'auto';
+
+    //Show total duration message
+    const totalDurationMessage = document.getElementById('totalDurationMessage');
+    totalDurationMessage.style.display = 'block'; // Change to 'block' to make it visible
+    totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3)) + 's';
+
+    // insert answers in database
+    insertAllAnswers(questionJsonList)
+}
+
 // Event listener for answering a line (using Enter key)
 answerInputTextArea.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
 
-        let minusCount = (answerInputTextArea.value.match(/-/g) || []).length;
-        let dotCount = (answerInputTextArea.value.match(/\./g) || []).length;
-        if (minusCount > 1 || (minusCount === 1 && answerInputTextArea.value.indexOf('-') !== 0) || dotCount > 1) {
-            errorMessageElement.textContent = 'Invalid input! Only one "-" and one "." allowed.';
-            errorMessageElement.style.visibility = 'visible';
-        }
-        else {
-            let answerValueFloat = parseFloat(answerInputTextArea.value)
+        let answerValue = answerInputTextArea.value;
+        if (inputIsCorrect(answerValue)) {
+            answerValue = formattedValue(answerValue);
+            
+            let currentQuestion = questionJsonList[currentLine]
+            if (handleResult(answerValue, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
+            else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
 
-            if (!isNaN(parseFloat(answerValueFloat)) && answerValueFloat !== '') {
+            linesContainerElement.children[currentLine].classList.remove('current');
+            linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                // Remove unnecessary leading zeros and trailing zeros
-                answerInputTextArea.value = answerInputTextArea.value.replace(/^0+(?=\d)/, ''); // Remove leading zeros
-                answerInputTextArea.value = answerInputTextArea.value.replace(/(\.\d*?[1-9])0+$/, '$1'); // Remove trailing zeros after decimal point
-                answerInputTextArea.value = answerInputTextArea.value.replace(/(\.0+)$/, '.'); // Remove .0
+            currentLine++;
 
-                let currentQuestion = questionJsonList[currentLine]
-
-                if (handleResult(answerValueFloat, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
-                else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
-                linesContainerElement.children[currentLine].classList.remove('current');
-
-                linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                currentLine++;
-
-                if (currentLine == numberOfLines) {
-                    // Insert the sessionIdentifier to each items of the json
-                    questionJsonList.forEach((item) => {
-                        item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
-                    });
-
-                    // Make each answer div visible
-                    const answerDivs = linesContainerElement.querySelectorAll('.answer');
-                    answerDivs.forEach(answerDiv => {
-                        answerDiv.style.visibility = 'visible';
-                        answerDiv.style.opacity = '1';
-                    });
-
-                    //Show Dashboard button
-                    document.getElementById('dashboardButton').style.visibility = 'visible';
-
-                    //Allow scrolling on the container
-                    linesContainerElement.style.overflowY = 'auto';
-
-                    //Show total duration message
-                    const totalDurationMessage = document.getElementById('totalDurationMessage');
-                    totalDurationMessage.style.display = 'block'; // Change to 'block' to make it visible
-                    totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3)) + 's';
-
-                    // insert answers in database
-                    insertAllAnswers(questionJsonList)
-                } else {
-                    linesContainerElement.children[currentLine].classList.add('current');
-                }
+            if (currentLine == numberOfLines) {
+                handleEndOfSession();
+            } else {
+                linesContainerElement.children[currentLine].classList.add('current');
             }
+
         }
         answerInputTextArea.value = '';
         answerInputTextArea.focus();
