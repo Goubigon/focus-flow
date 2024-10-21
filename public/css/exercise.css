@@ -136,3 +136,14 @@ body {
 .button:hover {
     background-color: #218838; /* Darker green on hover */
 }
+
+#totalDurationMessage {
+    display: none; /* Hidden by default */
+    padding: 10px; /* Add some padding */
+    margin: 20px 0; /* Margin for spacing */
+    background-color: #f8f9fa; /* Light gray background */
+    color: #333; /* Dark text color */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 5px; /* Rounded corners */
+    font-size: 16px; /* Font size */
+}

@@ -15,6 +15,8 @@ let questionJsonList;
 let currentLine = 0;
 let numberOfLines;
 
+let totalDuration = 0;
+
 const linesContainerElement = document.getElementById('linesContainer');
 const answerInputTextArea = document.getElementById('answer-input');
 const errorMessageElement = document.getElementById('errorMessage');
@@ -54,6 +56,7 @@ function handleResult(userAnswer, currentQuestion) {
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
     currentQuestion.qTime = timeTaken;
     currentQuestion.qDate = getCurrentDateTime();
+    totalDuration += timeTaken;
 
     handleViewResult(currentQuestion.qAnswer, currentQuestion.qResult, currentQuestion.qTime);
 
@@ -68,7 +71,7 @@ function handleViewResult(userAnswer, actualResult, duration) {
     operationsSpan.textContent += userAnswer;
 
     const answerDiv = currentLineDiv.querySelector('div');
-    answerDiv.textContent = 'Correct answer : ' + actualResult + ' | Time taken : ' + duration;
+    answerDiv.textContent = 'Correct answer : ' + actualResult + ' | Time taken : ' + duration + 's';
 
 }
 
@@ -116,11 +119,14 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                     });
 
                     //show button
-                    const dashboardButton = document.getElementById('dashboardButton');
-                    dashboardButton.style.visibility = 'visible';
+                    document.getElementById('dashboardButton').style.visibility = 'visible';
 
                     //Allow scrolling on the container
                     linesContainerElement.style.overflowY = 'auto';
+
+                    const totalDurationMessage = document.getElementById('totalDurationMessage');
+                    totalDurationMessage.style.display = 'block'; // Change to 'block' to make it visible
+                    totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3) + 's');
 
 
                     insertAllAnswers(questionJsonList)
