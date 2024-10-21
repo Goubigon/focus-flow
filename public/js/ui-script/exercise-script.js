@@ -118,24 +118,21 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                         answerDiv.style.opacity = '1';
                     });
 
-                    //show button
+                    //Show Dashboard button
                     document.getElementById('dashboardButton').style.visibility = 'visible';
 
                     //Allow scrolling on the container
                     linesContainerElement.style.overflowY = 'auto';
 
+                    //Show total duration message
                     const totalDurationMessage = document.getElementById('totalDurationMessage');
                     totalDurationMessage.style.display = 'block'; // Change to 'block' to make it visible
-                    totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3) + 's');
+                    totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3)) + 's';
 
-
+                    // insert answers in database
                     insertAllAnswers(questionJsonList)
-
-                    //setTimeout(() => { window.location.href = '/dashboard' }, 500);
-
                 } else {
                     linesContainerElement.children[currentLine].classList.add('current');
-
                 }
             }
         }
