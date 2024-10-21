@@ -114,8 +114,11 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                         answerDiv.style.visibility = 'visible'; 
                     });
 
-                    insertAllAnswers(questionJsonList)
+                    //Allow scrolling on the container
+                    linesContainerElement.style.overflowY = 'auto';
 
+
+                    insertAllAnswers(questionJsonList)
 
                     //setTimeout(() => { window.location.href = '/dashboard' }, 500);
 
