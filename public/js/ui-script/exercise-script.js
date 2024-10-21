@@ -28,7 +28,16 @@ function generateExerciseDiv(questionJsonList) {
         lineDiv.className = 'line';
         lineDiv.tabIndex = 0; // Make it focusable
         lineDiv.id = `line${i}`;
-        lineDiv.textContent = item.leftOperation + ' ' + item.mathOperation + ' ' + item.rightOperation + ' = ';
+
+        const operationsSpan = document.createElement('span');
+        operationsSpan.textContent = `${item.leftOperation} ${item.mathOperation} ${item.rightOperation} = `;
+        lineDiv.appendChild(operationsSpan);
+
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'answer';
+        //answerDiv.textContent = '____ (Duration: __ seconds)';
+        lineDiv.appendChild(answerDiv);
+
         linesContainerElement.appendChild(lineDiv);
     }
 }
@@ -37,19 +46,30 @@ function generateExerciseDiv(questionJsonList) {
 
 //Adds the answer, isCorrect, qTime and qDate into the json
 //Return isCorrect
-function handleResult(userAnswer, questionJsonList) {
-    questionJsonList[currentLine].qAnswer = userAnswer;
-    questionJsonList[currentLine].isCorrect = (userAnswer == questionJsonList[currentLine].qResult);
+function handleResult(userAnswer, currentQuestion) {
+    currentQuestion.qAnswer = userAnswer;
+    currentQuestion.isCorrect = (userAnswer == currentQuestion.qResult);
 
     const endTime = new Date();
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
+    currentQuestion.qTime = timeTaken;
+    currentQuestion.qDate = getCurrentDateTime();
 
-    questionJsonList[currentLine].qTime = timeTaken;
-    questionJsonList[currentLine].qDate = getCurrentDateTime();
+    handleViewResult(currentQuestion.qAnswer, currentQuestion.qResult, currentQuestion.qTime);
 
     startTime = new Date();
+    return currentQuestion.isCorrect;
+}
 
-    return userAnswer == questionJsonList[currentLine].qResult;
+function handleViewResult(userAnswer, actualResult, duration){
+    //Write the answer in div
+    const currentLineDiv = document.getElementById(`line${currentLine}`);
+    const operationsSpan = currentLineDiv.querySelector('span');
+    operationsSpan.textContent += userAnswer;
+
+    const answerDiv = currentLineDiv.querySelector('div');
+    answerDiv.textContent = 'Correct answer : ' + actualResult + ' | Time taken : ' + duration;
+
 }
 
 // Event listener for answering a line (using Enter key)
@@ -73,11 +93,9 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                 answerInputTextArea.value = answerInputTextArea.value.replace(/(\.\d*?[1-9])0+$/, '$1'); // Remove trailing zeros after decimal point
                 answerInputTextArea.value = answerInputTextArea.value.replace(/(\.0+)$/, '.'); // Remove .0
 
-                //Write the answer in div
-                const currentLineDiv = document.getElementById(`line${currentLine}`);
-                currentLineDiv.textContent += answerValueFloat;
+                let currentQuestion = questionJsonList[currentLine]
 
-                if (handleResult(answerValueFloat, questionJsonList)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
+                if (handleResult(answerValueFloat, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
                 else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
                 linesContainerElement.children[currentLine].classList.remove('current');
 
@@ -85,12 +103,22 @@ answerInputTextArea.addEventListener('keypress', (event) => {
                 currentLine++;
 
                 if (currentLine == numberOfLines) {
+                    // Insert the sessionIdentifier to each items of the json
                     questionJsonList.forEach((item) => {
                         item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
                     });
+
+                    // Make each answer div visible
+                    const answerDivs = linesContainerElement.querySelectorAll('.answer');
+                    answerDivs.forEach(answerDiv => {
+                        answerDiv.style.visibility = 'visible'; 
+                    });
+
                     insertAllAnswers(questionJsonList)
-                    setTimeout(() => { window.location.href = '/dashboard' }, 500);
-                    
+
+
+                    //setTimeout(() => { window.location.href = '/dashboard' }, 500);
+
                 } else {
                     linesContainerElement.children[currentLine].classList.add('current');
 
@@ -109,7 +137,7 @@ answerInputTextArea.addEventListener('input', function (e) {
 
     // Remove any character that is not a digit, '.', or '-' 
     value = value.replace(/[^0-9.-]/g, '');
-    
+
     errorMessageElement.innerHTML = '';
 
     e.target.value = value;

@@ -31,9 +31,7 @@ body {
 
 .lines-container {
     width: 400px;
-    /* Set a fixed width for the container */
     height: 500px;
-    /* Set a fixed height for the container */
     overflow-y: hidden;
     /* Hide scrollbars */
     position: relative;
@@ -104,3 +102,15 @@ body {
     background: #ffb3a3;
 }
 
+.line {
+    position: relative; /* Ensure position is relative for absolute positioning of answerDiv */
+}
+
+.answer {
+    font-size: 0.8em; /* Extra small text size */
+    position: absolute; /* Position it absolutely within lineDiv */
+    bottom: 0; /* Align to the bottom */
+    right: 0; /* Align to the right */
+    margin: 5px; /* Optional: Add some margin for spacing */
+    visibility: hidden;
+}
