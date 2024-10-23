@@ -47,12 +47,12 @@ router.post("/createParams", async (req, res) => {
         if (paramsIdentifier == 0) { //parameters don't exist, create new one
             const newParamsJson = await createParam(mMinNumber, mMaxNumber, mFloatNumber, mNumber,
                 mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
-            console.log("API LOG new : ", newParamsJson)
+            console.log("[POST /createParams] New Param created : ", newParamsJson)
             res.status(200).json(newParamsJson)
         }
         else { //parameters already exists, return them
             const existingParamsJson = await getParamWithID(paramsIdentifier);
-            console.log("API LOG existing : ", existingParamsJson)
+            console.log("[POST /createParams] Param existing : ", existingParamsJson)
             res.status(200).json(existingParamsJson);
         }
         //console.log(response);
