@@ -106,37 +106,6 @@
     </div>
 
     <script type="module" src="/js/ui-script/parameters-script.js"></script>
-    <script>
-        const configForm = document.getElementById('configForm');
-        const levelsButton = document.getElementById('levelsButton');
-        const customButton = document.getElementById('customButton');
-        const levelButtonsContainer = document.getElementById('levelButtons');
-
-        // Show levels when the "Levels" button is clicked
-        levelsButton.addEventListener('click', () => {
-            configForm.style.display = 'none'; // Hide the form
-            levelButtonsContainer.style.display = 'block'; // Show level buttons
-            levelButtonsContainer.innerHTML = ''; // Clear any existing buttons
-
-            // Create level buttons dynamically
-            for (let i = 1; i <= 10; i++) {
-                const levelButton = document.createElement('button');
-                levelButton.className = 'level-button';
-                levelButton.innerText = `Level ${i}`;
-                levelButton.addEventListener('click', () => {
-                    alert(`You selected ${levelButton.innerText}`);
-                    // Add functionality for level selection here
-                });
-                levelButtonsContainer.appendChild(levelButton);
-            }
-        });
-
-        // Show custom form when the "Custom" button is clicked
-        customButton.addEventListener('click', () => {
-            levelButtonsContainer.style.display = 'none'; // Hide level buttons
-            configForm.style.display = 'block'; // Show the form
-        });
-    </script>
 </body>
 
 </html>

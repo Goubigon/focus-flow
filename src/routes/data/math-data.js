@@ -8,7 +8,7 @@ const { getAnswers, getAnswer, createAnswer,
     medianTimeWithOperation
 } = require('../../../config/database/sc-math-db.js');
 
-const { updateSessionDuration, getSessionWithID } = require('../../../config/database/sc-session-db.js');
+const { updateSessionDuration, getSessionWithID, getParamWithID } = require('../../../config/database/sc-session-db.js');
 const { incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime } = require('../../../config/database/sc-user-db.js');
 
 
@@ -86,25 +86,26 @@ function getCorrectResult(lOpe, mOpe, rOpe){
 }
 
 router.post("/generateQuestions", async (req, res) => {
-    const { minNumber, maxNumber,
-        additionCheck, subtractionCheck, multiplicationCheck,
+    const { mParametersIdentifier } = req.body
+    console.log("[POST /generateQuestions] gen question param id : " + mParametersIdentifier)
+    const { mMinNumber, mMaxNumber,
+        mAdditionCheck, mSubtractionCheck, mMultiplicationCheck,
         mMaxAnswerCount
-    } = req.body
+    } = await getParamWithID(mParametersIdentifier)
 
-    console.log("mMaxAnswerCount : " + mMaxAnswerCount )
     //Push selected math operations
     const opList = []
-    if (additionCheck) { opList.push("+"); }
-    if (subtractionCheck) { opList.push("-"); }
-    if (multiplicationCheck) { opList.push("x"); }
+    if (mAdditionCheck) { opList.push("+"); }
+    if (mSubtractionCheck) { opList.push("-"); }
+    if (mMultiplicationCheck) { opList.push("x"); }
     //List containing all the questions
     let questionJsonList = [];
 
     //Fill the list with random questions
     for (let i = 0; i < mMaxAnswerCount; i++) {
-        const lOpe = randomNumber(minNumber, maxNumber);
+        const lOpe = randomNumber(mMinNumber, mMaxNumber);
         const mOpe = opList[Math.floor(Math.random() * opList.length)];
-        const rOpe = randomNumber(minNumber, maxNumber);
+        const rOpe = randomNumber(mMinNumber, mMaxNumber);
         const qRes =  getCorrectResult(lOpe, mOpe, rOpe)
 
         const question = {
@@ -115,8 +116,7 @@ router.post("/generateQuestions", async (req, res) => {
         };
         questionJsonList.push(question);
     }
-
-    console.log("BACKEND questionJsonList : " + JSON.stringify(questionJsonList))
+    console.log("[POST /generateQuestions] final list of questions : " + JSON.stringify(questionJsonList))
     res.status(201).send(questionJsonList)
 })
 

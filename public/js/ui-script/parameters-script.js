@@ -24,23 +24,23 @@ inputList.forEach(currentInput => {
 //when loading parameters windows
 //loads last saved parameters if it exists
 function loadExistingForm() {
-    const formDataString = localStorage.getItem('formData');
-    if (formDataString) {
-        const formData = JSON.parse(formDataString);
-        console.log(formData);
-        document.getElementById('minNumber').value = formData.minNumber;
-        document.getElementById('maxNumber').value = formData.maxNumber;
+    const paramString = localStorage.getItem('parametersJson');
+    if (paramString) {
+        const paramJson = JSON.parse(paramString);
+        console.log(paramJson);
+        document.getElementById('minNumber').value = paramJson.mMinNumber;
+        document.getElementById('maxNumber').value = paramJson.mMaxNumber;
 
-        document.getElementById('additionCheck').checked = formData.additionCheck;
-        document.getElementById('subtractionCheck').checked = formData.subtractionCheck;
-        document.getElementById('multiplicationCheck').checked = formData.multiplicationCheck;
+        document.getElementById('additionCheck').checked = paramJson.mAdditionCheck;
+        document.getElementById('subtractionCheck').checked = paramJson.mSubtractionCheck;
+        document.getElementById('multiplicationCheck').checked = paramJson.mMultiplicationCheck;
 
-        document.getElementById('maxAnswerCount').value = formData.mMaxAnswerCount;
+        document.getElementById('maxAnswerCount').value = paramJson.mMaxAnswerCount;
     }
 }
 
 
-async function createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount) {
+async function createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAddCheck, mSubCheck, mMultCheck, mMaxAnswerCount) {
     try {
         const response = await fetch(`/session-data/createParams`, {
             method: 'POST',
@@ -48,20 +48,21 @@ async function createParams(minNumber, maxNumber, floatNumber, nNumber, addition
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                minNumber: minNumber,
-                maxNumber: maxNumber,
-                floatNumber: floatNumber,
-                nNumber: nNumber,
+                mMinNumber: mMinNumber,
+                mMaxNumber: mMaxNumber,
+                mFloatNumber: mFloatNumber,
+                mNumber: mNumber,
 
-                additionCheck: additionCheck,
-                subtractionCheck: subtractionCheck,
-                multiplicationCheck: multiplicationCheck,
-                maxAnswerCount: maxAnswerCount,
+                mAdditionCheck: mAddCheck,
+                mSubtractionCheck: mSubCheck,
+                mMultiplicationCheck: mMultCheck,
+                mMaxAnswerCount: mMaxAnswerCount,
             })
         });
 
         const result = await response.json();
         if (response.ok) {
+            console.log("[Fetch createParams] : " + JSON.stringify(result))
             return result;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
@@ -86,6 +87,7 @@ async function createSession(paramID, sessionDate) {
 
         const result = await response.json();
         if (response.ok) {
+            console.log("[Fetch createSession] : " + JSON.stringify(result))
             return result;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
@@ -102,37 +104,36 @@ formElement.addEventListener('submit', async (event) => {
     //so this prevents the page from reloading
     event.preventDefault();
 
+    // Prevents unsaved edits
     isFormSubmitted = true;
     isFormChanged = false;
 
 
     // Get the input values
-    const minNumber = parseFloat(document.getElementById('minNumber').value);
-    const maxNumber = parseFloat(document.getElementById('maxNumber').value);
+    const mMinNumber = parseFloat(document.getElementById('minNumber').value);
+    const mMaxNumber = parseFloat(document.getElementById('maxNumber').value);
 
-    const floatNumber = 0;
-    const nNumber = 2;
+    const mFloatNumber = 0;
+    const mNumber = 2;
 
-
-    const additionCheck = document.getElementById('additionCheck').checked;
-    const subtractionCheck = document.getElementById('subtractionCheck').checked;
-    const multiplicationCheck = document.getElementById('multiplicationCheck').checked;
+    const mAdditionCheck = document.getElementById('additionCheck').checked;
+    const mSubtractionCheck = document.getElementById('subtractionCheck').checked;
+    const mMultiplicationCheck = document.getElementById('multiplicationCheck').checked;
 
     const mMaxAnswerCount = parseFloat(document.getElementById('maxAnswerCount').value);
 
-    const errorMessage = document.getElementById('errorMessage');
-
     // Clear previous error message
+    const errorMessage = document.getElementById('errorMessage');
     errorMessage.textContent = '';
 
     // Validate input
     //Min is lower or equal Max
-    if (minNumber >= maxNumber) {
+    if (mMinNumber >= mMaxNumber) {
         errorMessage.textContent = "Min number must be less than max number.";
         errorMessage.style.color = 'red';
     }
     //at least one operation is selected
-    else if ((additionCheck || subtractionCheck || multiplicationCheck) == false) {
+    else if ((mAdditionCheck || mSubtractionCheck || mMultiplicationCheck) == false) {
         errorMessage.textContent = "Must check at least one operation.";
         errorMessage.style.color = 'red';
     }
@@ -141,41 +142,50 @@ formElement.addEventListener('submit', async (event) => {
         errorMessage.textContent = "Successfully saved";
         errorMessage.style.color = 'green';
 
-        const paramJson = await createParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, mMaxAnswerCount)
-
-        console.log(paramJson)
-
+        const paramJson = await createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
         const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
 
-        console.log(sessionJson)
-
-
-        // Create JSON object
-        const formData = {
-            mSessionIdentifier : sessionJson.mSessionIdentifier,
-            minNumber: minNumber,
-            maxNumber: maxNumber,
-            floatNumber: floatNumber,
-            nNumber: nNumber,
-
-            additionCheck: additionCheck,
-            subtractionCheck: subtractionCheck,
-            multiplicationCheck: multiplicationCheck,
-            mMaxAnswerCount: mMaxAnswerCount
-        };
-
-        //null -> no placeholder function
-        //4 -> number of spaces for indentation in result
-        const jsonString = JSON.stringify(formData, null, 4); // Pretty print the JSON
-        document.getElementById('jsonOutput').textContent = jsonString;
-
-        localStorage.setItem('formData', JSON.stringify(formData));
-
-        
+        //localStorage.setItem('parametersJson', JSON.stringify(paramJson));
+        localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
         window.location.href = 'exercise';
-
     }
 });
+
+
+const configForm = document.getElementById('configForm');
+const levelsButton = document.getElementById('levelsButton');
+const customButton = document.getElementById('customButton');
+const levelButtonsContainer = document.getElementById('levelButtons');
+
+// Show levels when the "Levels" button is clicked
+levelsButton.addEventListener('click', () => {
+    configForm.style.display = 'none'; // Hide the form
+    levelButtonsContainer.style.display = 'block'; // Show level buttons
+    levelButtonsContainer.innerHTML = ''; // Clear any existing buttons
+
+    // Create level buttons dynamically
+    for (let i = 1; i <= 5; i++) {
+        const levelButton = document.createElement('button');
+        levelButton.className = 'level-button';
+        levelButton.innerText = `Level ${i}`;
+        levelButton.addEventListener('click', async () => {
+            // Create a session using the parameters 1 to 5 accordingly
+            const sessionJson = await createSession(i, getCurrentDateTime())
+            localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
+            window.location.href = 'exercise';
+        });
+        levelButtonsContainer.appendChild(levelButton);
+    }
+});
+
+// Show custom form when the "Custom" button is clicked
+customButton.addEventListener('click', () => {
+    levelButtonsContainer.style.display = 'none'; // Hide level buttons
+    configForm.style.display = 'block'; // Show the form
+});
+
+
+
 
 // When the windows page loads
 // Call the function to generate last written parameters if it exists

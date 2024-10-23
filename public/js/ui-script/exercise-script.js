@@ -1,6 +1,6 @@
 import {
     getCurrentDateTime,
-    loadParamsFromLocalStorage,
+    loadFromLocalStorage,
     askGenerateQuestions, insertAllAnswers
 } from '../client-api/utils.js';
 
@@ -120,15 +120,14 @@ answerInputTextArea.addEventListener('input', function (e) {
 
 window.onload = async () => {
     keepAuthenticate()
-    localStorageParametersJson = loadParamsFromLocalStorage();
-    console.log("localStorageParametersJson : " + JSON.stringify(localStorageParametersJson))
-
-    questionJsonList = await askGenerateQuestions(localStorageParametersJson)
-    console.log("FRONT questionJsonList : " + JSON.stringify(questionJsonList))
+    
+    const mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
+    questionJsonList = await askGenerateQuestions(mParametersIdentifier)
+    console.log("[exercise onload] question list: " + JSON.stringify(questionJsonList))
 
     generateExerciseDiv(questionJsonList)
 
-    numberOfLines = localStorageParametersJson.mMaxAnswerCount;
+    numberOfLines = questionJsonList.length;
     answerInputTextArea.focus()
     linesContainerElement.children[currentLine].classList.add('current');
     startTime = new Date();

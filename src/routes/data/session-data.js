@@ -40,19 +40,19 @@ router.get("/getSessionWithID/:id", async (req, res) => {
 
 router.post("/createParams", async (req, res) => {
     try {
-        const { minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount } = req.body;
-        const paramsIdentifier = await getExactParams(minNumber, maxNumber, floatNumber, nNumber,
-            additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
+        const { mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount } = req.body;
+        const paramsIdentifier = await getExactParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber,
+            mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
 
         if (paramsIdentifier == 0) { //parameters don't exist, create new one
-            const newParamsJson = await createParam(minNumber, maxNumber, floatNumber, nNumber,
-                additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
-            console.log("API LOG new : ", newParamsJson)
+            const newParamsJson = await createParam(mMinNumber, mMaxNumber, mFloatNumber, mNumber,
+                mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
+            console.log("[POST /createParams] New Param created : ", newParamsJson)
             res.status(200).json(newParamsJson)
         }
         else { //parameters already exists, return them
             const existingParamsJson = await getParamWithID(paramsIdentifier);
-            console.log("API LOG existing : ", existingParamsJson)
+            console.log("[POST /createParams] Param existing : ", existingParamsJson)
             res.status(200).json(existingParamsJson);
         }
         //console.log(response);
