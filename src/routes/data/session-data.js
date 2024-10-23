@@ -40,13 +40,13 @@ router.get("/getSessionWithID/:id", async (req, res) => {
 
 router.post("/createParams", async (req, res) => {
     try {
-        const { minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount } = req.body;
-        const paramsIdentifier = await getExactParams(minNumber, maxNumber, floatNumber, nNumber,
-            additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
+        const { mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount } = req.body;
+        const paramsIdentifier = await getExactParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber,
+            mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
 
         if (paramsIdentifier == 0) { //parameters don't exist, create new one
-            const newParamsJson = await createParam(minNumber, maxNumber, floatNumber, nNumber,
-                additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount)
+            const newParamsJson = await createParam(mMinNumber, mMaxNumber, mFloatNumber, mNumber,
+                mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
             console.log("API LOG new : ", newParamsJson)
             res.status(200).json(newParamsJson)
         }

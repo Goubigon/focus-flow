@@ -12,11 +12,11 @@ export function getCurrentDateTime() {
 };
 
 export function loadParamsFromLocalStorage() {
-    const formDataString = localStorage.getItem('formData');
-    if (formDataString) {
-        let formData = JSON.parse(formDataString);
-        console.log('Form from parameters :', formData);
-        return formData;
+    const paramString = localStorage.getItem('parametersJson');
+    if (paramString) {
+        let paramJson = JSON.parse(paramString);
+        console.log('Params from local storage :', paramJson);
+        return paramJson;
     } else {
         console.log('No form data found in localStorage.');
         return null;
