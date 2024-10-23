@@ -46,7 +46,7 @@ async function middleAuthentication(req, res, next) {
                     if (!refreshTokenCookie) {
                         console.log("-> No Refresh Cookie, request to log out")
                         req.isAuth = false;
-                        return next()
+                        return res.status(401).send({ message: "Failed to refresh auth token." });
                     }
                     const newAuthToken = await refreshingToken(req, res, refreshTokenCookie);
                     req.user = jwt.decode(newAuthToken);
@@ -54,7 +54,6 @@ async function middleAuthentication(req, res, next) {
                     return next();
                 } catch (err) {
                     return next()
-                    return res.status(err.status || 403).send({ message: err.message });
                 }
             }
             req.user = user;
