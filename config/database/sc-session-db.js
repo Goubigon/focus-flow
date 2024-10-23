@@ -48,6 +48,8 @@ async function getParamWithID(id){
       WHERE mParametersIdentifier = ?
       `, [id]);
 
+    console.log("[DB session] Retrieved params with id : " + id)
+    console.log(result[0])
     return result[0];
 
   }catch(err){
