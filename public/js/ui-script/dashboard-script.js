@@ -1,120 +1,5 @@
 import { keepAuthenticate } from '../client-api/auth_api.js';
-
-
-
-/*
-async function getAnswers() {
-    try {
-        const response = await fetch('/math-data/getAnswers', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result);
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function countOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/countOperation/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function successByOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/averageSbO/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function medianTimeByOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/medianTbO/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-document.getElementById('getAnswersButton').addEventListener('click', async (event) =>{
-    getAnswers();
-})
-
-document.getElementById('countOperation').addEventListener('click', async (event) =>{
-    countOperation("+");
-})
-
-
-
-document.getElementById('plusAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("+");
-})
-document.getElementById('minusAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("-");
-})
-document.getElementById('timesAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("x");
-})
-
-
-document.getElementById('plusMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("+");
-})
-document.getElementById('minusMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("-");
-})
-document.getElementById('timesMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("x");
-})
-*/
-
+import { getCleanDateTime } from '../client-api/utils.js'
 
 
 async function getUserSessionData() {
@@ -158,11 +43,31 @@ async function callRoute(route) {
         console.error('Error:', error);
     }
 }
+async function callLevelRoute(route, level) {
+    try {
+        const response = await fetch('/user-data/' + route + '/' + level, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            //console.log(JSON.stringify(result));
+            return result;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 let myChart = null;
 
-function generateBarGraphByDate(duration, date, label, yText, chartType) {
+function generateGraphByDate(duration, date, label, yText, chartType) {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     if (myChart !== null) {
@@ -282,6 +187,95 @@ function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 }
 
 
+function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, yText) {
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    if (myChart !== null) {
+        myChart.destroy();
+    }
+
+    myChart = new Chart(ctx, {
+        type: 'line',
+        
+        data: {
+            labels: date, // Labels for the bars
+            datasets: [{
+                label: 'Correct Answers',
+                data: val1, // Data for correct answers
+                backgroundColor: 'rgba(75, 192, 75, 0.2)', // Green for correct answers
+                borderColor: 'rgba(75, 192, 75, 1)', // Dark green border for correct answers
+                borderWidth: 5,
+                yAxisID: 'y1',
+            }, {
+                label: 'Incorrect Answers',
+                data: val2, // Data for incorrect answers
+                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Red for incorrect answers
+                borderColor: 'rgba(255, 99, 132, 1)', // Dark red border for incorrect answers
+                borderWidth: 5,
+                yAxisID: 'y1',
+            },{
+                label: 'Duration (seconds)',
+                data: duration, // Data for duration
+                backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blue for duration
+                borderColor: 'rgba(54, 162, 235, 1)', // Dark blue border
+                borderWidth: 1,
+                yAxisID: 'y2', 
+                fill: true 
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date',
+                        font: {
+                            weight: 'bold'
+                        }
+
+                    }
+                },
+                y1: {
+                    type: 'linear',
+                    position: 'left', // Primary y-axis on the left
+                    title: {
+                        display: true,
+                        text: yText,
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    beginAtZero: true,
+                },
+                y2: {
+                    type: 'linear',
+                    position: 'right', // Secondary y-axis on the right
+                    title: {
+                        display: true,
+                        text: 'Duration (seconds)',
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    beginAtZero: true,
+                    grid: {
+                        drawOnChartArea: false, // Prevent grid lines from overlapping
+                    },
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+
+}
+
+
+
 
 function generateIsCorrectBarGraph(correct, incorrect) {
     const ctx = document.getElementById('myChart').getContext('2d');
@@ -356,7 +350,7 @@ loadGraphButton.addEventListener('click', async () => {
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
-    generateBarGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
+    generateGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
 })
 
 
@@ -371,7 +365,7 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
-    generateBarGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
+    generateGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
 })
 
 
@@ -416,6 +410,34 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
 
 
 
+document.getElementById('level3Button').addEventListener('click', async () => { 
+    h2Element.textContent = 'Results for level 3';
+    const resJson = await callLevelRoute('getResultByLevel' ,3)
+    console.log("callLevelRoute : " + JSON.stringify(resJson))
+
+    
+    
+    const sessionDates = resJson.map(session => session.mSessionDate);
+    const formattedSessionDates = sessionDates.map(sessionDate => {
+        const date = new Date(sessionDate);  // Ensure sessionDate is a valid Date object
+        return getCleanDateTime(date);
+    });
+
+    
+    const duration = resJson.map(session => session.mSessionDuration);
+
+    const correct = resJson.map(session => session.CorrectCount);
+    const incorrect = resJson.map(session => session.IncorrectCount);
+    
+    console.log("sessionDates : " + sessionDates)
+    console.log("correct : " + correct)
+    console.log("incorrect : " + incorrect)
+
+    generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
+
+
+
+})
 
 window.onload = async () => {
     keepAuthenticate()

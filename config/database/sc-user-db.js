@@ -299,11 +299,30 @@ async function getResultsByDay(mUserIdentifier) {
 }
 
 
+async function getResultByLevel(mUserIdentifier, level) {
+  try {
+    const [result] = await pool.query(`
+        SELECT ms.mSessionIdentifier, ms.mSessionDate, ms.mSessionDuration,
+          SUM(CASE WHEN isCorrect = 1 THEN 1 ELSE 0 END) AS CorrectCount,
+            SUM(CASE WHEN isCorrect = 0 THEN 1 ELSE 0 END) AS IncorrectCount
+        FROM math_answer ma 
+        JOIN math_session ms ON ma.mSessionIdentifier = ms.mSessionIdentifier 
+        WHERE ms.mUserIdentifier = ? AND  ms.mParametersIdentifier = ?
+        GROUP BY ms.mSessionIdentifier
+        ORDER BY ms.mSessionDate ASC;
+      `, [mUserIdentifier, level]);
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
 
 module.exports = {
   getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, getUsername,
   getUserWithEmail, deleteUser, createUserStat,
   incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
   getUserSessionData, getUserSessionCountByDay,
-  getLatestResults, getResultsByDay
+  getLatestResults, getResultsByDay, getResultByLevel
 };
