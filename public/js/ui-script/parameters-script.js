@@ -145,7 +145,7 @@ formElement.addEventListener('submit', async (event) => {
         const paramJson = await createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
         const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
 
-        //localStorage.setItem('parametersJson', JSON.stringify(paramJson));
+        localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
         localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
         window.location.href = 'exercise';
     }
@@ -171,6 +171,7 @@ levelsButton.addEventListener('click', () => {
         levelButton.addEventListener('click', async () => {
             // Create a session using the parameters 1 to 5 accordingly
             const sessionJson = await createSession(i, getCurrentDateTime())
+            localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
             localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
             window.location.href = 'exercise';
         });

@@ -9,7 +9,8 @@ import { keepAuthenticate } from '../client-api/auth_api.js';
 
 let startTime; //starting time when questions are loaded
 
-let localStorageParametersJson;
+let mSessionIdentifier;
+let mParametersIdentifier;
 let questionJsonList;
 
 let currentLine = 0;
@@ -98,7 +99,7 @@ function formattedValue(answerValue) {
 function handleEndOfSession() {
     // Insert the sessionIdentifier to each items of the json
     questionJsonList.forEach((item) => {
-        item.mSessionIdentifier = localStorageParametersJson.mSessionIdentifier;
+        item.mSessionIdentifier = mSessionIdentifier;;
     });
 
     // Make each answer div visible
@@ -155,14 +156,13 @@ answerInputTextArea.addEventListener('keypress', (event) => {
 
 
 answerInputTextArea.addEventListener('input', function (e) {
-    const errorMessage = document.getElementById('errorMessage');
+    const errorMessageElement = document.getElementById('errorMessage');
     let value = e.target.value;
 
     // Remove any character that is not a digit, '.', or '-' 
     value = value.replace(/[^0-9.-]/g, '');
 
     errorMessageElement.innerHTML = '';
-
     e.target.value = value;
 });
 
@@ -172,7 +172,9 @@ answerInputTextArea.addEventListener('input', function (e) {
 window.onload = async () => {
     keepAuthenticate()
     
-    const mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
+    mSessionIdentifier = loadFromLocalStorage('mSessionIdentifier');
+    mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
+
     questionJsonList = await askGenerateQuestions(mParametersIdentifier)
     console.log("[exercise onload] question list: " + JSON.stringify(questionJsonList))
 
