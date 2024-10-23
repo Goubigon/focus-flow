@@ -24,9 +24,9 @@ inputList.forEach(currentInput => {
 //when loading parameters windows
 //loads last saved parameters if it exists
 function loadExistingForm() {
-    const paramString = localStorage.getItem('parametersJson');
-    if (paramString) {
-        const paramJson = JSON.parse(paramString);
+    const savedParams = localStorage.getItem('savedParams');
+    if (savedParams) {
+        const paramJson = JSON.parse(savedParams);
         console.log(paramJson);
         document.getElementById('minNumber').value = paramJson.mMinNumber;
         document.getElementById('maxNumber').value = paramJson.mMaxNumber;
@@ -145,7 +145,10 @@ formElement.addEventListener('submit', async (event) => {
         const paramJson = await createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
         const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
 
-        //localStorage.setItem('parametersJson', JSON.stringify(paramJson));
+
+        console.log("Saving in local storage : " + JSON.stringify(paramJson))
+        localStorage.setItem('savedParams', JSON.stringify(paramJson));
+        localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
         localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
         window.location.href = 'exercise';
     }
@@ -171,6 +174,7 @@ levelsButton.addEventListener('click', () => {
         levelButton.addEventListener('click', async () => {
             // Create a session using the parameters 1 to 5 accordingly
             const sessionJson = await createSession(i, getCurrentDateTime())
+            localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
             localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
             window.location.href = 'exercise';
         });
