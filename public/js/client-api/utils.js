@@ -11,14 +11,13 @@ export function getCurrentDateTime() {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
-export function loadParamsFromLocalStorage() {
-    const paramString = localStorage.getItem('parametersJson');
+export function loadFromLocalStorage(itemName) {
+    const paramString = localStorage.getItem(itemName);
     if (paramString) {
-        let paramJson = JSON.parse(paramString);
-        console.log('Params from local storage :', paramJson);
-        return paramJson;
+        console.log('Loaded From local storage [' + itemName + '] : ', paramString);
+        return paramString;
     } else {
-        console.log('No form data found in localStorage.');
+        console.log('No data found in localStorage.');
         return null;
     }
 }
@@ -59,16 +58,16 @@ export async function createAnswer(mSessionIdentifier, leftOperation, mathOperat
 
 
 
-export async function askGenerateQuestions(parametersJson) {
+export async function askGenerateQuestions(mParametersIdentifier) {
     try {
-        console.log("API parametersJson : " + JSON.stringify(parametersJson))
+        //console.log("API parametersJson : " + JSON.stringify(parametersJson))
         
         const response = await fetch('/math-data/generateQuestions', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(parametersJson)
+            body: JSON.stringify({mParametersIdentifier : mParametersIdentifier})
         });
 
         if (response.ok) {
