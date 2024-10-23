@@ -8,7 +8,7 @@ const { getAnswers, getAnswer, createAnswer,
     medianTimeWithOperation
 } = require('../../../config/database/sc-math-db.js');
 
-const { updateSessionDuration, getSessionWithID } = require('../../../config/database/sc-session-db.js');
+const { updateSessionDuration, getSessionWithID, getParamWithID } = require('../../../config/database/sc-session-db.js');
 const { incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime } = require('../../../config/database/sc-user-db.js');
 
 
@@ -86,12 +86,13 @@ function getCorrectResult(lOpe, mOpe, rOpe){
 }
 
 router.post("/generateQuestions", async (req, res) => {
+    const { mParametersIdentifier } = req.body
+    console.log("[POST /generateQuestions] gen question param id : " + mParametersIdentifier)
     const { mMinNumber, mMaxNumber,
         mAdditionCheck, mSubtractionCheck, mMultiplicationCheck,
         mMaxAnswerCount
-    } = req.body
+    } = await getParamWithID(mParametersIdentifier)
 
-    console.log("mMaxAnswerCount : " + mMaxAnswerCount )
     //Push selected math operations
     const opList = []
     if (mAdditionCheck) { opList.push("+"); }
@@ -115,8 +116,7 @@ router.post("/generateQuestions", async (req, res) => {
         };
         questionJsonList.push(question);
     }
-
-    console.log("BACKEND questionJsonList : " + JSON.stringify(questionJsonList))
+    console.log("[POST /generateQuestions] final list of questions : " + JSON.stringify(questionJsonList))
     res.status(201).send(questionJsonList)
 })
 

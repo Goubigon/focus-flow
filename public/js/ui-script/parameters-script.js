@@ -62,7 +62,7 @@ async function createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAddC
 
         const result = await response.json();
         if (response.ok) {
-            console.log("RESULT : " + JSON.stringify(result))
+            console.log("[Fetch createParams] : " + JSON.stringify(result))
             return result;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
@@ -86,7 +86,8 @@ async function createSession(paramID, sessionDate) {
         });
 
         const result = await response.json();
-        if (response.ok) {
+        if (response.ok) {            
+            console.log("[Fetch createSession] : " + JSON.stringify(result))
             return result;
         } else {
             document.getElementById('errorMessage').innerHTML = result.message;
@@ -142,51 +143,17 @@ formElement.addEventListener('submit', async (event) => {
         errorMessage.style.color = 'green';
 
         const paramJson = await createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
+        const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
 
-        await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
-
-        // const parametersJson = {
-        //     mSessionIdentifier: paramJson.mSessionIdentifier,
-        //     minNumber: paramJson.minNumber,
-        //     maxNumber: paramJson.maxNumber,
-        //     floatNumber: paramJson.floatNumber,
-        //     nNumber: paramJson.nNumber,
-    
-        //     additionCheck: paramJson.additionCheck,
-        //     subtractionCheck: paramJson.subtractionCheck,
-        //     multiplicationCheck: paramJson.multiplicationCheck,
-        //     mMaxAnswerCount: paramJson.mMaxAnswerCount
-        // };
-    
-        console.log("PARAM JSON : " + JSON.stringify(paramJson))
-        
-        // console.log("FORM DATA : " + JSON.stringify(parametersJson))
-    
-        localStorage.setItem('parametersJson', JSON.stringify(paramJson));
-        window.location.href = 'exercise';    
+        //localStorage.setItem('parametersJson', JSON.stringify(paramJson));
+        localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
+        window.location.href = 'exercise';
     }
 });
 
 
-// function loadExercise(paramJson){
-//     const parametersJson = {
-//         mSessionIdentifier: paramJson.mSessionIdentifier,
-//         minNumber: paramJson.minNumber,
-//         maxNumber: paramJson.maxNumber,
-//         floatNumber: paramJson.floatNumber,
-//         nNumber: paramJson.nNumber,
-
-//         additionCheck: paramJson.additionCheck,
-//         subtractionCheck: paramJson.subtractionCheck,
-//         multiplicationCheck: paramJson.multiplicationCheck,
-//         mMaxAnswerCount: paramJson.mMaxAnswerCount
-//     };
-
-//     console.log("PARAM JSON : " + JSON.stringify(paramJson))
-
-//     localStorage.setItem('parametersJson', JSON.stringify(parametersJson));
-//     //window.location.href = 'exercise';        
-// }
+function loadExercise(paramJson) {
+}
 
 
 
@@ -209,7 +176,7 @@ levelsButton.addEventListener('click', () => {
         levelButton.addEventListener('click', async () => {
             alert(`You selected ${levelButton.innerText}`);
             // Create a session using the parameters 1 to 5 accordingly
-            const sessionJson = await createSession( i, getCurrentDateTime())
+            const sessionJson = await createSession(i, getCurrentDateTime())
 
 
         });
