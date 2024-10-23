@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 
 //PARAMETERS
 
-async function getExactParams(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount) {
+async function getExactParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAddCheck, mSubCheck, mMultCheck, mMaxAnswerCount) {
   try {
     const [result] = await pool.query(`
       SELECT mParametersIdentifier
@@ -27,8 +27,8 @@ async function getExactParams(minNumber, maxNumber, floatNumber, nNumber, additi
        mSubtractionCheck = ? AND
        mMultiplicationCheck = ? AND
        mMaxAnswerCount = ?
-      `, [minNumber, maxNumber, floatNumber, nNumber,
-      additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount]);
+      `, [mMinNumber, mMaxNumber, mFloatNumber, mNumber,
+      mAddCheck, mSubCheck, mMultCheck, mMaxAnswerCount]);
 
     if (result.length === 0) {
       return 0;
@@ -55,14 +55,20 @@ async function getParamWithID(id){
   }
 }
 
-async function createParam(minNumber, maxNumber, floatNumber, nNumber, additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount) {
+async function createParam(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAddCheck, mSubCheck, mMultCheck, mMaxAnswerCount) {
   try {
     const [result] = await pool.query(`
-      INSERT INTO math_session_parameters (mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
+      INSERT INTO math_session_parameters (
+      mMinNumber, mMaxNumber, 
+      mFloatNumber, mNumber, 
+      mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, 
+      mMaxAnswerCount)
       VALUES (?, ?, ?, ?, 
       ?, ?, ?, ?)
-      `, [minNumber, maxNumber, floatNumber, nNumber,
-      additionCheck, subtractionCheck, multiplicationCheck, maxAnswerCount]);
+      `, [mMinNumber, mMaxNumber, 
+        mFloatNumber, mNumber, 
+        mAddCheck, mSubCheck, mMultCheck, 
+        mMaxAnswerCount]);
 
     return getParamWithID(result.insertId);
 
