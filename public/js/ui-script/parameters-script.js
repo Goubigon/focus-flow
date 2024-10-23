@@ -86,7 +86,7 @@ async function createSession(paramID, sessionDate) {
         });
 
         const result = await response.json();
-        if (response.ok) {            
+        if (response.ok) {
             console.log("[Fetch createSession] : " + JSON.stringify(result))
             return result;
         } else {
@@ -152,11 +152,6 @@ formElement.addEventListener('submit', async (event) => {
 });
 
 
-function loadExercise(paramJson) {
-}
-
-
-
 const configForm = document.getElementById('configForm');
 const levelsButton = document.getElementById('levelsButton');
 const customButton = document.getElementById('customButton');
@@ -174,11 +169,10 @@ levelsButton.addEventListener('click', () => {
         levelButton.className = 'level-button';
         levelButton.innerText = `Level ${i}`;
         levelButton.addEventListener('click', async () => {
-            alert(`You selected ${levelButton.innerText}`);
             // Create a session using the parameters 1 to 5 accordingly
             const sessionJson = await createSession(i, getCurrentDateTime())
-
-
+            localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
+            window.location.href = 'exercise';
         });
         levelButtonsContainer.appendChild(levelButton);
     }
