@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/dashboard.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="/js/ui-script/load-dashboard-script.js"></script>
 
 </head>
 
@@ -35,10 +36,10 @@
             </div>
             <div class="tab-content">
 
-                <h2>General results</h2>
-                <p>Get general information about your results.</p>
-
                 <div id="tab1" class="tab active">
+
+                    <h2>General results</h2>
+                    <p>Get general information about your results.</p>
                     <button id="sessionDurationByDateButton">Playtime by day</button>
                     <button id="sessionNumberByDateButton">Number of session by day</button>
                     <button id="lastSessionResultsButton">Results from last session</button>
@@ -49,15 +50,17 @@
                     <h2>Results by level</h2>
                     <p>Get key performance indicator and graphs of your results by levels.</p>
 
-                    <button id="level3Button">Level 3</button>
+                        <button id="level1Button">Level 1</button>
+                        <button id="level2Button">Level 2</button>
+                        <button id="level3Button">Level 3</button>
+                        <button id="level4Button">Level 4</button>
+                        <button id="level5Button">Level 5</button>
 
 
-                    <h2 id="kpi1"></h2>
-                    <h2 id="kpi2"></h2>
-                    <h2 id="kpi3"></h2>
-                    <h2 id="kpi4"></h2>
-
-
+                        <h2 id="kpi1"></h2>
+                        <h2 id="kpi2"></h2>
+                        <h2 id="kpi3"></h2>
+                        <h2 id="kpi4"></h2>
                 </div>
                 <div id="tab3" class="tab">
                     <h2>Profile</h2>
@@ -71,28 +74,6 @@
 
         <script type="module" src="/js/ui-script/dashboard-script.js"></script>
         <script>
-            function openTab(event, tabName) {
-                // Get all elements with class="tab" and hide them
-                const tabs = document.querySelectorAll('.tab');
-                tabs.forEach(tab => {
-                    tab.classList.remove('active');
-                });
-
-                // Get all elements with class="tab-button" and remove the class "active"
-                const tabButtons = document.querySelectorAll('.tab-button');
-                tabButtons.forEach(button => {
-                    button.classList.remove('active');
-                });
-
-                // Show the current tab and add an "active" class to the button that opened the tab
-                document.getElementById(tabName).classList.add('active');
-                event.currentTarget.classList.add('active');
-            }
-
-            // Open the first tab by default
-            document.addEventListener('DOMContentLoaded', () => {
-                document.querySelector('.tab-button.active').click();
-            });
 
         </script>
     </div>

@@ -409,14 +409,12 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
 })
 
 
+async function displayLevelStats(level){
 
-document.getElementById('level3Button').addEventListener('click', async () => { 
-    h2Element.textContent = 'Results for level 3';
-    const resJson = await callLevelRoute('getResultByLevel' ,3)
+    h2Element.textContent = 'Results for level '+ level;
+    const resJson = await callLevelRoute('getResultByLevel' , level)
     console.log("callLevelRoute : " + JSON.stringify(resJson))
 
-    
-    
     const sessionDates = resJson.resByLevel.map(session => session.mSessionDate);
     const formattedSessionDates = sessionDates.map(sessionDate => {
         const date = new Date(sessionDate);  // Ensure sessionDate is a valid Date object
@@ -439,16 +437,25 @@ document.getElementById('level3Button').addEventListener('click', async () => {
     const sessionAverageDuration = resJson.sessionDetailsByLevel.map(session => session.sessionAverageDuration);
     const answerAverageDuration = resJson.avgAnswerDurationByLevel.map(session => session.answerAverageDuration);
 
-    document.getElementById('kpi1').textContent = "Times played level 3 : "+ sessionCount
-    document.getElementById('kpi2').textContent = "Total time playing 3 : "+ sessionTotalDuration
-    document.getElementById('kpi3').textContent = "Average time in level 3 : "+ sessionAverageDuration
-    document.getElementById('kpi4').textContent = "Average answer time in level 3 : "+ answerAverageDuration
+    document.getElementById('kpi1').textContent = "Times played level " + level +" : " + sessionCount
+    document.getElementById('kpi2').textContent = "Total time playing " + level +": " + sessionTotalDuration
+    document.getElementById('kpi3').textContent = "Average time in level " + level +": " + sessionAverageDuration
+    document.getElementById('kpi4').textContent = "Average answer time in level " + level +": " + answerAverageDuration
 
     generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
+}
 
 
 
+document.getElementById('tab2').addEventListener('click', () => {
+    for (let i = 1; i <= 5; i++) {
+        const levelButton = document.getElementById(`level${i}Button`);
+        levelButton.addEventListener('click', async () => {
+            displayLevelStats(i)
+        });
+    }
 })
+
 
 window.onload = async () => {
     keepAuthenticate()

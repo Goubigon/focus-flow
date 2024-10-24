@@ -21,6 +21,14 @@ h1 {
     margin-bottom: 20px;
 }
 
+h2{
+    margin: 10px;
+}
+
+p{
+    margin : 5px;
+}
+/*
 /* Button styling */
 button {
     background-color: #6a94d1;
@@ -37,6 +45,7 @@ button {
 button:hover {
     background-color: #3f60d6;
 }
+*/
 
 
 body {
@@ -70,7 +79,6 @@ body {
 
 .tab-content {
     border-top: 1px solid #ccc;
-    padding: 15px;
 }
 
 .tab {
