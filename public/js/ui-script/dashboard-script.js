@@ -417,21 +417,32 @@ document.getElementById('level3Button').addEventListener('click', async () => {
 
     
     
-    const sessionDates = resJson.map(session => session.mSessionDate);
+    const sessionDates = resJson.resByLevel.map(session => session.mSessionDate);
     const formattedSessionDates = sessionDates.map(sessionDate => {
         const date = new Date(sessionDate);  // Ensure sessionDate is a valid Date object
         return getCleanDateTime(date);
     });
 
     
-    const duration = resJson.map(session => session.mSessionDuration);
+    const duration = resJson.resByLevel.map(session => session.mSessionDuration);
 
-    const correct = resJson.map(session => session.CorrectCount);
-    const incorrect = resJson.map(session => session.IncorrectCount);
+    const correct = resJson.resByLevel.map(session => session.CorrectCount);
+    const incorrect = resJson.resByLevel.map(session => session.IncorrectCount);
     
     console.log("sessionDates : " + sessionDates)
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
+
+    
+    const sessionCount = resJson.sessionDetailsByLevel.map(session => session.sessionCount);
+    const sessionTotalDuration = resJson.sessionDetailsByLevel.map(session => session.sessionTotalDuration);
+    const sessionAverageDuration = resJson.sessionDetailsByLevel.map(session => session.sessionAverageDuration);
+    const answerAverageDuration = resJson.avgAnswerDurationByLevel.map(session => session.answerAverageDuration);
+
+    document.getElementById('kpi1').textContent = "Times played level 3 : "+ sessionCount
+    document.getElementById('kpi2').textContent = "Total time playing 3 : "+ sessionTotalDuration
+    document.getElementById('kpi3').textContent = "Average time in level 3 : "+ sessionAverageDuration
+    document.getElementById('kpi4').textContent = "Average answer time in level 3 : "+ answerAverageDuration
 
     generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 

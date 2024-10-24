@@ -317,6 +317,35 @@ async function getResultByLevel(mUserIdentifier, level) {
   }
 }
 
+async function getSessionDetailsByLevel(mUserIdentifier, level) {
+  try {
+    const [result] = await pool.query(`
+        SELECT 
+          COUNT(mSessionIdentifier) AS sessionCount,
+          ROUND(SUM(mSessionDuration), 2) AS sessionTotalDuration,
+          ROUND(AVG(mSessionDuration), 2) AS sessionAverageDuration
+        FROM math_session
+        WHERE mUserIdentifier = ? AND mParametersIdentifier = ?;
+      `, [mUserIdentifier, level]);
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+async function averageAnswerDurationByLevel(mUserIdentifier, level) {
+  try {
+    const [result] = await pool.query(`
+        SELECT ROUND(AVG(ma.qTime), 2) answerAverageDuration
+        FROM math_answer ma 
+        JOIN math_session ms ON ma.mSessionIdentifier = ms.mSessionIdentifier 
+        WHERE ms.mUserIdentifier = ? AND ms.mParametersIdentifier = ?; 
+      `, [mUserIdentifier, level]);
+    return result;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 
 
 module.exports = {
@@ -324,5 +353,6 @@ module.exports = {
   getUserWithEmail, deleteUser, createUserStat,
   incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
   getUserSessionData, getUserSessionCountByDay,
-  getLatestResults, getResultsByDay, getResultByLevel
+  getLatestResults, getResultsByDay, getResultByLevel,
+  getSessionDetailsByLevel, averageAnswerDurationByLevel
 };
