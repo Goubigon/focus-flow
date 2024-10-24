@@ -7,7 +7,7 @@
     <title>Home Page</title>
     <link rel="stylesheet" href="/css/dashboard.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
 </head>
 
@@ -27,26 +27,74 @@
 
 
     <div id="home">
-        <h1>Welcome to the Dashboard Page!</h1>
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab(event, 'tab1')">General results</button>
+                <button class="tab-button" onclick="openTab(event, 'tab2')">Results by level</button>
+                <button class="tab-button" onclick="openTab(event, 'tab3')">Profile</button>
+            </div>
+            <div class="tab-content">
 
-        <button id="sessionDurationByDateButton">Playtime by day</button>
-        <button id="sessionNumberByDateButton">Number of session by day</button>
-        <button id="lastSessionResultsButton">Results from last session</button>
-        <button id="resultsByDayButton">Results by day</button>
-        <button id="level3Button">Level 3</button>
+                <h2>General results</h2>
+                <p>Get general information about your results.</p>
 
-        
-        <h2 id="kpi1"></h2>
-        <h2 id="kpi2"></h2>
-        <h2 id="kpi3"></h2>
-        <h2 id="kpi4"></h2>
+                <div id="tab1" class="tab active">
+                    <button id="sessionDurationByDateButton">Playtime by day</button>
+                    <button id="sessionNumberByDateButton">Number of session by day</button>
+                    <button id="lastSessionResultsButton">Results from last session</button>
+                    <button id="resultsByDayButton">Results by day</button>
 
-        <h2 id="titleOfGraph"></h2>
-        <canvas id="myChart" width="250" height="100"></canvas>
+                </div>
+                <div id="tab2" class="tab">
+                    <h2>Results by level</h2>
+                    <p>Get key performance indicator and graphs of your results by levels.</p>
+
+                    <button id="level3Button">Level 3</button>
 
 
+                    <h2 id="kpi1"></h2>
+                    <h2 id="kpi2"></h2>
+                    <h2 id="kpi3"></h2>
+                    <h2 id="kpi4"></h2>
+
+
+                </div>
+                <div id="tab3" class="tab">
+                    <h2>Profile</h2>
+                    <p>Get information about your profile.</p>
+                </div>
+
+                <h2 id="titleOfGraph"></h2>
+                <canvas id="myChart"></canvas>
+            </div>
+        </div>
 
         <script type="module" src="/js/ui-script/dashboard-script.js"></script>
+        <script>
+            function openTab(event, tabName) {
+                // Get all elements with class="tab" and hide them
+                const tabs = document.querySelectorAll('.tab');
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                // Get all elements with class="tab-button" and remove the class "active"
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show the current tab and add an "active" class to the button that opened the tab
+                document.getElementById(tabName).classList.add('active');
+                event.currentTarget.classList.add('active');
+            }
+
+            // Open the first tab by default
+            document.addEventListener('DOMContentLoaded', () => {
+                document.querySelector('.tab-button.active').click();
+            });
+
+        </script>
     </div>
 
 

@@ -37,3 +37,48 @@ button {
 button:hover {
     background-color: #3f60d6;
 }
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.tab-container {
+    margin: 20px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab-button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #5bb0e5;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #0c63cd;
+}
+
+.tab-button.active {
+    background-color: #0c63cd;
+}
+
+.tab-content {
+    border-top: 1px solid #ccc;
+    padding: 15px;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+
