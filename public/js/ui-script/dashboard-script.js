@@ -284,8 +284,6 @@ document.getElementById('tab-button2').addEventListener('click', () => {
 document.getElementById('tab-button3').addEventListener('click', async () => {
     const userStats = await callRoute('/getUserStats')
 
-    console.log("userDate : " +  userStats.mLastSessionDate)
-
     const keyDataList = [
         { key: 'totSessionTime', value: convertSecondsToMinutesAndSeconds(userStats.mTotalSessionTime), subtext: 'Time playing' },
         { key: 'logNumber', value: userStats.mLogNumber, subtext: 'Number of times logging in' },
