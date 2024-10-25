@@ -15,15 +15,17 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('logbar').innerHTML = data;
+                // Load your logbar script here after the logbar is inserted
+                return import('/js/ui-script/logbar-script.js');
             })
-            .catch(error => console.error("Error loading navbar:", error));
+            .catch(error => console.error("Error loading logbar:", error));
     </script>
 
 
     <div id="home">
 
         <h1>You have been logged out</h1>
-        <a href="/login" class="button">Go to Login</a>
+        <a href="/" class="button">Go back to preview</a>
 
     </div>
 </body>
