@@ -1,6 +1,10 @@
 
 export function generateGraphByDate(duration, date, label, yText, chartType) {
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const myCanvas = document.getElementById('myChart')
+    myCanvas.width = window.innerWidth * 0.8;
+    myCanvas.height = window.innerHeight * 0.5;
+    const ctx = myCanvas.getContext('2d');
+
 
     return new Chart(ctx, {
         type: chartType,
@@ -40,7 +44,7 @@ export function generateGraphByDate(duration, date, label, yText, chartType) {
 
                 }
             },
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: true
@@ -53,7 +57,10 @@ export function generateGraphByDate(duration, date, label, yText, chartType) {
 
 
 export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const myCanvas = document.getElementById('myChart')
+    myCanvas.width = window.innerWidth * 0.8;
+    myCanvas.height = window.innerHeight * 0.5;
+    const ctx = myCanvas.getContext('2d');
 
     return new Chart(ctx, {
         type: 'line',
@@ -99,7 +106,7 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
                 }
             },
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: true
@@ -112,7 +119,12 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
 
 export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, yText) {
-    const ctx = document.getElementById('myChart').getContext('2d');
+    const myCanvas = document.getElementById('myChart')
+    
+    myCanvas.width = window.innerWidth * 0.8;
+    myCanvas.height = window.innerHeight * 0.3;
+
+    const ctx = myCanvas.getContext('2d');
 
     return new Chart(ctx, {
         type: 'line',
@@ -183,7 +195,7 @@ export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, 
                     },
                 }
             },
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: true
@@ -195,8 +207,11 @@ export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, 
 }
 
 export function generateIsCorrectBarGraph(correct, incorrect) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-
+    const myCanvas = document.getElementById('myChart')
+    myCanvas.width = window.innerWidth * 0.8;
+    myCanvas.height = window.innerHeight * 0.5;
+    const ctx = myCanvas.getContext('2d');
+    
     return new Chart(ctx, {
         type: 'bar',
         data: {
@@ -230,7 +245,7 @@ export function generateIsCorrectBarGraph(correct, incorrect) {
                     beginAtZero: true
                 }
             },
-            responsive: true,
+            responsive: false,
             plugins: {
                 legend: {
                     display: false

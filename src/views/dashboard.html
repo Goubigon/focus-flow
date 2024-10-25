@@ -28,25 +28,26 @@
     <div id="home">
         <div class="tab-container">
             <div class="tabs">
-                <button class="tab-button active" id="tab-button1" >General results</button>
-                <button class="tab-button" id="tab-button2" >Results by level</button>
-                <button class="tab-button" id="tab-button3" >Profile</button>
+                <button class="tab-button active" id="tab-button1">General results</button>
+                <button class="tab-button" id="tab-button2">Results by level</button>
+                <button class="tab-button" id="tab-button3">Profile</button>
             </div>
             <div class="tab-content">
+                <div class="high-content">
+                    <div id="tab1" class="tab active">
 
-                <div id="tab1" class="tab active">
+                        <h2>General results</h2>
+                        <p>Get general information about your results.</p>
+                        <button class="element-button" id="sessionDurationByDateButton">Playtime by day</button>
+                        <button class="element-button" id="sessionNumberByDateButton">Number of session by day</button>
+                        <button class="element-button active" id="lastSessionResultsButton">Results from last
+                            session</button>
+                        <button class="element-button" id="resultsByDayButton">Results by day</button>
 
-                    <h2>General results</h2>
-                    <p>Get general information about your results.</p>
-                    <button class="element-button" id="sessionDurationByDateButton">Playtime by day</button>
-                    <button class="element-button" id="sessionNumberByDateButton">Number of session by day</button>
-                    <button class="element-button active" id="lastSessionResultsButton">Results from last session</button>
-                    <button class="element-button" id="resultsByDayButton">Results by day</button>
-
-                </div>
-                <div id="tab2" class="tab">
-                    <h2>Results by level</h2>
-                    <p>Get key performance indicator and graphs of your results by levels.</p>
+                    </div>
+                    <div id="tab2" class="tab">
+                        <h2>Results by level</h2>
+                        <p>Get key performance indicator and graphs of your results by levels.</p>
                         <button class="element-button" id="level1Button">Level 1</button>
                         <button class="element-button" id="level2Button">Level 2</button>
                         <button class="element-button" id="level3Button">Level 3</button>
@@ -54,22 +55,22 @@
                         <button class="element-button" id="level5Button">Level 5</button>
 
                         <div id="key-data-container"></div>
-                        
-                </div>
-                <div id="tab3" class="tab">
-                    <h2>Profile</h2>
-                    <p>Get information about your profile.</p>
-                </div>
 
-                <h2 class="tab" id="titleOfGraph"></h2>
-                <canvas id="myChart"></canvas>
+                    </div>
+                    <div id="tab3" class="tab">
+                        <h2>Profile</h2>
+                        <p>Get information about your profile.</p>
+                    </div>
+
+                </div>
+                <div class="low-content">
+                    <h2 class="tab" id="titleOfGraph"></h2>
+                    <canvas id="myChart"></canvas>
+                </div>
             </div>
         </div>
 
         <script type="module" src="/js/ui-script/dashboard-script.js"></script>
-        <script>
-
-        </script>
     </div>
 
 

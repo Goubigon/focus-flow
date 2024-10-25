@@ -130,3 +130,10 @@ body {
     font-size: 16px;
     color: #434343;
 }
+
+
+.low-content{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+}

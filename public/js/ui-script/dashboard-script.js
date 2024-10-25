@@ -178,7 +178,7 @@ async function displayLevelStats(level) {
 
     const keyDataContainer = document.getElementById('key-data-container');
     keyDataContainer.innerHTML = '';
-    
+
     keyDataList.forEach(item => {
         // Create the data box
         const box = document.createElement('div');
@@ -215,7 +215,6 @@ function setTabButtons() {
     tabButtonList.forEach(tabButton => {
         tabButton.addEventListener('click', () => {
             if (myChart !== null) { myChart.destroy(); }
-
 
             // Remove active to all .tab
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
