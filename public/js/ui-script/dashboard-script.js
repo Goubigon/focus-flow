@@ -187,7 +187,7 @@ document.getElementById('tab-button2').addEventListener('click', () => {
     for (let i = 1; i <= 5; i++) {
         const levelButton = document.getElementById(`level${i}Button`);
         levelButton.addEventListener('click', async () => { 
-            await displayLevelStats(i) 
+            displayLevelStats(i) 
         });
     }
     document.getElementById(`level1Button`).click();
@@ -236,5 +236,4 @@ window.onload = async () => {
     keepAuthenticate();
     setTabButtons();
     document.querySelector('.tab-button.active').click();
-    document.querySelector('.element-button.active').click();
 }
