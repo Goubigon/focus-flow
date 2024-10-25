@@ -13,7 +13,9 @@ const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, g
     getUserWithEmail, deleteUser, createUserStat, incrementLogNumber,
     getUserSessionData,
     getUserSessionCountByDay,
-    getLatestResults, getResultsByDay
+    getLatestResults, getResultsByDay, getResultByLevel,
+    getSessionDetailsByLevel, averageAnswerDurationByLevel,
+    getUserStats
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -252,6 +254,44 @@ router.get('/getResultsByDay', middleAuthentication, async (req, res) => {
         res.status(201).send(data);
     } catch (error) {
         console.error('get User Results by Day retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+
+router.get('/getResultByLevel/:level', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+        const level = req.params.level;
+
+        console.log("[GET /getResultByLevel/:"+ level+"]")
+
+        const resByLevel = await getResultByLevel(id, level)
+        const sessionDetailsByLevel = await getSessionDetailsByLevel(id, level)
+        const avgAnswerDurationByLevel = await averageAnswerDurationByLevel(id, level)
+
+        res.status(201).send({
+            resByLevel,
+            sessionDetailsByLevel,
+            avgAnswerDurationByLevel
+        });
+    } catch (error) {
+        console.error('get User Results by Day retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+router.get('/getUserStats', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+
+        console.log("[GET /getUserStats")
+
+        const userStats = await getUserStats(id)
+
+        res.status(201).send(userStats);
+    } catch (error) {
+        console.error('getUserStats : ', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })

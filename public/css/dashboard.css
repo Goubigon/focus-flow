@@ -21,6 +21,14 @@ h1 {
     margin-bottom: 20px;
 }
 
+h2{
+    margin: 10px;
+}
+
+p{
+    margin : 5px;
+}
+
 /* Button styling */
 button {
     background-color: #6a94d1;
@@ -36,4 +44,100 @@ button {
 
 button:hover {
     background-color: #3f60d6;
+}
+
+button.active {
+    background-color: #0c63cd;
+}
+
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.tab-container {
+    margin: 20px;
+}
+
+.tabs {
+    display: flex;
+}
+
+.tab-button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    background-color: #5bb0e5;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+.tab-button:hover {
+    background-color: #0c63cd;
+}
+
+.tab-button.active {
+    background-color: #0c63cd;
+}
+
+.tab-content {
+    border-top: 1px solid #ccc;
+}
+
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+
+/* Main container holding all key data boxes */
+#key-data-container {
+    display: flex;
+    gap: 20px; /* Space between boxes */
+    justify-content: center; /* Center-aligns boxes horizontally */
+    padding: 20px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+/* Style for each key data box */
+.key-data-box {
+    width: 120px;
+    height: 120px;
+    background-color: #f3f3f3;
+    border-radius: 15px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(221, 221, 221);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Subtext styling */
+.subtext {
+    font-size: 16px;
+    color: #434343;
+    margin-top: 20px;
+}
+
+
+/* Main key data number styling */
+.key-data {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1b1b1b;
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+
+.low-content{
+    display: flex;
+    align-items: center; 
+    justify-content: center;
 }

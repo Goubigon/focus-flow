@@ -1,5 +1,5 @@
 import {
-    getCurrentDateTime,
+    getCleanDateTime,
     loadFromLocalStorage,
     askGenerateQuestions, insertAllAnswers
 } from '../client-api/utils.js';
@@ -56,7 +56,7 @@ function handleResult(userAnswer, currentQuestion) {
     const endTime = new Date();
     const timeTaken = (endTime - startTime) / 1000; // Time in seconds
     currentQuestion.qTime = timeTaken;
-    currentQuestion.qDate = getCurrentDateTime();
+    currentQuestion.qDate = getCleanDateTime(new Date());
     totalDuration += timeTaken;
 
     handleViewResult(currentQuestion.qAnswer, currentQuestion.qResult, currentQuestion.qTime);

@@ -1,119 +1,12 @@
 import { keepAuthenticate } from '../client-api/auth_api.js';
+import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-api/utils.js'
 
-
-
-/*
-async function getAnswers() {
-    try {
-        const response = await fetch('/math-data/getAnswers', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result);
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
+import {
+    generateGraphByDate, generateDoubleLineGraphByDate,
+    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph
 }
+    from './dashboard-graphs.js'
 
-async function countOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/countOperation/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function successByOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/averageSbO/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function medianTimeByOperation(operation) {
-    try {
-        const response = await fetch(`/math-data/medianTbO/${operation}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'text/plain',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            console.log(result); 
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-document.getElementById('getAnswersButton').addEventListener('click', async (event) =>{
-    getAnswers();
-})
-
-document.getElementById('countOperation').addEventListener('click', async (event) =>{
-    countOperation("+");
-})
-
-
-
-document.getElementById('plusAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("+");
-})
-document.getElementById('minusAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("-");
-})
-document.getElementById('timesAverageButton').addEventListener('click', async (event) =>{
-    successByOperation("x");
-})
-
-
-document.getElementById('plusMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("+");
-})
-document.getElementById('minusMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("-");
-})
-document.getElementById('timesMedianButton').addEventListener('click', async (event) =>{
-    medianTimeByOperation("x");
-})
-*/
 
 
 
@@ -158,190 +51,31 @@ async function callRoute(route) {
         console.error('Error:', error);
     }
 }
+async function callLevelRoute(route, level) {
+    try {
+        const response = await fetch('/user-data/' + route + '/' + level, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            //console.log(JSON.stringify(result));
+            return result;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 
 let myChart = null;
 
-function generateBarGraphByDate(duration, date, label, yText, chartType) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-
-    if (myChart !== null) {
-        myChart.destroy();
-    }
-
-    myChart = new Chart(ctx, {
-        type: chartType,
-        data: {
-            labels: date,
-            datasets: [{
-                label: label,
-                data: duration,
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-                fill: true // Fill the area under the line
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Day',
-                        font: {
-                            weight: 'bold'
-                        }
-
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: yText,
-                        font: {
-                            weight: 'bold'
-                        }
-
-                    },
-                    beginAtZero: true,
-
-                }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true
-                }
-            }
-        }
-    });
-
-}
-
-
-function generateDoubleLineGraphByDate(val1, val2, date, yText) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-
-    if (myChart !== null) {
-        myChart.destroy();
-    }
-
-    myChart = new Chart(ctx, {
-        type: 'line',
-        
-        data: {
-            labels: date, // Labels for the bars
-            datasets: [{
-                label: 'Correct Answers',
-                data: val1, // Data for correct answers
-                backgroundColor: 'rgba(75, 192, 75, 0.2)', // Green for correct answers
-                borderColor: 'rgba(75, 192, 75, 1)', // Dark green border for correct answers
-                borderWidth: 1
-            }, {
-                label: 'Incorrect Answers',
-                data: val2, // Data for incorrect answers
-                backgroundColor: 'rgba(255, 99, 132, 0.2)', // Red for incorrect answers
-                borderColor: 'rgba(255, 99, 132, 1)', // Dark red border for incorrect answers
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Day',
-                        font: {
-                            weight: 'bold'
-                        }
-
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: yText,
-                        font: {
-                            weight: 'bold'
-                        }
-
-                    },
-                    beginAtZero: true,
-
-                }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: true
-                }
-            }
-        }
-    });
-
-}
-
-
-
-function generateIsCorrectBarGraph(correct, incorrect) {
-    const ctx = document.getElementById('myChart').getContext('2d');
-
-    if (myChart !== null) {
-        myChart.destroy();
-    }
-
-    myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Correct', 'Incorrect'], // Labels for the bars
-            datasets: [{
-                data: [correct, incorrect], // Data for the bars
-                backgroundColor: [
-                    'rgba(75, 192, 75, 0.2)', // Green for Correct
-                    'rgba(255, 99, 132, 0.2)' // Red for Incorrect
-                ],
-                borderColor: [
-                    'rgba(75, 192, 75, 1)', // Dark green border for Correct
-                    'rgba(255, 99, 132, 1)' // Dark red border for Incorrect
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Answers'
-                    }
-                },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Number of answers'
-                    },
-                    beginAtZero: true
-                }
-            },
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false
-                },
-                tooltip: {
-                    callbacks: {
-                        label: (tooltipItem) => {
-                            return `${tooltipItem.raw} answers`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-
-
-}
+const keyDataContainer = document.getElementById('key-data-container');
 
 const loadGraphButton = document.getElementById('sessionDurationByDateButton');
 const h2Element = document.getElementById('titleOfGraph');
@@ -356,7 +90,7 @@ loadGraphButton.addEventListener('click', async () => {
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
-    generateBarGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
+    myChart = generateGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
 })
 
 
@@ -371,17 +105,12 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
-    generateBarGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
+    myChart = generateGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
 })
 
 
 
 document.getElementById('lastSessionResultsButton').addEventListener('click', async () => {
-    displayLatest()
-})
-
-
-async function displayLatest() {
     h2Element.textContent = 'Your latest results :';
 
     const resJson = await callRoute('getLatestResults');
@@ -391,9 +120,9 @@ async function displayLatest() {
     const incorrect = resJson.map(session => session.IncorrectCount);
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
-    generateIsCorrectBarGraph(correct, incorrect)
+    myChart = generateIsCorrectBarGraph(correct, incorrect)
+})
 
-}
 
 document.getElementById('resultsByDayButton').addEventListener('click', async () => {
     h2Element.textContent = 'Results by day';
@@ -402,7 +131,7 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
     console.log("sessionDataStr : " + JSON.stringify(resJson))
 
     const sessionDates = resJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
-    
+
     const correct = resJson.map(session => session.CorrectCount);
     const incorrect = resJson.map(session => session.IncorrectCount);
 
@@ -411,13 +140,162 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
 
-    generateDoubleLineGraphByDate(correct, incorrect, sessionDates, 'Number of answers')
+    myChart = generateDoubleLineGraphByDate(correct, incorrect, sessionDates, 'Number of answers')
+})
+
+
+async function displayLevelStats(level) {
+
+    h2Element.textContent = 'Results for level ' + level;
+    const resJson = await callLevelRoute('getResultByLevel', level)
+    console.log("callLevelRoute : " + JSON.stringify(resJson))
+
+    const sessionDates = resJson.resByLevel.map(session => session.mSessionDate);
+    const formattedSessionDates = sessionDates.map(sessionDate => {
+        const date = new Date(sessionDate);  // Ensure sessionDate is a valid Date object
+        return getCleanDateTime(date);
+    });
+
+
+    const duration = resJson.resByLevel.map(session => session.mSessionDuration);
+
+    const correct = resJson.resByLevel.map(session => session.CorrectCount);
+    const incorrect = resJson.resByLevel.map(session => session.IncorrectCount);
+
+    console.log("sessionDates : " + sessionDates)
+    console.log("correct : " + correct)
+    console.log("incorrect : " + incorrect)
+
+
+    const sessionCount = resJson.sessionDetailsByLevel.map(session => session.sessionCount);
+    const sessionTotalDuration = resJson.sessionDetailsByLevel.map(session => session.sessionTotalDuration);
+    const sessionAverageDuration = resJson.sessionDetailsByLevel.map(session => session.sessionAverageDuration);
+    const answerAverageDuration = resJson.avgAnswerDurationByLevel.map(session => session.answerAverageDuration);
+
+    const keyDataList = [
+        { key: 'nbAttempts', value: sessionCount, subtext: 'Number of attempts' },
+        { key: 'totTime', value: sessionTotalDuration, subtext: 'Total time' },
+        { key: 'avgTimeLevel', value: sessionAverageDuration, subtext: 'Average time in this level' },
+        { key: 'avgTimeAnswer', value: answerAverageDuration, subtext: 'Average time of an answer' }
+    ];
+
+    generateKeyDataBoxes(keyDataList)
+
+
+    myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
+}
+
+
+function generateKeyDataBoxes(keyDataList){
+    keyDataContainer.innerHTML = '';
+
+    keyDataList.forEach(item => {
+        // Create the data box
+        const box = document.createElement('div');
+        box.classList.add('key-data-box');
+        
+
+        // Create the subtext element
+        const subtext = document.createElement('div');
+        subtext.classList.add('subtext');
+        subtext.textContent = item.subtext;
+
+
+        // Create the number element
+        const number = document.createElement('div');
+        number.classList.add('key-data');
+        number.setAttribute('key-data', item.key);
+        number.textContent = item.value;
+
+
+        // Append number and subtext to the box
+        box.appendChild(subtext);
+        box.appendChild(number);
+
+        // Append the box to the container
+        keyDataContainer.appendChild(box);
+    });
+}
+
+
+function setTabButtons() {
+    const tabButtonList = document.querySelectorAll('.tab-button');
+
+    tabButtonList.forEach(tabButton => {
+        tabButton.addEventListener('click', () => {
+            if (myChart !== null) { myChart.destroy(); }
+
+            keyDataContainer.innerHTML = '';
+
+            // Remove active to all .tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            // Remove active to all .tab-button 
+            tabButtonList.forEach(button => button.classList.remove('active'));
+
+
+            const elementButtons = document.querySelectorAll('.element-button')
+            elementButtons.forEach(elButton => {
+                elButton.addEventListener('click', () => {
+                    if (myChart !== null) { myChart.destroy(); }
+                    // Remove active to all .element-button 
+                    elementButtons.forEach(rButton => { rButton.classList.remove('active') })
+                    // Set active to current clicked .element-button
+                    elButton.classList.add('active')
+                }
+                )
+            })
+
+            // Determine tabName based on the button ID by extracting the number
+            const tabName = `tab${tabButton.id.replace('tab-button', '')}`;
+
+            // Activate the corresponding tab and clicked button
+            document.getElementById(tabName).classList.add('active');
+            tabButton.classList.add('active');
+
+        });
+    });
+
+
+    // Prepare level buttons
+    for (let i = 1; i <= 5; i++) {
+        const levelButton = document.getElementById(`level${i}Button`);
+        levelButton.addEventListener('click', async () => {
+            await displayLevelStats(i)
+        });
+    }
+
+}
+
+
+document.getElementById('tab-button1').addEventListener('click', () => {
+    document.getElementById('lastSessionResultsButton').click();
+    document.getElementById(`lastSessionResultsButton`).classList.add('active');
 })
 
 
 
 
+document.getElementById('tab-button2').addEventListener('click', () => {
+    document.getElementById(`level1Button`).click();
+    document.getElementById(`level1Button`).classList.add('active');
+})
+
+
+document.getElementById('tab-button3').addEventListener('click', async () => {
+    const userStats = await callRoute('/getUserStats')
+
+    const keyDataList = [
+        { key: 'totSessionTime', value: convertSecondsToMinutesAndSeconds(userStats.mTotalSessionTime), subtext: 'Time playing' },
+        { key: 'logNumber', value: userStats.mLogNumber, subtext: 'Number of times logging in' },
+        { key: 'lastSessionDate', value: getCleanDateTime(new Date(userStats.mLastSessionDate)), subtext: 'Last session date' }
+    ];
+
+    generateKeyDataBoxes(keyDataList)
+})
+
+
 window.onload = async () => {
-    keepAuthenticate()
-    displayLatest()
+    keepAuthenticate();
+    setTabButtons();
+    document.querySelector('.tab-button.active').click();
 }

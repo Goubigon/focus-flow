@@ -7,8 +7,7 @@
     <title>Home Page</title>
     <link rel="stylesheet" href="/css/dashboard.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js" ></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 </head>
 
 
@@ -27,17 +26,50 @@
 
 
     <div id="home">
-        <h1>Welcome to the Dashboard Page!</h1>
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab-button active" id="tab-button1">General results</button>
+                <button class="tab-button" id="tab-button2">Results by level</button>
+                <button class="tab-button" id="tab-button3">Profile</button>
+            </div>
+            <div class="tab-content">
+                <div class="high-content">
+                    <div id="tab1" class="tab active">
 
-        <button id="sessionDurationByDateButton">Playtime by day</button>
-        <button id="sessionNumberByDateButton">Number of session by day</button>
-        <button id="lastSessionResultsButton">Results from last session</button>
-        <button id="resultsByDayButton">Results by day</button>
+                        <h2>General results</h2>
+                        <p>Get general information about your results.</p>
+                        <button class="element-button" id="sessionDurationByDateButton">Playtime by day</button>
+                        <button class="element-button" id="sessionNumberByDateButton">Number of session by day</button>
+                        <button class="element-button active" id="lastSessionResultsButton">Results from last
+                            session</button>
+                        <button class="element-button" id="resultsByDayButton">Results by day</button>
 
-        <h2 id="titleOfGraph"></h2>
-        <canvas id="myChart" width="250" height="100"></canvas>
+                    </div>
+                    <div id="tab2" class="tab">
+                        <h2>Results by level</h2>
+                        <p>Get key performance indicator and graphs of your results by levels.</p>
+                        <button class="element-button" id="level1Button">Level 1</button>
+                        <button class="element-button" id="level2Button">Level 2</button>
+                        <button class="element-button" id="level3Button">Level 3</button>
+                        <button class="element-button" id="level4Button">Level 4</button>
+                        <button class="element-button" id="level5Button">Level 5</button>
 
+                    </div>
+                    <div id="tab3" class="tab">
+                        <h2>Profile</h2>
+                        <p>Get information about your profile.</p>
+                    </div>
 
+                </div>
+                
+                <div id="key-data-container"></div>
+
+                <div class="low-content">
+                    <h2 class="tab" id="titleOfGraph"></h2>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
 
         <script type="module" src="/js/ui-script/dashboard-script.js"></script>
     </div>

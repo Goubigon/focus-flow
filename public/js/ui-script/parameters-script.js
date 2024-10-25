@@ -2,7 +2,7 @@
 //handles form submission
 
 import { keepAuthenticate } from '../client-api/auth_api.js';
-import { getCurrentDateTime } from '../client-api/utils.js';
+import { getCleanDateTime } from '../client-api/utils.js';
 
 
 //boolean true if anything in the inputs of the form has changed
@@ -143,7 +143,7 @@ formElement.addEventListener('submit', async (event) => {
         errorMessage.style.color = 'green';
 
         const paramJson = await createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAdditionCheck, mSubtractionCheck, mMultiplicationCheck, mMaxAnswerCount)
-        const sessionJson = await createSession(paramJson.mParametersIdentifier, getCurrentDateTime())
+        const sessionJson = await createSession(paramJson.mParametersIdentifier, getCleanDateTime(new Date()))
 
 
         console.log("Saving in local storage : " + JSON.stringify(paramJson))
@@ -173,7 +173,7 @@ levelsButton.addEventListener('click', () => {
         levelButton.innerText = `Level ${i}`;
         levelButton.addEventListener('click', async () => {
             // Create a session using the parameters 1 to 5 accordingly
-            const sessionJson = await createSession(i, getCurrentDateTime())
+            const sessionJson = await createSession(i, getCleanDateTime(new Date()))
             localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
             localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
             window.location.href = 'exercise';
