@@ -93,3 +93,40 @@ body {
 }
 
 
+/* Main container holding all key data boxes */
+#key-data-container {
+    display: flex;
+    gap: 20px; /* Space between boxes */
+    justify-content: center; /* Center-aligns boxes horizontally */
+    padding: 20px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+}
+
+/* Style for each key data box */
+.key-data-box {
+    width: 120px;
+    height: 120px;
+    background-color: #f3f3f3;
+    border-radius: 15px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(221, 221, 221);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* Main key data number styling */
+.key-data {
+    font-size: 32px;
+    font-weight: bold;
+    color: #1b1b1b;
+}
+
+/* Subtext styling */
+.subtext {
+    font-size: 16px;
+    color: #434343;
+}

@@ -169,10 +169,39 @@ async function displayLevelStats(level) {
     const sessionAverageDuration = resJson.sessionDetailsByLevel.map(session => session.sessionAverageDuration);
     const answerAverageDuration = resJson.avgAnswerDurationByLevel.map(session => session.answerAverageDuration);
 
-    document.getElementById('kpi1').textContent = "Number of attempts  : " + sessionCount
-    document.getElementById('kpi2').textContent = "Total time : " + sessionTotalDuration
-    document.getElementById('kpi3').textContent = "Average time in this level : " + sessionAverageDuration
-    document.getElementById('kpi4').textContent = "Average time of an answer  : " + answerAverageDuration
+    const keyDataList = [
+        { key: 'nbAttempts', value: sessionCount, subtext: 'Number of attempts' },
+        { key: 'totTime', value: sessionTotalDuration, subtext: 'Total time' },
+        { key: 'avgTimeLevel', value: sessionAverageDuration, subtext: 'Average time in this level' },
+        { key: 'avgTimeAnswer', value: answerAverageDuration, subtext: 'Average time of an answer' }
+    ];
+
+    const keyDataContainer = document.getElementById('key-data-container');
+    keyDataContainer.innerHTML = '';
+    
+    keyDataList.forEach(item => {
+        // Create the data box
+        const box = document.createElement('div');
+        box.classList.add('key-data-box');
+
+        // Create the number element
+        const number = document.createElement('div');
+        number.classList.add('number');
+        number.setAttribute('key-data', item.key);
+        number.textContent = item.value;
+
+        // Create the subtext element
+        const subtext = document.createElement('div');
+        subtext.classList.add('subtext');
+        subtext.textContent = item.subtext;
+
+        // Append number and subtext to the box
+        box.appendChild(number);
+        box.appendChild(subtext);
+
+        // Append the box to the container
+        keyDataContainer.appendChild(box);
+    });
 
     myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 }
