@@ -186,21 +186,24 @@ async function displayLevelStats(level) {
         // Create the data box
         const box = document.createElement('div');
         box.classList.add('key-data-box');
-
-        // Create the number element
-        const number = document.createElement('div');
-        number.classList.add('number');
-        number.setAttribute('key-data', item.key);
-        number.textContent = item.value;
+        
 
         // Create the subtext element
         const subtext = document.createElement('div');
         subtext.classList.add('subtext');
         subtext.textContent = item.subtext;
 
+
+        // Create the number element
+        const number = document.createElement('div');
+        number.classList.add('key-data');
+        number.setAttribute('key-data', item.key);
+        number.textContent = item.value;
+
+
         // Append number and subtext to the box
-        box.appendChild(number);
         box.appendChild(subtext);
+        box.appendChild(number);
 
         // Append the box to the container
         keyDataContainer.appendChild(box);
