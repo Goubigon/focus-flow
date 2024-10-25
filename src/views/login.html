@@ -15,15 +15,17 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('logbar').innerHTML = data;
+                // Load your logbar script here after the logbar is inserted
+                return import('/js/ui-script/logbar-script.js');
             })
-            .catch(error => console.error("Error loading navbar:", error));
+            .catch(error => console.error("Error loading logbar:", error));
     </script>
 
     <div class="container">
         <div class="login-form">
             <h2>Login</h2>
             <form id="loginForm">
-                
+
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required value="Badoit@cojean.fr">
@@ -38,7 +40,7 @@
 
             <div id="errorMessage" class="error-message"></div>
         </div>
-        
+
     </div>
     <script type="module" src="/js/ui-script/login-script.js"></script>
 </body>

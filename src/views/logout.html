@@ -15,8 +15,10 @@
             .then(response => response.text())
             .then(data => {
                 document.getElementById('logbar').innerHTML = data;
+                // Load your logbar script here after the logbar is inserted
+                return import('/js/ui-script/logbar-script.js');
             })
-            .catch(error => console.error("Error loading navbar:", error));
+            .catch(error => console.error("Error loading logbar:", error));
     </script>
 
 
