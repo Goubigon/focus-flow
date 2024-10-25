@@ -1,8 +1,10 @@
 import { keepAuthenticate } from '../client-api/auth_api.js';
 import { getCleanDateTime } from '../client-api/utils.js'
 
-import { generateGraphByDate, generateDoubleLineGraphByDate,
-    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph } 
+import {
+    generateGraphByDate, generateDoubleLineGraphByDate,
+    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph
+}
     from './dashboard-graphs.js'
 
 
@@ -73,6 +75,7 @@ async function callLevelRoute(route, level) {
 
 let myChart = null;
 
+const keyDataContainer = document.getElementById('key-data-container');
 
 const loadGraphButton = document.getElementById('sessionDurationByDateButton');
 const h2Element = document.getElementById('titleOfGraph');
@@ -176,7 +179,7 @@ async function displayLevelStats(level) {
         { key: 'avgTimeAnswer', value: answerAverageDuration, subtext: 'Average time of an answer' }
     ];
 
-    const keyDataContainer = document.getElementById('key-data-container');
+
     keyDataContainer.innerHTML = '';
 
     keyDataList.forEach(item => {
@@ -216,12 +219,14 @@ function setTabButtons() {
         tabButton.addEventListener('click', () => {
             if (myChart !== null) { myChart.destroy(); }
 
+            keyDataContainer.innerHTML = '';
+
             // Remove active to all .tab
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
             // Remove active to all .tab-button 
             tabButtonList.forEach(button => button.classList.remove('active'));
 
-            
+
             const elementButtons = document.querySelectorAll('.element-button')
             elementButtons.forEach(elButton => {
                 elButton.addEventListener('click', () => {
@@ -231,7 +236,8 @@ function setTabButtons() {
                     // Set active to current clicked .element-button
                     elButton.classList.add('active')
                 }
-            )})
+                )
+            })
 
             // Determine tabName based on the button ID by extracting the number
             const tabName = `tab${tabButton.id.replace('tab-button', '')}`;
@@ -247,8 +253,8 @@ function setTabButtons() {
     // Prepare level buttons
     for (let i = 1; i <= 5; i++) {
         const levelButton = document.getElementById(`level${i}Button`);
-        levelButton.addEventListener('click', async () => { 
-            await displayLevelStats(i) 
+        levelButton.addEventListener('click', async () => {
+            await displayLevelStats(i)
         });
     }
 
