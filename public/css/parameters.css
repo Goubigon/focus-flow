@@ -7,50 +7,113 @@ body {
     align-items: center;
     height: 100vh;
 }
-form {
-    flex-direction: column;
-    width: 300px;
-}
-label, input {
-    margin-bottom: 10px;
+
+
+#configForm {
+    max-width: 400px; 
+    margin: 0 auto; 
+    padding: 20px; 
+    border: 1px solid #ccc; 
+    border-radius: 8px; 
+    background-color: #f9f9f9; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    font-family: Arial, sans-serif; 
 }
 
-input{
-    margin-right : 10px
-}
 
 label {
-    display: inline-block;
-    margin-right: 10px;
-}
-.error {
-    color: red;
-    font-size: 0.9em;
+    display: block; 
+    margin-bottom: 5px; 
+    font-weight: bold; 
 }
 
-/* General button styles */
+
+input[type="number"],
+input[type="checkbox"] {
+    width: calc(100% - 20px); /* Full width with padding */
+    padding: 10px; 
+    margin-bottom: 15px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 16px; 
+}
+
+input[type="checkbox"] {
+    width: auto; /* Keep checkboxes small */
+    margin: 0 5px; /* Margin around checkboxes */
+}
+
+/* Operation list styling */
+#ope-list {
+    margin-bottom: 15px; /* Spacing below operation list */
+}
+
+#ope-list ul {
+    list-style-type: none; 
+    padding: 0; 
+    display: flex; 
+}
+
+#ope-list li {
+    display: flex;
+    align-items: center;
+    margin-right: 15px; 
+}
+
+#ope-list label {
+    margin-right: 5px;
+}
+
+.error {
+    color: red; 
+    font-size: 14px; 
+    margin-top: 10px;
+}
+
+
+
 button {
-    background-color: #4CAF50; /* Green background */
-    border: none; /* Remove borders */
-    color: white; /* White text color */
-    padding: 10px 20px; /* Add padding */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Allow block display */
-    font-size: 16px; /* Increase font size */
-    margin: 10px; /* Add margin */
-    cursor: pointer; /* Pointer cursor on hover */
-    border-radius: 5px; /* Rounded corners */
-    transition: background-color 0.3s, transform 0.2s; /* Smooth transition */
+    background-color: #4CAF50;
+
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    /* Remove underline */
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    /* Smooth transition */
 }
 
 /* Button hover effect */
 button:hover {
-    background-color: #45a049; /* Darker green on hover */
-    transform: scale(1.05); /* Slightly increase size */
+    background-color: #45a049;
+    transform: scale(1.05);
 }
 
 /* Button active effect */
 button:active {
-    transform: scale(0.95); /* Slightly decrease size when active */
+    transform: scale(0.95);
+    /* Slightly decrease size when active */
+}
+
+#configForm {
+    display: none;
+    /* Hide the form initially */
+}
+
+#levelButtons {
+    display: none;
+    margin-top: 20px;
+}
+
+.level-button {
+    width: 100px;
+    display: inline-block;
 }
