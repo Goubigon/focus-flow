@@ -178,22 +178,6 @@ async function displayLevelStats(level) {
 }
 
 
-document.getElementById('tab-button1').addEventListener('click', () => {
-    document.getElementById('lastSessionResultsButton').click();
-})
-
-
-document.getElementById('tab-button2').addEventListener('click', () => {
-    for (let i = 1; i <= 5; i++) {
-        const levelButton = document.getElementById(`level${i}Button`);
-        levelButton.addEventListener('click', async () => { 
-            displayLevelStats(i) 
-        });
-    }
-    document.getElementById(`level1Button`).click();
-})
-
-
 
 
 function setTabButtons() {
@@ -202,6 +186,7 @@ function setTabButtons() {
     tabButtonList.forEach(tabButton => {
         tabButton.addEventListener('click', () => {
             if (myChart !== null) { myChart.destroy(); }
+
 
             // Remove active to all .tab
             document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
@@ -226,10 +211,34 @@ function setTabButtons() {
             // Activate the corresponding tab and clicked button
             document.getElementById(tabName).classList.add('active');
             tabButton.classList.add('active');
+
         });
     });
 
+
+    // Prepare level buttons
+    for (let i = 1; i <= 5; i++) {
+        const levelButton = document.getElementById(`level${i}Button`);
+        levelButton.addEventListener('click', async () => { 
+            await displayLevelStats(i) 
+        });
+    }
+
 }
+
+
+document.getElementById('tab-button1').addEventListener('click', () => {
+    document.getElementById('lastSessionResultsButton').click();
+    document.getElementById(`lastSessionResultsButton`).classList.add('active');
+})
+
+
+
+
+document.getElementById('tab-button2').addEventListener('click', () => {
+    document.getElementById(`level1Button`).click();
+    document.getElementById(`level1Button`).classList.add('active');
+})
 
 
 window.onload = async () => {
