@@ -8,8 +8,6 @@
     <link rel="stylesheet" href="/css/dashboard.css">
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
-    <script src="/js/ui-script/load-dashboard-script.js"></script>
-
 </head>
 
 
@@ -30,9 +28,9 @@
     <div id="home">
         <div class="tab-container">
             <div class="tabs">
-                <button class="tab-button active" onclick="openTab(event, 'tab1')">General results</button>
-                <button class="tab-button" onclick="openTab(event, 'tab2')">Results by level</button>
-                <button class="tab-button" onclick="openTab(event, 'tab3')">Profile</button>
+                <button class="tab-button active" id="tab-button1" >General results</button>
+                <button class="tab-button" id="tab-button2" >Results by level</button>
+                <button class="tab-button" id="tab-button3" >Profile</button>
             </div>
             <div class="tab-content">
 
@@ -40,21 +38,21 @@
 
                     <h2>General results</h2>
                     <p>Get general information about your results.</p>
-                    <button id="sessionDurationByDateButton">Playtime by day</button>
-                    <button id="sessionNumberByDateButton">Number of session by day</button>
-                    <button id="lastSessionResultsButton">Results from last session</button>
-                    <button id="resultsByDayButton">Results by day</button>
+                    <button class="element-button" id="sessionDurationByDateButton">Playtime by day</button>
+                    <button class="element-button" id="sessionNumberByDateButton">Number of session by day</button>
+                    <button class="element-button active" id="lastSessionResultsButton">Results from last session</button>
+                    <button class="element-button" id="resultsByDayButton">Results by day</button>
 
                 </div>
                 <div id="tab2" class="tab">
                     <h2>Results by level</h2>
                     <p>Get key performance indicator and graphs of your results by levels.</p>
 
-                        <button id="level1Button">Level 1</button>
-                        <button id="level2Button">Level 2</button>
-                        <button id="level3Button">Level 3</button>
-                        <button id="level4Button">Level 4</button>
-                        <button id="level5Button">Level 5</button>
+                        <button class="element-button" id="level1Button">Level 1</button>
+                        <button class="element-button" id="level2Button">Level 2</button>
+                        <button class="element-button" id="level3Button">Level 3</button>
+                        <button class="element-button" id="level4Button">Level 4</button>
+                        <button class="element-button" id="level5Button">Level 5</button>
 
 
                         <h2 id="kpi1"></h2>
@@ -67,7 +65,7 @@
                     <p>Get information about your profile.</p>
                 </div>
 
-                <h2 id="titleOfGraph"></h2>
+                <h2 class="tab" id="titleOfGraph"></h2>
                 <canvas id="myChart"></canvas>
             </div>
         </div>

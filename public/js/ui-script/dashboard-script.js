@@ -133,7 +133,7 @@ function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
     myChart = new Chart(ctx, {
         type: 'line',
-        
+
         data: {
             labels: date, // Labels for the bars
             datasets: [{
@@ -196,7 +196,7 @@ function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, y
 
     myChart = new Chart(ctx, {
         type: 'line',
-        
+
         data: {
             labels: date, // Labels for the bars
             datasets: [{
@@ -213,14 +213,14 @@ function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, y
                 borderColor: 'rgba(255, 99, 132, 1)', // Dark red border for incorrect answers
                 borderWidth: 5,
                 yAxisID: 'y1',
-            },{
+            }, {
                 label: 'Duration (seconds)',
                 data: duration, // Data for duration
                 backgroundColor: 'rgba(54, 162, 235, 0.2)', // Blue for duration
                 borderColor: 'rgba(54, 162, 235, 1)', // Dark blue border
                 borderWidth: 1,
-                yAxisID: 'y2', 
-                fill: true 
+                yAxisID: 'y2',
+                fill: true
             }]
         },
         options: {
@@ -396,7 +396,7 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
     console.log("sessionDataStr : " + JSON.stringify(resJson))
 
     const sessionDates = resJson.map(session => new Date(session.sessionDateGroup).toLocaleDateString());
-    
+
     const correct = resJson.map(session => session.CorrectCount);
     const incorrect = resJson.map(session => session.IncorrectCount);
 
@@ -409,10 +409,10 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
 })
 
 
-async function displayLevelStats(level){
+async function displayLevelStats(level) {
 
-    h2Element.textContent = 'Results for level '+ level;
-    const resJson = await callLevelRoute('getResultByLevel' , level)
+    h2Element.textContent = 'Results for level ' + level;
+    const resJson = await callLevelRoute('getResultByLevel', level)
     console.log("callLevelRoute : " + JSON.stringify(resJson))
 
     const sessionDates = resJson.resByLevel.map(session => session.mSessionDate);
@@ -421,43 +421,139 @@ async function displayLevelStats(level){
         return getCleanDateTime(date);
     });
 
-    
+
     const duration = resJson.resByLevel.map(session => session.mSessionDuration);
 
     const correct = resJson.resByLevel.map(session => session.CorrectCount);
     const incorrect = resJson.resByLevel.map(session => session.IncorrectCount);
-    
+
     console.log("sessionDates : " + sessionDates)
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
 
-    
+
     const sessionCount = resJson.sessionDetailsByLevel.map(session => session.sessionCount);
     const sessionTotalDuration = resJson.sessionDetailsByLevel.map(session => session.sessionTotalDuration);
     const sessionAverageDuration = resJson.sessionDetailsByLevel.map(session => session.sessionAverageDuration);
     const answerAverageDuration = resJson.avgAnswerDurationByLevel.map(session => session.answerAverageDuration);
 
-    document.getElementById('kpi1').textContent = "Times played level " + level +" : " + sessionCount
-    document.getElementById('kpi2').textContent = "Total time playing " + level +": " + sessionTotalDuration
-    document.getElementById('kpi3').textContent = "Average time in level " + level +": " + sessionAverageDuration
-    document.getElementById('kpi4').textContent = "Average answer time in level " + level +": " + answerAverageDuration
+    document.getElementById('kpi1').textContent = "Number of attempts  : " + sessionCount
+    document.getElementById('kpi2').textContent = "Total time : " + sessionTotalDuration
+    document.getElementById('kpi3').textContent = "Average time in this level : " + sessionAverageDuration
+    document.getElementById('kpi4').textContent = "Average time of an answer  : " + answerAverageDuration
 
     generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 }
 
+// for (let i = 1; i <= 3; i++) {
+//     document.getElementById(`tab-button${i}`).addEventListener('click', () => {
+//         if (myChart !== null) { myChart.destroy(); }
+
+//         const buttons = document.querySelectorAll('button'); // Select all buttons
+
+//         buttons.forEach(button => {
+//             button.addEventListener('click', () => {
+//                 // Remove the 'active' class from all buttons
+//                 buttons.forEach(btn => btn.classList.remove('active'));
+
+//                 // Add the 'active' class to the clicked button
+//                 button.classList.add('active');
+//             });
+//         });
 
 
-document.getElementById('tab2').addEventListener('click', () => {
+//         // for(let i = 1; i <= 4; i++){
+//         //     document.getElementById(`kpi${i}`).textContent = '';
+
+//         // }
+//     })
+// }
+
+
+const tabButtonList = document.querySelectorAll('.tab-button');
+tabButtonList.forEach(currentTabButton => {
+    currentTabButton.addEventListener('click', () => {
+        // Remove the 'active' class from all tabButtonList
+        tabButtonList.forEach(tabButton => tabButton.classList.remove('active'));
+
+        // Add the 'active' class to the clicked button
+        currentTabButton.classList.add('active');
+    });
+});
+
+const elButtonList = document.querySelectorAll('.element-button');
+tabButtonList.forEach(currentElButton => {
+    currentElButton.addEventListener('click', () => {
+        // Remove the 'active' class from all tabButtonList
+        tabButtonList.forEach(elButton => elButton.classList.remove('active'));
+
+        // Add the 'active' class to the clicked button
+        currentElButton.classList.add('active');
+    });
+});
+
+
+
+document.getElementById('tab-button2').addEventListener('click', () => {
     for (let i = 1; i <= 5; i++) {
         const levelButton = document.getElementById(`level${i}Button`);
+
         levelButton.addEventListener('click', async () => {
-            displayLevelStats(i)
+            // for (let j = 1; j <= 5; j++) {
+            //     document.getElementById(`level${j}Button`).classList.remove('active');
+            // }
+            // levelButton.classList.add('active');
+
+            await displayLevelStats(i)
         });
     }
+
+    document.getElementById(`level1Button`).click();
 })
 
 
+
+
+function setTabButtons() {
+    const tabButtonList = document.querySelectorAll('.tab-button');
+
+    tabButtonList.forEach(tabButton => {
+        tabButton.addEventListener('click', () => {
+            if (myChart !== null) { myChart.destroy(); }
+
+            // Remove active to all .tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            // Remove active to all .tab-button 
+            tabButtonList.forEach(button => button.classList.remove('active'));
+
+            
+            const elementButtons = document.querySelectorAll('.element-button')
+            elementButtons.forEach(elButton => {
+                elButton.addEventListener('click', () => {
+                    // Remove active to all .element-button 
+                    elementButtons.forEach(rButton => { rButton.classList.remove('active') })
+                    // Set active to current clicked .element-button
+                    elButton.classList.add('active')
+                }
+            )})
+
+
+
+            // Determine tabName based on the button ID by extracting the number
+            const tabName = `tab${tabButton.id.replace('tab-button', '')}`;
+
+            // Activate the corresponding tab and clicked button
+            document.getElementById(tabName).classList.add('active');
+            tabButton.classList.add('active');
+        });
+    });
+
+}
+
+
 window.onload = async () => {
-    keepAuthenticate()
-    displayLatest()
+    keepAuthenticate();
+    setTabButtons();
+    document.querySelector('.tab-button.active').click();
+    document.querySelector('.element-button.active').click();
 }
