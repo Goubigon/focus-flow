@@ -14,7 +14,8 @@ const { getUsers, getUser, createUser, checkDuplicateEmail, getHashedPassword, g
     getUserSessionData,
     getUserSessionCountByDay,
     getLatestResults, getResultsByDay, getResultByLevel,
-    getSessionDetailsByLevel, averageAnswerDurationByLevel
+    getSessionDetailsByLevel, averageAnswerDurationByLevel,
+    getUserStats
 } = require('../../../config/database/sc-user-db.js');
 
 
@@ -276,6 +277,21 @@ router.get('/getResultByLevel/:level', middleAuthentication, async (req, res) =>
         });
     } catch (error) {
         console.error('get User Results by Day retrieving user data:', error); // Log the error
+        res.status(500).send({ message: 'get User Internal Server Error' });
+    }
+})
+
+router.get('/getUserStats', middleAuthentication, async (req, res) => {
+    try {
+        const id = req.user.mUserIdentifier;
+
+        console.log("[GET /getUserStats")
+
+        const userStats = await getUserStats(id)
+
+        res.status(201).send(userStats);
+    } catch (error) {
+        console.error('getUserStats : ', error); // Log the error
         res.status(500).send({ message: 'get User Internal Server Error' });
     }
 })

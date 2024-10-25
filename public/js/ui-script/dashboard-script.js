@@ -1,5 +1,5 @@
 import { keepAuthenticate } from '../client-api/auth_api.js';
-import { getCleanDateTime } from '../client-api/utils.js'
+import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-api/utils.js'
 
 import {
     generateGraphByDate, generateDoubleLineGraphByDate,
@@ -179,7 +179,14 @@ async function displayLevelStats(level) {
         { key: 'avgTimeAnswer', value: answerAverageDuration, subtext: 'Average time of an answer' }
     ];
 
+    generateKeyDataBoxes(keyDataList)
 
+
+    myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
+}
+
+
+function generateKeyDataBoxes(keyDataList){
     keyDataContainer.innerHTML = '';
 
     keyDataList.forEach(item => {
@@ -208,11 +215,7 @@ async function displayLevelStats(level) {
         // Append the box to the container
         keyDataContainer.appendChild(box);
     });
-
-    myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 }
-
-
 
 
 function setTabButtons() {
@@ -275,6 +278,21 @@ document.getElementById('tab-button1').addEventListener('click', () => {
 document.getElementById('tab-button2').addEventListener('click', () => {
     document.getElementById(`level1Button`).click();
     document.getElementById(`level1Button`).classList.add('active');
+})
+
+
+document.getElementById('tab-button3').addEventListener('click', async () => {
+    const userStats = await callRoute('/getUserStats')
+
+    console.log("userDate : " +  userStats.mLastSessionDate)
+
+    const keyDataList = [
+        { key: 'totSessionTime', value: convertSecondsToMinutesAndSeconds(userStats.mTotalSessionTime), subtext: 'Time playing' },
+        { key: 'logNumber', value: userStats.mLogNumber, subtext: 'Number of times logging in' },
+        { key: 'lastSessionDate', value: getCleanDateTime(new Date(userStats.mLastSessionDate)), subtext: 'Last session date' }
+    ];
+
+    generateKeyDataBoxes(keyDataList)
 })
 
 

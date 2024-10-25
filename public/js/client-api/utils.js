@@ -9,6 +9,12 @@ export function getCleanDateTime(pDate) {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 };
 
+export function convertSecondsToMinutesAndSeconds(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.round(seconds % 60);
+    return `${minutes}m ${remainingSeconds}s`;
+}
+
 export function loadFromLocalStorage(itemName) {
     const paramString = localStorage.getItem(itemName);
     if (paramString) {

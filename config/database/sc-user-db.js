@@ -346,6 +346,21 @@ async function averageAnswerDurationByLevel(mUserIdentifier, level) {
   }
 }
 
+async function getUserStats(mUserIdentifier) {
+  try {
+    const [result] = await pool.query(`
+        SELECT mTotalSessionTime, mLogNumber, mLastSessionDate 
+        FROM math_user_stat mus 
+        WHERE mUserIdentifier = ?;
+
+      `, [mUserIdentifier]);
+    return result[0];
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+
 
 
 module.exports = {
@@ -354,5 +369,6 @@ module.exports = {
   incrementLogNumber, incrementSessionCountInStat, changeLastSessionDateInStat, updateTotalSessionTime,
   getUserSessionData, getUserSessionCountByDay,
   getLatestResults, getResultsByDay, getResultByLevel,
-  getSessionDetailsByLevel, averageAnswerDurationByLevel
+  getSessionDetailsByLevel, averageAnswerDurationByLevel,
+  getUserStats
 };
