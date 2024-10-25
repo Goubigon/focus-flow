@@ -174,9 +174,9 @@ async function displayLevelStats(level) {
 
     const keyDataList = [
         { key: 'nbAttempts', value: sessionCount, subtext: 'Number of attempts' },
-        { key: 'totTime', value: sessionTotalDuration, subtext: 'Total time' },
-        { key: 'avgTimeLevel', value: sessionAverageDuration, subtext: 'Average time in this level' },
-        { key: 'avgTimeAnswer', value: answerAverageDuration, subtext: 'Average time of an answer' }
+        { key: 'totTime', value:  convertSecondsToMinutesAndSeconds(sessionTotalDuration), subtext: 'Total time' },
+        { key: 'avgTimeLevel', value: sessionAverageDuration + "s", subtext: 'Average time in this level' },
+        { key: 'avgTimeAnswer', value: answerAverageDuration + "s", subtext: 'Average time of an answer' }
     ];
 
     generateKeyDataBoxes(keyDataList)
