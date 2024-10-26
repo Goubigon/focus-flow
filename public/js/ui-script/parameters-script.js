@@ -1,7 +1,7 @@
 //script used by parameters.html
 //handles form submission
 
-import { keepAuthenticate } from '../client-api/auth_api.js';
+import { keepAuthenticate } from '../client-api/user_api.js';
 import { getCleanDateTime } from '../client-api/utils.js';
 
 

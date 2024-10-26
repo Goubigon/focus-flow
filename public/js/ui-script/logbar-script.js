@@ -1,4 +1,4 @@
-import { logUser } from '../client-api/auth_api.js';
+import { logUser } from '../client-api/user_api.js';
    
 
 document.getElementById("guestButton").addEventListener('click', async () =>{

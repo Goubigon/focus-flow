@@ -1,4 +1,4 @@
-import { keepAuthenticate } from '../client-api/auth_api.js';
+import { keepAuthenticate } from '../client-api/user_api.js';
 import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-api/utils.js'
 
 import {

@@ -4,7 +4,7 @@ import {
     askGenerateQuestions, insertAllAnswers
 } from '../client-api/utils.js';
 
-import { keepAuthenticate } from '../client-api/auth_api.js';
+import { keepAuthenticate } from '../client-api/user_api.js';
 
 
 let startTime; //starting time when questions are loaded
