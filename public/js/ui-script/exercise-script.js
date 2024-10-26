@@ -1,4 +1,4 @@
-import { getCleanDateTime, loadFromLocalStorage } from '../client-api/utils.js';
+import { getCleanDateTime, loadFromLocalStorage } from '../client-api/tools.js';
 import { keepAuthenticate } from '../client-api/user_api.js';
 
 import { askGenerateQuestions, insertAllAnswers } from '../client-api/math_api.js';
