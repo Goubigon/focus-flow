@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/base-theme.css">
+    <link rel="stylesheet" href="css/form-theme.css">
 </head>
 
 <body>
@@ -21,11 +22,11 @@
             .catch(error => console.error("Error loading logbar:", error));
     </script>
 
-    <div class="container">
-        <div class="login-form">
+    <div class="form-container">
+        <div class="div-form">
             <h2>Login</h2>
-            <form id="loginForm">
 
+            <form id="loginForm">
                 <div class="input-group">
                     <label for="email">Email</label>
                     <input type="email" id="email" name="email" required value="Badoit@cojean.fr">
@@ -36,11 +37,10 @@
                 </div>
                 <button id="loginButton" type="submit">Login</button>
             </form>
-            <p>Don't have an account? <a href="/sign">Sign up</a></p>
 
+            <p>Don't have an account? <a href="/sign">Sign up</a></p>
             <div id="errorMessage" class="error-message"></div>
         </div>
-
     </div>
     <script type="module" src="/js/ui-script/login-script.js"></script>
 </body>
