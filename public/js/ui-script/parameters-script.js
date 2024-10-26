@@ -11,8 +11,8 @@ let isFormSubmitted = false;
 
 //get element containing all the inputs (4 numbers, 3 checkboxes)
 const formElement = document.getElementById('configForm');
-
 const inputList = formElement.querySelectorAll('input');
+
 //add change listener on each inputList
 inputList.forEach(currentInput => {
     currentInput.addEventListener('change', () => {
@@ -158,18 +158,20 @@ formElement.addEventListener('submit', async (event) => {
 const configForm = document.getElementById('configForm');
 const levelsButton = document.getElementById('levelsButton');
 const customButton = document.getElementById('customButton');
+const configDiv = document.getElementById('configDiv');
 const levelButtonsContainer = document.getElementById('levelButtons');
 
 // Show levels when the "Levels" button is clicked
 levelsButton.addEventListener('click', () => {
     configForm.style.display = 'none'; // Hide the form
+    configDiv.style.display = 'none';
     levelButtonsContainer.style.display = 'block'; // Show level buttons
     levelButtonsContainer.innerHTML = ''; // Clear any existing buttons
 
     // Create level buttons dynamically
     for (let i = 1; i <= 5; i++) {
         const levelButton = document.createElement('button');
-        levelButton.className = 'level-button';
+        levelButton.className = 'base-button level-button';
         levelButton.innerText = `Level ${i}`;
         levelButton.addEventListener('click', async () => {
             // Create a session using the parameters 1 to 5 accordingly
@@ -186,6 +188,7 @@ levelsButton.addEventListener('click', () => {
 customButton.addEventListener('click', () => {
     levelButtonsContainer.style.display = 'none'; // Hide level buttons
     configForm.style.display = 'block'; // Show the form
+    configDiv.style.display = 'block';
 });
 
 

@@ -5,25 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="css/sign.css">
+    <link rel="stylesheet" href="css/base-theme.css">
+    <link rel="stylesheet" href="css/form-theme.css">
 </head>
 
 <body>
-    <div id="logbar"></div>
+    <div id="bar"></div>
     <script>
         fetch('/partial/logbar.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('logbar').innerHTML = data;
+                document.getElementById('bar').innerHTML = data;
                 // Load your logbar script here after the logbar is inserted
                 return import('/js/ui-script/logbar-script.js');
             })
             .catch(error => console.error("Error loading logbar:", error));
     </script>
 
-    <div class="container">
-        <div class="signup-form">
+    <div class="form-container">
+        <div class="div-form">
             <h2>Create Account</h2>
+
             <form id="signForm">
                 <div class="input-group">
                     <label for="username">Username</label>
@@ -41,7 +43,7 @@
                     <label for="confirm_password">Confirm Password</label>
                     <input type="password" id="confirm_password" name="confirm_password" required value="americano">
                 </div>
-                <button id="signButton" type="submit">Sign Up</button>
+                <button class="base-button" id="signButton" type="submit">Sign Up</button>
             </form>
             
             <p>Already have an account? <a href="/login">Sign in</a></p>

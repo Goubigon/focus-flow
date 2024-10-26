@@ -1,0 +1,30 @@
+#bar {
+    background-color: #333;
+    padding: 15px 50px 15px 10px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
+
+.bar-list {
+    list-style-type: none;
+    display: inline-block; /* Make the ul inline-block to center it */
+    margin: 0;
+    padding: 0;
+}
+
+.bar-list li {
+    display: inline;
+    margin: 0 15px;
+}
+
+.bar-list li a {
+    transform: translateY(-80%);
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}

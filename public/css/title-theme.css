@@ -1,0 +1,26 @@
+
+.basic-title-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.basic-title-div h1 {
+    font-size: 3.5em;
+    color: #00b395;
+    text-align: center;
+}
+
+.basic-title-div p {
+    font-size: 1.5em;
+    line-height: 1.6;
+}
+
+.basic-title-div img {
+    margin: 10px;
+    border-radius: 15px;
+    border: 1px solid gray;
+}

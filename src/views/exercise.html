@@ -11,12 +11,12 @@
 
 
 <body>
-    <div id="navbar"></div>
+    <div id="bar"></div>
     <script>
         fetch('/partial/navbar.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('navbar').innerHTML = data;
+                document.getElementById('bar').innerHTML = data;
                 // Load your navbar script here after the navbar is inserted
                 return import('/js/ui-script/navbar-script.js');
             })
