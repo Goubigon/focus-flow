@@ -10,12 +10,12 @@
 </head>
 
 <body>
-    <div id="logbar"></div>
+    <div id="bar"></div>
     <script>
         fetch('/partial/logbar.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('logbar').innerHTML = data;
+                document.getElementById('bar').innerHTML = data;
                 // Load your logbar script here after the logbar is inserted
                 return import('/js/ui-script/logbar-script.js');
             })

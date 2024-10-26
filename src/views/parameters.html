@@ -9,12 +9,12 @@
 </head>
 
 <body>
-    <div id="navbar"></div>
+    <div id="bar"></div>
     <script>
         fetch('/partial/navbar.html')
             .then(response => response.text())
             .then(data => {
-                document.getElementById('navbar').innerHTML = data;
+                document.getElementById('bar').innerHTML = data;
                 return import('/js/ui-script/navbar-script.js');
             })
             .catch(error => console.error("Error loading navbar:", error));
