@@ -1,4 +1,4 @@
-import { logUser, alreadyConnected } from '../client-api/auth_api.js';
+import { alreadyConnected, createUser } from '../client-api/auth_api.js';
 
 
 function validateForm() {
@@ -39,34 +39,6 @@ function validateForm() {
 
     return true; // Allow form submission if all validations pass
 }
-
-async function createUser(name, email, password) {
-    try {
-        const response = await fetch(`/user-data/createUser`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body : JSON.stringify({
-                name : name,
-                email : email,
-                password : password,
-                role : "user"
-            })
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            console.log(result); 
-            await logUser(email, password);
-        } else {
-            document.getElementById('errorMessage').innerHTML = result.message;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 
 document.getElementById('signForm').addEventListener('submit', async (event) =>{
     event.preventDefault();

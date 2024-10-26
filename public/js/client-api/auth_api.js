@@ -1,4 +1,3 @@
-//Check data base
 
 export async function logUser(email, password) {
     try {
@@ -146,6 +145,34 @@ export async function alreadyConnected (){
             return result.isAuth;
         } else {
             console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+export async function createUser(name, email, password) {
+    try {
+        const response = await fetch(`/user-data/createUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+                name : name,
+                email : email,
+                password : password,
+                role : "user"
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log(result); 
+            await logUser(email, password);
+        } else {
+            document.getElementById('errorMessage').innerHTML = result.message;
         }
     } catch (error) {
         console.error('Error:', error);
