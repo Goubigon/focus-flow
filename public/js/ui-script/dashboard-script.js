@@ -1,4 +1,4 @@
-import { keepAuthenticate } from '../client-api/user_api.js';
+import { keepAuthenticate, callRoute, callLevelRoute } from '../client-api/user_api.js';
 import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-api/utils.js'
 
 import {
@@ -8,69 +8,6 @@ import {
     from './dashboard-graphs.js'
 
 
-
-
-async function getUserSessionData() {
-    try {
-        const response = await fetch('/user-data/getUserSessionData', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            //console.log(JSON.stringify(result));
-            return result;
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function callRoute(route) {
-    try {
-        const response = await fetch('/user-data/' + route, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            //console.log(JSON.stringify(result));
-            return result;
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-async function callLevelRoute(route, level) {
-    try {
-        const response = await fetch('/user-data/' + route + '/' + level, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        });
-
-        if (response.ok) {
-            const result = await response.json();
-            //console.log(JSON.stringify(result));
-            return result;
-        } else {
-            console.error('Failed to retrieve answers.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
 
 
 let myChart = null;
