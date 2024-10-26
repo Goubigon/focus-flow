@@ -5,6 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>parameters</title>
+    <link rel="stylesheet" href="/css/base-theme.css">
+    <link rel="stylesheet" href="/css/title-theme.css">
+    <link rel="stylesheet" href="/css/form-theme.css">
     <link rel="stylesheet" href="/css/parameters.css">
 </head>
 
@@ -20,57 +23,70 @@
             .catch(error => console.error("Error loading navbar:", error));
     </script>
 
-    <div id="params">
-        <h1>Choose your difficulty</h1>
+    <div class="basic-title-div param-div">
+        <h2>Choose your difficulty</h2>
 
         <!-- Buttons for Levels and Custom -->
-        <button id="levelsButton">Levels</button>
-        <button id="customButton">Custom</button>
+        <button class="base-button half-button" id="levelsButton">Levels</button>
+        <button class="base-button half-button" id="customButton">Custom</button>
+
 
         <!-- Container for Level Buttons -->
         <div id="levelButtons"></div>
 
-        <form id="configForm">
-            <label for="minNumber">Min Number:</label>
-            <input type="number" id="minNumber" name="minNumber" value="-10" required>
 
-            <label for="maxNumber">Max Number:</label>
-            <input type="number" id="maxNumber" name="maxNumber" value="10" required>
+        <div class="form-container">
+            <div class="div-form" id="configDiv"">
+            <form id="configForm">
+                <label for="minNumber">Min Number:</label>
+                <input type="number" id="minNumber" name="minNumber" value="-10" required>
 
-            <label style="display: none" for="floatNumber">Numbers after comma:</label>
-            <input style="display: none" type="number" id="floatNumber" name="floatNumber" value="0" disabled>
+                <label for="maxNumber">Max Number:</label>
+                <input type="number" id="maxNumber" name="maxNumber" value="10" required>
 
-            <label style="display: none" for="nNumber">Number of Numbers:</label>
-            <input style="display: none" type="number" id="nNumber" name="nNumber" value="2" disabled>
+                <label style="display: none" for="floatNumber">Numbers after comma:</label>
+                <input style="display: none" type="number" id="floatNumber" name="floatNumber" value="0" disabled>
 
-            <div id="ope-list">
-                <label for="operation">List of operations:</label>
-                <ul>
-                    <li>
-                        <label for="addition">+</label>
-                        <input type="checkbox" id="additionCheck" name="additionCheck" checked>
-                    </li>
-                    <li>
-                        <label for="subtraction">-</label>
-                        <input type="checkbox" id="subtractionCheck" name="subtractionCheck" checked>
-                    </li>
-                    <li>
-                        <label for="multiplication">x</label>
-                        <input type="checkbox" id="multiplicationCheck" name="multiplicationCheck" checked>
-                    </li>
-                </ul>
+                <label style="display: none" for="nNumber">Number of Numbers:</label>
+                <input style="display: none" type="number" id="nNumber" name="nNumber" value="2" disabled>
+
+                <div id="ope-list">
+                    <label for="operation">List of operations:</label>
+                    <ul>
+                        <li>
+                            <label for="addition">+</label>
+                            <input type="checkbox" id="additionCheck" name="additionCheck" checked>
+                        </li>
+                        <li>
+                            <label for="subtraction">-</label>
+                            <input type="checkbox" id="subtractionCheck" name="subtractionCheck" checked>
+                        </li>
+                        <li>
+                            <label for="multiplication">x</label>
+                            <input type="checkbox" id="multiplicationCheck" name="multiplicationCheck" checked>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <label for="maxAnswerCount">Number of questions:</label>
+                <input type="number" id="maxAnswerCount" name="maxAnswerCount" value="10">
+
+                <button type="submit" class="base-button half-button">Submit</button>
+                <p class="error" id="errorMessage"></p>
+
+                <pre id="jsonOutput"></pre>
+                </form>
+
+
             </div>
+        </div>
+        
 
 
-            <label for="maxAnswerCount">Number of questions:</label>
-            <input type="number" id="maxAnswerCount" name="maxAnswerCount" value="10">
-
-            <button type="submit">Submit</button>
-            <p class="error" id="errorMessage"></p>
-
-            <pre id="jsonOutput"></pre>
-        </form>
     </div>
+
+    
 
     <script type="module" src="/js/ui-script/parameters-script.js"></script>
 </body>

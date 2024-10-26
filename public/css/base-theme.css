@@ -12,6 +12,7 @@ body {
 
 .base-button {
     width: 100%;
+    margin: 5px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -27,5 +28,6 @@ body {
 }
 
 .half-button {
-    width: 50%
+    width: 50%;
+    margin: 10px;
 }
