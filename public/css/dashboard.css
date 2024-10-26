@@ -1,20 +1,14 @@
-/* Basic styling for the body and layout */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
 }
 
-/* Home section */
-#home {
+#dashboard-container {
     margin-top: 20px;
     padding: 20px;
     text-align: center;
 }
 
-/* Headline styling */
 h1 {
     color: #333;
     font-size: 2.5em;
@@ -29,7 +23,6 @@ p{
     margin : 5px;
 }
 
-/* Button styling */
 button {
     background-color: #6a94d1;
     color: white;
