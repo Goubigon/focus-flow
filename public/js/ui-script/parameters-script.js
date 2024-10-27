@@ -1,8 +1,9 @@
 //script used by parameters.html
 //handles form submission
 
-import { keepAuthenticate } from '../client-api/auth_api.js';
-import { getCleanDateTime } from '../client-api/utils.js';
+import { keepAuthenticate } from '../client-api/user_api.js';
+import { createParams, createSession } from '../client-api/session_api.js';
+import { getCleanDateTime } from '../client-api/tools.js';
 
 
 //boolean true if anything in the inputs of the form has changed
@@ -38,66 +39,6 @@ function loadExistingForm() {
         document.getElementById('maxAnswerCount').value = paramJson.mMaxAnswerCount;
     }
 }
-
-
-async function createParams(mMinNumber, mMaxNumber, mFloatNumber, mNumber, mAddCheck, mSubCheck, mMultCheck, mMaxAnswerCount) {
-    try {
-        const response = await fetch(`/session-data/createParams`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                mMinNumber: mMinNumber,
-                mMaxNumber: mMaxNumber,
-                mFloatNumber: mFloatNumber,
-                mNumber: mNumber,
-
-                mAdditionCheck: mAddCheck,
-                mSubtractionCheck: mSubCheck,
-                mMultiplicationCheck: mMultCheck,
-                mMaxAnswerCount: mMaxAnswerCount,
-            })
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            console.log("[Fetch createParams] : " + JSON.stringify(result))
-            return result;
-        } else {
-            document.getElementById('errorMessage').innerHTML = result.message;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-async function createSession(paramID, sessionDate) {
-    try {
-        const response = await fetch(`/session-data/createSession`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                paramID: paramID,
-                sessionDate: sessionDate
-            })
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            console.log("[Fetch createSession] : " + JSON.stringify(result))
-            return result;
-        } else {
-            document.getElementById('errorMessage').innerHTML = result.message;
-        }
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
-
 
 formElement.addEventListener('submit', async (event) => {
     //default form submission makes submission reloads the page

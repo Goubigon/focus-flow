@@ -1,4 +1,3 @@
-//Check data base
 
 export async function logUser(email, password) {
     try {
@@ -144,6 +143,99 @@ export async function alreadyConnected (){
             console.log("is user still connected : " + result.isAuth)
             if(result.isAuth) {window.location.href = '/home';}
             return result.isAuth;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+export async function createUser(name, email, password) {
+    try {
+        const response = await fetch(`/user-data/createUser`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify({
+                name : name,
+                email : email,
+                password : password,
+                role : "user"
+            })
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log(result); 
+            await logUser(email, password);
+        } else {
+            document.getElementById('errorMessage').innerHTML = result.message;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+
+
+export async function getUserSessionData() {
+    try {
+        const response = await fetch('/user-data/getUserSessionData', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            //console.log(JSON.stringify(result));
+            return result;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export async function callRoute(route) {
+    try {
+        const response = await fetch('/user-data/' + route, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            //console.log(JSON.stringify(result));
+            return result;
+        } else {
+            console.error('Failed to retrieve answers.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+export async function callLevelRoute(route, level) {
+    try {
+        const response = await fetch('/user-data/' + route + '/' + level, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            //console.log(JSON.stringify(result));
+            return result;
         } else {
             console.error('Failed to retrieve answers.');
         }

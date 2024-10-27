@@ -1,10 +1,7 @@
-import {
-    getCleanDateTime,
-    loadFromLocalStorage,
-    askGenerateQuestions, insertAllAnswers
-} from '../client-api/utils.js';
+import { getCleanDateTime, loadFromLocalStorage } from '../client-api/tools.js';
+import { keepAuthenticate } from '../client-api/user_api.js';
 
-import { keepAuthenticate } from '../client-api/auth_api.js';
+import { askGenerateQuestions, insertAllAnswers } from '../client-api/math_api.js';
 
 
 let startTime; //starting time when questions are loaded
@@ -132,7 +129,7 @@ answerInputTextArea.addEventListener('keypress', (event) => {
         let answerValue = answerInputTextArea.value;
         if (inputIsCorrect(answerValue)) {
             answerValue = formattedValue(answerValue);
-            
+
             let currentQuestion = questionJsonList[currentLine]
             if (handleResult(answerValue, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
             else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
@@ -171,7 +168,7 @@ answerInputTextArea.addEventListener('input', function (e) {
 
 window.onload = async () => {
     keepAuthenticate()
-    
+
     mSessionIdentifier = loadFromLocalStorage('mSessionIdentifier');
     mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
 

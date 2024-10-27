@@ -1,4 +1,4 @@
-import { getUserInfo, keepAuthenticate } from '../client-api/auth_api.js';
+import { getUserInfo, keepAuthenticate } from '../client-api/user_api.js';
 
 
 window.onload = async function () {
@@ -6,5 +6,4 @@ window.onload = async function () {
     
     const userJson = await getUserInfo()
     document.getElementById('user-name').textContent = userJson.mUsername;
-
 };

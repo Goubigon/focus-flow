@@ -1,4 +1,4 @@
-import { logoutUser } from '../client-api/auth_api.js';
+import { logoutUser } from '../client-api/user_api.js';
 
 
     
