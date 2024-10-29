@@ -53,8 +53,14 @@ Navigate into the project folder and install dependencies:
 cd focus-flow
 npm install
 ```
-The last command should have installed the following key packages:
+
+You can check the installed packages by running:
+```bash
+npm list
 ```
+
+The last command should have installed the following key packages.
+```bash
 ├── bcrypt@5.1.1
 ├── cookie-parser@1.4.6
 ├── dotenv@16.4.5
@@ -75,13 +81,18 @@ Copy .env.example to .env
 ```bash
 cp .env.example .env
 ```
-Generate cryptographic strings for token secrets using OpenSSL:
+Generate a cryptographic string for ACCESS_TOKEN_SECRET using OpenSSL:
 ```bash
-openssl rand -base64 32
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
 ```
+Then generate another one for REFRESH_TOKEN_SECRET:
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
+```
+
 In your newly created .env file:
-- Replace DB_USER and DB_PASSWORD with your actual credentials.
-- Replace the ACCESS_TOKEN_SECRET and REFRESH_TOKEN_SECRET with two different generated strings.
+- Fill DB_USER and DB_PASSWORD with your actual credentials.
+- Fill the ACCESS_TOKEN_SECRET and REFRESH_TOKEN_SECRET with two different generated strings.
 ```
 DB_HOST=localhost
 DB_USER=your_username # Your MySQL username
