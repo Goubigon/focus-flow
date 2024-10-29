@@ -53,8 +53,7 @@ Navigate into the project folder and install dependencies:
 cd focus-flow
 npm install
 ```
-
-This app requires the following key packages:
+The last command should have installed the following key packages:
 ```
 ├── bcrypt@5.1.1
 ├── cookie-parser@1.4.6
@@ -80,9 +79,9 @@ Generate cryptographic strings for token secrets using OpenSSL:
 ```bash
 openssl rand -base64 32
 ```
-
-Replace DB_USER and DB_PASSWORD with your actual credentials.
-Replace the ACCESS_TOKEN_SECRET and REFRESH_TOKEN_SECRET with two different generated strings.
+In your newly created .env file:
+- Replace DB_USER and DB_PASSWORD with your actual credentials.
+- Replace the ACCESS_TOKEN_SECRET and REFRESH_TOKEN_SECRET with two different generated strings.
 ```
 DB_HOST=localhost
 DB_USER=your_username # Your MySQL username
@@ -113,9 +112,19 @@ Start the server:
 node ./app.js
 ```
 
-# Screenshots
-## Dashboard page
-![App Screenshot](assets/dashboard_lvl3.png)
+You should see :
+```bash
+Server running at https://localhost:8000/
+```
 
-## End results
-![App Screenshot](assets/end_result.png)
+And you will be able to access the page by following that link.
+
+# Screenshots
+
+## Preview page
+The first preview page you will see when accessing the app
+![App Screenshot](assets/preview.png)
+
+## Dashboard page
+A dashboard summarizing all the data
+![App Screenshot](assets/dashboard_lvl3.png)
