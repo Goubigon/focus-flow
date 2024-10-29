@@ -96,21 +96,15 @@ REFRESH_TOKEN_SECRET=your_refresh_token_secret # Secret for signing refresh toke
 
 
 ### Database setup
-Creation of the database and tables :
-```sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_db_schema.sql
-
+Ensure you have the correct rights to run the installation script
+```bash
+chmod +x db_installation_script.sh
 ```
 
-Load sample data for guest access:
-```sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_user_credential_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_user_stat_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_session_parameters_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_session_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "$DB_NAME_MATH" < /db_installation/math_answer_seed.sql
+Run it
+```bash
+./run_db_installation.sh
 ```
-
 
 ### Run the App
 
