@@ -12,6 +12,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+      
+    - name: Check environment
+      run: echo "Logging in with user:${{ secrets.DOCKER_USERNAME }}"
 
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
