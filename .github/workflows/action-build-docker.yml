@@ -22,8 +22,9 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
           cd /home/leo/remote_docker_folder
-          docker build -t focus-flow-image:latest .
+          docker rmi $(docker images focus-flow-image -q)
           docker stop focus-flow-container || true
           docker rm focus-flow-container || true
+          docker build -t focus-flow-image:latest .
           docker compose up -d
         EOF
