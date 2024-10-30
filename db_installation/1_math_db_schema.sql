@@ -1,6 +1,6 @@
 DROP DATABASE IF EXISTS `math_db`;
 CREATE DATABASE `math_db`;
-USE my_database;
+USE `math_db`;
 
 
 
