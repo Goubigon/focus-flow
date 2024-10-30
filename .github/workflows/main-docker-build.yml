@@ -28,4 +28,4 @@ jobs:
         context: .
         file: ./docker/Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/myapp-image:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/focus-flow:latest
