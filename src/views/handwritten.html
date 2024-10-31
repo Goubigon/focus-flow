@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Number Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-top: 30px;
+        }
+
+        canvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        #first_res,
+        #second_res {
+            font-weight: bold;
+        }
+
+        #first_prob,
+        #second_prob {
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Draw a Number</h1>
+    <canvas id="canvas" width="200" height="200"></canvas>
+    <br>
+    <button id="clear">Clear</button>
+    <button id="predict">Predict Number</button>
+    <h2 id="first_res"></h2>
+    <h2 id="first_prob"></h2>
+
+    <h2 id="second_res"></h2>
+    <h2 id="second_prob"></h2>
+
+    <script type="module" src="/js/ui-script/hand-script.js"></script>
+</body>
+
+</html>

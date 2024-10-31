@@ -151,4 +151,13 @@ router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
 })
 
 
+
+// router.post("/predict", async (req, res) => {
+//     const base64Image = req.body.image;
+//     console.log("base64Image : " + base64Image)
+
+//     res.status(201)
+// })
+
+
 module.exports = router;

@@ -26,6 +26,8 @@ const sessionDataRoute = require('../src/routes/data/session-data.js');
 
 const previewRoute = require('../src/routes/preview.js');
 
+const handRoute = require('../src/routes/handwritten.js');
+
 
 //default / redirects to /preview
 app.get('/', (req, res) => {
@@ -48,6 +50,9 @@ app.use('/logout', logoutRoute);
 
 app.use('/session-data', sessionDataRoute);
 app.use('/preview', previewRoute);
+
+
+app.use('/handwritten', handRoute);
 
 
 // Handle 404 errors
