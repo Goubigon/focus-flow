@@ -37,7 +37,7 @@ document.getElementById('predict').addEventListener('click', () => {
     const dataURL = canvas.toDataURL('image/png');
     console.log(dataURL);  // Log Base64 image data
 
-    fetch('/math-data/predict', {
+    fetch('http://localhost:8001/predict', {
         method: 'POST',
         body: JSON.stringify({ image: dataURL }),
         headers: {
