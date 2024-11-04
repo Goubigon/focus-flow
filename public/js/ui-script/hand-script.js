@@ -37,7 +37,7 @@ document.getElementById('predict').addEventListener('click', () => {
     const dataURL = canvas.toDataURL('image/png');
     console.log(dataURL);  // Log Base64 image data
 
-    fetch('https://mnist-server:5001/predict', {
+    fetch('http://mnist-server:5001/predict', {
         method: 'POST',
         body: JSON.stringify({ image: dataURL }),
         headers: {
