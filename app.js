@@ -1,7 +1,10 @@
 //app.js
 //main executer
 
-//express.js & https.js
-const { expressApp, startServer } = require('./config/sc-index');
+//express.js & http.js
+const { expressApp, startServerHTTP, initializeDatabase } = require('./config/sc-index');
 
-startServer(expressApp);
+// Initialize the database
+initializeDatabase();
+
+startServerHTTP(expressApp);

@@ -34,9 +34,9 @@ INSERT INTO math_db.math_session (mUserIdentifier,mParametersIdentifier,mSession
 INSERT INTO math_db.math_session (mUserIdentifier,mParametersIdentifier,mSessionDuration,mSessionDate) VALUES
 	 (1,23,29.81,'2024-10-21 17:39:29'),
 	 (1,10,4.67,'2024-10-21 18:03:40'),
-	 (1,35,3.06,'2024-10-23 14:38:59'),
+	 (1,22,3.06,'2024-10-23 14:38:59'),
 	 (1,24,2.32,'2024-10-23 14:42:08'),
-	 (1,36,4.46,'2024-10-23 14:44:01'),
+	 (1,22,4.46,'2024-10-23 14:44:01'),
 	 (1,1,19.18,'2024-10-23 14:52:03'),
 	 (1,3,73.6,'2024-10-23 14:58:13'),
 	 (1,3,16.12,'2024-10-23 16:20:02'),
