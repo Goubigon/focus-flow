@@ -11,4 +11,14 @@ INSERT INTO math_db.math_session (mUserIdentifier,mParametersIdentifier,mSession
 	 (1,3,29.28,'2024-11-02 14:10:04');
 INSERT INTO math_db.math_session (mUserIdentifier,mParametersIdentifier,mSessionDuration,mSessionDate) VALUES
 	 (1,4,17.19,'2024-11-02 14:11:20'),
-	 (1,5,7.6,'2024-11-04 14:19:13');
+	 (1,5,7.6,'2024-11-04 14:19:13'),
+	 (1,5,7.6,'2024-11-04 14:20:13'),
+	 (1,1,20.55,'2024-11-04 16:21:27'),
+	 (1,1,23.91,'2024-11-04 16:21:53'),
+	 (1,1,28.41,'2024-11-04 16:22:28'),
+	 (1,2,25.89,'2024-11-04 16:23:06'),
+	 (1,4,24.96,'2024-11-04 16:23:48'),
+	 (1,4,15.28,'2024-11-04 16:24:18'),
+	 (1,5,7.73,'2024-11-04 16:24:39');
+INSERT INTO math_db.math_session (mUserIdentifier,mParametersIdentifier,mSessionDuration,mSessionDate) VALUES
+	 (1,5,10.66,'2024-11-04 16:24:53');

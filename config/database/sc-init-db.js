@@ -42,8 +42,8 @@ async function initializeDatabase() {
       await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_user_credential_seed.sql'));
       await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_user_stat_seed.sql'));
       await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_session_parameters_seed.sql'));
-    //   await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_session_seed.sql'));
-    //   await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_answer_seed.sql'));
+      await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_session_seed.sql'));
+      await executeSQLFile(connection, path.join(__dirname, '../../db_installation/math_answer_seed.sql'));
 
 
       console.log(`Database ${process.env.DB_NAME_MATH} created and seeded successfully.`);
