@@ -2,6 +2,6 @@
 //main executer
 
 //express.js & http.js
-const { expressApp, startServer } = require('./config/sc-index');
+const { expressApp, startServerHTTP } = require('./config/sc-index');
 
-startServer(expressApp);
+startServerHTTP(expressApp);
