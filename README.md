@@ -106,32 +106,16 @@ REFRESH_TOKEN_SECRET=your_refresh_token_secret # Secret for signing refresh toke
 
 
 ### Database setup
-#### On Linux/macOS/wsl
-Ensure you have the correct rights to run the installation script
-```bash
-chmod +x db_installation_script.sh
-```
+The databases needed for the app will be automatically created using the information filled in the .env file.
+The database `math_db` will have the following tables :
+- `math_user_credentials` 
+- `math_user_stats` 
+- `math_session_parameters` 
+- `math_session` 
+- `math_answer`
 
-Run it
-```bash
-./run_db_installation.sh
-```
+Which will be filled by demonstration data to make the guest account work.
 
-#### On Windows
-Replace the following $DB_USER and $DB_PASSWORD with your own mySQL credentials.
-- Creating the database and tables
-```bash
-mysql -u your_username -p"$DB_PASSWORD" "DB_NAME_MATH" < /db_installation/math_db_schema.sql
-```
-
-- Filling the tables with guest data
-```bash
-mysql -u "$DB_USER" -p"$DB_PASSWORD" MATH_DB < /db_installation/math_user_credential_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "DB_NAME_MATH" < /db_installation/math_user_stat_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "DB_NAME_MATH" < /db_installation/math_session_parameters_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "DB_NAME_MATH" < /db_installation/math_session_seed.sql
-mysql -u "$DB_USER" -p"$DB_PASSWORD" "DB_NAME_MATH" < /db_installation/math_answer_seed.sql
-```
 ### Run the App
 
 Start the server:
@@ -141,7 +125,7 @@ node ./app.js
 
 You should see :
 ```bash
-Server running at https://localhost:8000/
+Server running at http://localhost:8000/
 ```
 
 And you will be able to access the page by following that link.
