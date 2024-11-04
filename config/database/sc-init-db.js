@@ -3,25 +3,46 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+const MAX_RETRIES = 5;
+const RETRY_DELAY = 2000;
+let pool;
 
-async function executeSQLFile(connection, filePath) {
-    const sql = fs.readFileSync(filePath, 'utf-8');
-    const statements = sql.split(/;\s*$/m); // Split by semicolon and remove empty strings
-  
-    for (const statement of statements) {
-      if (statement.trim()) { // Skip empty statements
-        await connection.query(statement);
+async function connectWithRetry(retries = MAX_RETRIES) {
+  while (retries > 0) {
+    try {
+      pool = await mysql.createPool({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+      });
+      console.log('Database connected successfully');
+      return pool;
+    } catch (err) {
+      console.error(`Database connection failed. Retries left: ${retries - 1}`);
+      if (--retries === 0) {
+        console.error('All retries exhausted. Exiting...');
+        process.exit(1); // Exit with failure
       }
+      await new Promise(res => setTimeout(res, RETRY_DELAY));
     }
   }
+}
+
+
+
+async function executeSQLFile(connection, filePath) {
+  const sql = fs.readFileSync(filePath, 'utf-8');
+  const statements = sql.split(/;\s*$/m); // Split by semicolon and remove empty strings
+
+  for (const statement of statements) {
+    if (statement.trim()) { // Skip empty statements
+      await connection.query(statement);
+    }
+  }
+}
 
 async function initializeDatabase() {
   let connection;
@@ -57,4 +78,4 @@ async function initializeDatabase() {
   }
 }
 
-module.exports = initializeDatabase;
+module.exports = {connectWithRetry, initializeDatabase};
