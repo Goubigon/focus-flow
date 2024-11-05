@@ -1,3 +1,7 @@
+
+import { askPredict } from '../client-api/model_api.js';
+
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let drawing = false;
@@ -33,23 +37,7 @@ document.getElementById('clear').addEventListener('click', () => {
 });
 
 // Predict number
-document.getElementById('predict').addEventListener('click', () => {
+document.getElementById('predict').addEventListener('click', async () => {
     const dataURL = canvas.toDataURL('image/png');
-    console.log(dataURL);  // Log Base64 image data
-
-    fetch('http://mnist-server:5001/predict', {
-        method: 'POST',
-        body: JSON.stringify({ image: dataURL }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('first_res').innerText = 'Predicted Number: ' + data.first_index;
-            document.getElementById('first_prob').innerText = 'Probability: ' + data.first_prob + '%';
-
-            document.getElementById('second_res').innerText = 'Second Number: ' + data.second_index;
-            document.getElementById('second_prob').innerText = 'Probability: ' + data.second_prob + '%';
-        });
+    await askPredict(dataURL);
 });
