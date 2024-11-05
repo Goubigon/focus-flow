@@ -2,7 +2,30 @@ DROP DATABASE IF EXISTS `math_db`;
 CREATE DATABASE `math_db`;
 USE `math_db`;
 
+-- math_db.math_user_credential definition
 
+CREATE TABLE `math_user_credential` (
+  `mUserIdentifier` int NOT NULL AUTO_INCREMENT,
+  `mUsername` varchar(255) NOT NULL,
+  `mEmail` varchar(255) NOT NULL,
+  `mHashedPassword` varchar(255) NOT NULL,
+  `mRole` enum('admin','user') NOT NULL DEFAULT 'user',
+  `mCreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`mUserIdentifier`),
+  UNIQUE KEY `mEmail` (`mEmail`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- math_db.math_user_stat definition
+
+CREATE TABLE `math_user_stat` (
+  `mUserIdentifier` int NOT NULL,
+  `mLogNumber` int DEFAULT '0',
+  `mSessionCount` int DEFAULT '0',
+  `mLastSessionDate` datetime DEFAULT NULL,
+  `mTotalSessionTime` float DEFAULT '0',
+  PRIMARY KEY (`mUserIdentifier`),
+  CONSTRAINT `math_user_stat_ibfk_1` FOREIGN KEY (`mUserIdentifier`) REFERENCES `math_user_credential` (`mUserIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- math_db.math_session_parameters definition
 
@@ -17,20 +40,6 @@ CREATE TABLE `math_session_parameters` (
   `mMultiplicationCheck` tinyint(1) DEFAULT '1',
   `mMaxAnswerCount` int DEFAULT '0',
   PRIMARY KEY (`mParametersIdentifier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
--- math_db.math_user_credential definition
-
-CREATE TABLE `math_user_credential` (
-  `mUserIdentifier` int NOT NULL AUTO_INCREMENT,
-  `mUsername` varchar(255) NOT NULL,
-  `mEmail` varchar(255) NOT NULL,
-  `mHashedPassword` varchar(255) NOT NULL,
-  `mRole` enum('admin','user') NOT NULL DEFAULT 'user',
-  `mCreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`mUserIdentifier`),
-  UNIQUE KEY `mEmail` (`mEmail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
@@ -50,17 +59,6 @@ CREATE TABLE `math_session` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- math_db.math_user_stat definition
-
-CREATE TABLE `math_user_stat` (
-  `mUserIdentifier` int NOT NULL,
-  `mLogNumber` int DEFAULT '0',
-  `mSessionCount` int DEFAULT '0',
-  `mLastSessionDate` datetime DEFAULT NULL,
-  `mTotalSessionTime` float DEFAULT '0',
-  PRIMARY KEY (`mUserIdentifier`),
-  CONSTRAINT `math_user_stat_ibfk_1` FOREIGN KEY (`mUserIdentifier`) REFERENCES `math_user_credential` (`mUserIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- math_db.math_answer definition
