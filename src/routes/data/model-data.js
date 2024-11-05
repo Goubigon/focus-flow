@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 router.post("/predict", async (req, res) => {
     //pythonRoute = 'http://localhost:5001/predict'
-    pythonRoute = 'http://mnist-server:5001'
+    pythonRoute = 'http://mnist-server:5001/predict'
     axios.post(pythonRoute, req.body, {
         headers: {
             'Content-Type': 'application/json'
