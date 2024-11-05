@@ -13,8 +13,7 @@ CREATE TABLE `math_user_credential` (
   `mCreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`mUserIdentifier`),
   UNIQUE KEY `mEmail` (`mEmail`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+);
 -- math_db.math_user_stat definition
 
 CREATE TABLE `math_user_stat` (
@@ -25,8 +24,7 @@ CREATE TABLE `math_user_stat` (
   `mTotalSessionTime` float DEFAULT '0',
   PRIMARY KEY (`mUserIdentifier`),
   CONSTRAINT `math_user_stat_ibfk_1` FOREIGN KEY (`mUserIdentifier`) REFERENCES `math_user_credential` (`mUserIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+);
 -- math_db.math_session_parameters definition
 
 CREATE TABLE `math_session_parameters` (
@@ -40,8 +38,7 @@ CREATE TABLE `math_session_parameters` (
   `mMultiplicationCheck` tinyint(1) DEFAULT '1',
   `mMaxAnswerCount` int DEFAULT '0',
   PRIMARY KEY (`mParametersIdentifier`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+);
 
 -- math_db.math_session definition
 
@@ -56,8 +53,7 @@ CREATE TABLE `math_session` (
   KEY `mParametersIdentifier` (`mParametersIdentifier`),
   CONSTRAINT `math_session_ibfk_1` FOREIGN KEY (`mUserIdentifier`) REFERENCES `math_user_credential` (`mUserIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `math_session_ibfk_2` FOREIGN KEY (`mParametersIdentifier`) REFERENCES `math_session_parameters` (`mParametersIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+);
 
 
 
@@ -77,4 +73,4 @@ CREATE TABLE `math_answer` (
   PRIMARY KEY (`mAnswerIdentifier`),
   KEY `mSessionIdentifier` (`mSessionIdentifier`),
   CONSTRAINT `math_answer_ibfk_1` FOREIGN KEY (`mSessionIdentifier`) REFERENCES `math_session` (`mSessionIdentifier`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
