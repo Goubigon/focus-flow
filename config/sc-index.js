@@ -5,11 +5,10 @@
 const expressApp = require('./sc-express.js');
 const { startServerHTTP } = require('./sc-http.js');
 
-const {connectWithRetry, initializeDatabase} = require('./database/sc-init-db.js');
+const {initializeDatabase} = require('./database/sc-init-db.js');
 
 module.exports = {
     expressApp,
     startServerHTTP,
-    connectWithRetry,
     initializeDatabase
 };

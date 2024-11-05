@@ -3,9 +3,14 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 
-const MAX_RETRIES = 5;
-const RETRY_DELAY = 2000;
-let pool;
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
 async function executeSQLFile(connection, filePath) {
   const sql = fs.readFileSync(filePath, 'utf-8');
@@ -67,4 +72,4 @@ async function initializeDatabase() {
   }
 }
 
-module.exports = {connectWithRetry, initializeDatabase};
+module.exports = {initializeDatabase};
