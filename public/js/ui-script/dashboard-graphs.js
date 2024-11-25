@@ -1,4 +1,5 @@
 
+
 export function generateGraphByDate(duration, date, label, yText, chartType) {
     const myCanvas = document.getElementById('myChart')
     myCanvas.width = window.innerWidth * 0.8;

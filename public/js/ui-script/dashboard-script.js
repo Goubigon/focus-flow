@@ -14,11 +14,9 @@ import {
 let myChart = null;
 
 const keyDataContainer = document.getElementById('key-data-container');
-
-const loadGraphButton = document.getElementById('sessionDurationByDateButton');
 const h2Element = document.getElementById('titleOfGraph');
 
-loadGraphButton.addEventListener('click', async () => {
+document.getElementById('sessionDurationByDateButton').addEventListener('click', async () => {
     h2Element.textContent = 'Play time duration by day';
 
     const sessionDataJson = await callRoute('getUserSessionData');
@@ -210,8 +208,6 @@ document.getElementById('tab-button1').addEventListener('click', () => {
     document.getElementById('lastSessionResultsButton').click();
     document.getElementById(`lastSessionResultsButton`).classList.add('active');
 })
-
-
 
 
 document.getElementById('tab-button2').addEventListener('click', () => {
