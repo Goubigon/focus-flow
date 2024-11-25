@@ -1,12 +1,12 @@
-
-
-export function generateGraphByDate(duration, date, label, yText, chartType) {
-    const myCanvas = document.getElementById('myChart')
+function setupCanvas() {
+    const myCanvas = document.getElementById('myChart');
     myCanvas.width = window.innerWidth * 0.8;
     myCanvas.height = window.innerHeight * 0.5;
-    const ctx = myCanvas.getContext('2d');
+    return myCanvas.getContext('2d');
+}
 
-
+export function generateGraphByDate(duration, date, label, yText, chartType) {
+    const ctx = setupCanvas();
     return new Chart(ctx, {
         type: chartType,
         data: {
@@ -58,10 +58,7 @@ export function generateGraphByDate(duration, date, label, yText, chartType) {
 
 
 export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
-    const myCanvas = document.getElementById('myChart')
-    myCanvas.width = window.innerWidth * 0.8;
-    myCanvas.height = window.innerHeight * 0.5;
-    const ctx = myCanvas.getContext('2d');
+    const ctx = setupCanvas();
 
     return new Chart(ctx, {
         type: 'line',
@@ -120,12 +117,7 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
 
 export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, yText) {
-    const myCanvas = document.getElementById('myChart')
-
-    myCanvas.width = window.innerWidth * 0.8;
-    myCanvas.height = window.innerHeight * 0.3;
-
-    const ctx = myCanvas.getContext('2d');
+    const ctx = setupCanvas();
 
     return new Chart(ctx, {
         type: 'line',
@@ -208,10 +200,7 @@ export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, 
 }
 
 export function generateIsCorrectBarGraph(correct, incorrect) {
-    const myCanvas = document.getElementById('myChart')
-    myCanvas.width = window.innerWidth * 0.8;
-    myCanvas.height = window.innerHeight * 0.5;
-    const ctx = myCanvas.getContext('2d');
+    const ctx = setupCanvas();
 
     return new Chart(ctx, {
         type: 'bar',
@@ -268,10 +257,7 @@ export function generateIsCorrectBarGraph(correct, incorrect) {
 
 
 export function generateCircularCorrectBarGraph(correct, incorrect) {
-    const myCanvas = document.getElementById('myChart')
-    myCanvas.width = window.innerWidth * 0.8;
-    myCanvas.height = window.innerHeight * 0.5;
-    const ctx = myCanvas.getContext('2d');
+    const ctx = setupCanvas();
 
     return new Chart(ctx, {
         type: 'doughnut', // Change to 'pie' if you prefer a pie chart
