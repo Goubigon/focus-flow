@@ -62,7 +62,6 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
     return new Chart(ctx, {
         type: 'line',
-
         data: {
             labels: date, // Labels for the bars
             datasets: [{
@@ -118,7 +117,6 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
 export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, yText) {
     const ctx = setupCanvas();
-
     return new Chart(ctx, {
         type: 'line',
 
@@ -196,12 +194,10 @@ export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, 
             }
         }
     });
-
 }
 
 export function generateIsCorrectBarGraph(correct, incorrect) {
     const ctx = setupCanvas();
-
     return new Chart(ctx, {
         type: 'bar',
         data: {
@@ -250,9 +246,6 @@ export function generateIsCorrectBarGraph(correct, incorrect) {
             }
         }
     });
-
-
-
 }
 
 
@@ -277,17 +270,15 @@ export function generateCircularCorrectBarGraph(correct, incorrect) {
             }]
         },
         options: {
-            responsive: true,
-            maintainAspectRatio: false,
+            responsive: false,
             plugins: {
                 legend: {
-                    position: 'top',
+                    display: false
                 },
                 tooltip: {
                     enabled: true,
                 },
             },
         },
-
     });
 }
