@@ -5,8 +5,7 @@ import {
     generateGraphByDate, generateDoubleLineGraphByDate,
     generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph,
     generateCircularCorrectBarGraph
-}
-    from './dashboard-graphs.js'
+} from './dashboard-graphs.js'
 
 
 
@@ -14,10 +13,10 @@ import {
 let myChart = null;
 
 const keyDataContainer = document.getElementById('key-data-container');
-const h2Element = document.getElementById('titleOfGraph');
+const graphTitle = document.getElementById('titleOfGraph');
 
 document.getElementById('sessionDurationByDateButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Play time duration by day';
+    graphTitle.textContent = 'Play time duration by day';
 
     const sessionDataJson = await callRoute('getUserSessionData');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
@@ -32,7 +31,7 @@ document.getElementById('sessionDurationByDateButton').addEventListener('click',
 
 
 document.getElementById('sessionNumberByDateButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Number of session by day';
+    graphTitle.textContent = 'Number of session by day';
 
     const sessionDataJson = await callRoute('getUserSessionCount');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
@@ -47,7 +46,7 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
 
 
 document.getElementById('lastSessionResultsButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Your latest results :';
+    graphTitle.textContent = 'Your latest results :';
 
     const resJson = await callRoute('getLatestResults');
     console.log("sessionDataStr : " + JSON.stringify(resJson))
@@ -62,7 +61,7 @@ document.getElementById('lastSessionResultsButton').addEventListener('click', as
 
 
 document.getElementById('resultsByDayButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Results by day';
+    graphTitle.textContent = 'Results by day';
 
     const resJson = await callRoute('getResultsByDay');
     console.log("sessionDataStr : " + JSON.stringify(resJson))
@@ -83,7 +82,7 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
 
 async function displayLevelStats(level) {
 
-    h2Element.textContent = 'Results for level ' + level;
+    graphTitle.textContent = 'Results for level ' + level;
     const resJson = await callLevelRoute('getResultByLevel', level)
     console.log("callLevelRoute : " + JSON.stringify(resJson))
 
@@ -217,7 +216,9 @@ document.getElementById('tab-button2').addEventListener('click', () => {
 
 
 document.getElementById('tab-button3').addEventListener('click', async () => {
+    graphTitle.textContent = '';
     const userStats = await callRoute('/getUserStats')
+
 
     const keyDataList = [
         { key: 'totSessionTime', value: convertSecondsToMinutesAndSeconds(userStats.mTotalSessionTime), subtext: 'Time playing' },
