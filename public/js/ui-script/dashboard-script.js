@@ -3,7 +3,8 @@ import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-a
 
 import {
     generateGraphByDate, generateDoubleLineGraphByDate,
-    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph
+    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph,
+    generateCircularCorrectBarGraph
 }
     from './dashboard-graphs.js'
 
@@ -57,7 +58,8 @@ document.getElementById('lastSessionResultsButton').addEventListener('click', as
     const incorrect = resJson.map(session => session.IncorrectCount);
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
-    myChart = generateIsCorrectBarGraph(correct, incorrect)
+    // myChart = generateIsCorrectBarGraph(correct, incorrect)
+    myChart = generateCircularCorrectBarGraph(correct, incorrect)
 })
 
 
