@@ -87,7 +87,7 @@ cp .env.example .env
 ```
 Generate cryptographic strings for token secrets using OpenSSL:
 ```bash
-openssl rand -base64 64
+openssl rand -hex 64
 ```
 In your newly created .env file:
 1. Replace DB_USER and DB_PASSWORD with your actual credentials.
@@ -106,28 +106,17 @@ REFRESH_TOKEN_SECRET=your_refresh_token_secret # Secret for signing refresh toke
 ![App Screenshot](assets/env_exemple.png)
 
 
-### Database setup
-Ensure you have the correct rights to run the installation script
-```bash
-chmod +x db_installation_script.sh
-```
-
-Run it
-```bash
-./run_db_installation.sh
-```
-
 ### Run the App
 
 Start the server:
 ```bash
 node ./app.js
 ```
+The app checks if the databases exist and have the correct data; creating and filling them if needed.
+
 
 You should see :
-```bash
-Server running at https://localhost:8000/
-```
+![App Screenshot](assets/run_app_log.png)
 
 And you will be able to access the page by following that link.
 
