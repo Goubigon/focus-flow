@@ -31,3 +31,13 @@ body {
     width: 50%;
     margin: 10px;
 }
+
+.base-image {
+    width: 50%;
+  }
+  
+@media screen and (max-width: 600px) { /* If screen < 600px */
+.base-image {
+    width: 80%;
+}
+}
