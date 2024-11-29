@@ -1,5 +1,6 @@
-#bar{
+.bar-center{
     text-align: center; 
+    padding: 1vh;
 }
 
 .bar-list li a:hover {
@@ -9,7 +10,7 @@
 
 #logoutButton {
     position: absolute;
-    right: 80px;
+    right: 30px;
     top: 50%;
     transform: translateY(-50%);
     background-color: red;

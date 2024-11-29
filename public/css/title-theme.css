@@ -4,18 +4,24 @@
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
+
 .basic-title-div h1 {
-    font-size: 3.5em;
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    margin: 0;
     color: #00b395;
     text-align: center;
 }
+.basic-title-div h2 {
+    margin: 2rem;
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+}
 
-.basic-title-div p {
-    font-size: 1.5em;
-    line-height: 1.6;
+.basic-title-div h3 {
+    margin: 0;
+    font-size: clamp(0.5rem, 1vw, 1.2rem);
 }
 
 .basic-title-div img {
