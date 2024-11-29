@@ -11,6 +11,4 @@ document.getElementById('loginForm').addEventListener('submit', async (event) =>
     await logUser(email, password);
 })
 
-window.onload = async () => {
-    await alreadyConnected()
-}
+await alreadyConnected();

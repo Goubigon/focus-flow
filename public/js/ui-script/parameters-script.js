@@ -133,15 +133,6 @@ customButton.addEventListener('click', () => {
 });
 
 
-
-
-// When the windows page loads
-// Call the function to generate last written parameters if it exists
-window.onload = function () {
-    keepAuthenticate();
-    loadExistingForm();
-};
-
 // When leaving parameters page, if form has changed && is not submitted
 // -> Pop-up message
 window.addEventListener('beforeunload', (event) => {
@@ -151,3 +142,10 @@ window.addEventListener('beforeunload', (event) => {
         event.returnValue = "You have unsaved changes. Are you sure you want to leave?";
     }
 });
+
+
+
+await keepAuthenticate();
+
+// Call the function to generate last written parameters if it exists
+loadExistingForm();

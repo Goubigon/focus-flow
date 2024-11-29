@@ -230,8 +230,6 @@ document.getElementById('tab-button3').addEventListener('click', async () => {
 })
 
 
-window.onload = async () => {
-    keepAuthenticate();
-    setTabButtons();
-    document.querySelector('.tab-button.active').click();
-}
+await keepAuthenticate();
+setTabButtons();
+document.querySelector('.tab-button.active').click();

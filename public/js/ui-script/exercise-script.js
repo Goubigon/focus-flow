@@ -166,19 +166,17 @@ answerInputTextArea.addEventListener('input', function (e) {
 
 
 
-window.onload = async () => {
-    keepAuthenticate()
+await keepAuthenticate();
 
-    mSessionIdentifier = loadFromLocalStorage('mSessionIdentifier');
-    mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
+mSessionIdentifier = loadFromLocalStorage('mSessionIdentifier');
+mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
 
-    questionJsonList = await askGenerateQuestions(mParametersIdentifier)
-    console.log("[exercise onload] question list: " + JSON.stringify(questionJsonList))
+questionJsonList = await askGenerateQuestions(mParametersIdentifier)
+console.log("[exercise onload] question list: " + JSON.stringify(questionJsonList))
 
-    generateExerciseDiv(questionJsonList)
+generateExerciseDiv(questionJsonList)
 
-    numberOfLines = questionJsonList.length;
-    answerInputTextArea.focus()
-    linesContainerElement.children[currentLine].classList.add('current');
-    startTime = new Date();
-};
+numberOfLines = questionJsonList.length;
+answerInputTextArea.focus()
+linesContainerElement.children[currentLine].classList.add('current');
+startTime = new Date();

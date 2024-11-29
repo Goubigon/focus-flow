@@ -7,6 +7,4 @@ document.getElementById("guestButton").addEventListener('click', async () =>{
 })
 
 
-window.onload = () => {
-    console.log("Load logbar script ");
-}
+console.log("Load logbar script ");
