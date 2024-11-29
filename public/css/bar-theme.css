@@ -1,30 +1,33 @@
 #bar {
     background-color: #333;
-    padding: 15px 50px 15px 10px;
+    padding: 10px;
     position: fixed;
     width: 100%;
     top: 0;
+    height:5vh;
 }
 
 
 .bar-list {
     list-style-type: none;
-    display: inline-block; /* Make the ul inline-block to center it */
     margin: 0;
     padding: 0;
 }
 
 .bar-list li {
-    display: inline;
-    margin: 0 15px;
+    width: auto;
+    display: inline-block;
+    margin: 0 10px;
 }
 
-.bar-list li a {
-    transform: translateY(-80%);
+.bar-list li a, button {
+    display: inline-block;
+    text-align: center;
     color: white;
-    padding: 8px 16px;
+    padding: 0.5em 1em; 
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1em; 
     border-radius: 4px;
     transition: background-color 0.3s;
+    border: none;
 }

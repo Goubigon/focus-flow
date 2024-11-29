@@ -17,8 +17,11 @@
 
 # Introduction
 
-Welcome to **Focus Flow**, an engaging math quiz application! 
-This app provides users with a customizable set of math questions at various difficulty levels and offers an interactive dashboard to track performance. Use the guest mode to explore sample data or sign up to save your personalized stats.
+Welcome to **Focus Flow**, an application to test your math skills!
+This app provides users with a customizable set of math questions at various difficulty levels and offers an interactive dashboard to track performance.  
+Use the guest mode to explore sample data or sign up to save your personalized stats.  
+You may try this app hosted on a personal server using the following link : https://focus.highigh.live/preview
+
 
 ## Demo
 ![App Demo](assets/exercise_demo.gif)
@@ -32,13 +35,14 @@ This app provides users with a customizable set of math questions at various dif
 - **Guest Access**: Try the app without registering via a "Guest" option to explore the features with sample data.
 
 ## Installation
+If you wish to install the app on your own, you can follow this section. 
 ### Prerequisites
 Ensure you have the following installed:
 ```
 Node.js (v20)
 MySQL
 git
-openSSL
+OpenSSL
 ```
 
 ### Clone the Repository
@@ -53,14 +57,18 @@ Navigate into the project folder and install dependencies:
 cd focus-flow
 npm install
 ```
+
 The last command should have installed the following key packages:
+```bash
+npm list
+```
 ```
 ├── bcrypt@5.1.1
-├── cookie-parser@1.4.6
+├── cookie-parser@1.4.7
 ├── dotenv@16.4.5
-├── express@4.21.0
+├── express@4.21.1
 ├── jsonwebtoken@9.0.2
-├── mysql2@3.11.0
+└── mysql2@3.11.4
 ```
 
 ### Prepare your environment variables
@@ -68,7 +76,9 @@ The last command should have installed the following key packages:
 #### What is a dotenv file?
 A .env file stores environment variables securely, including sensitive information like database credentials and API keys. It simplifies configuration management and enables easy environment switching (e.g., development, testing, production).
 
-To prevent sensitive data from being pushed to version control, the .env file is ignored by .gitignore.
+To prevent sensitive data from being pushed to version control, the .env file is ignored by .gitignore.  
+
+**The app needs you to create your own .env file and complete it with the correct information.**
 
 #### Creating your dotenv file
 Copy .env.example to .env
@@ -77,11 +87,12 @@ cp .env.example .env
 ```
 Generate cryptographic strings for token secrets using OpenSSL:
 ```bash
-openssl rand -base64 32
+openssl rand -hex 64
 ```
 In your newly created .env file:
-- Replace DB_USER and DB_PASSWORD with your actual credentials.
-- Replace the ACCESS_TOKEN_SECRET and REFRESH_TOKEN_SECRET with two different generated strings.
+1. Replace DB_USER and DB_PASSWORD with your actual credentials.
+2. Replace the ACCESS_TOKEN_SECRET with a generated cryptographic string.
+3. Replace the REFRESH_TOKEN_SECRET with a different generated cryptographic string.
 ```
 DB_HOST=localhost
 DB_USER=your_username # Your MySQL username
@@ -92,18 +103,8 @@ ACCESS_TOKEN_SECRET=your_access_token_secret # Secret for signing access tokens
 REFRESH_TOKEN_SECRET=your_refresh_token_secret # Secret for signing refresh tokens
 ```
 
+![App Screenshot](assets/env_exemple.png)
 
-
-### Database setup
-Ensure you have the correct rights to run the installation script
-```bash
-chmod +x db_installation_script.sh
-```
-
-Run it
-```bash
-./run_db_installation.sh
-```
 
 ### Run the App
 
@@ -111,11 +112,11 @@ Start the server:
 ```bash
 node ./app.js
 ```
+The app checks if the databases exist and have the correct data; creating and filling them if needed.
+
 
 You should see :
-```bash
-Server running at https://localhost:8000/
-```
+![App Screenshot](assets/run_app_log.png)
 
 And you will be able to access the page by following that link.
 

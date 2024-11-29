@@ -3,22 +3,19 @@ import { getCleanDateTime, convertSecondsToMinutesAndSeconds } from '../client-a
 
 import {
     generateGraphByDate, generateDoubleLineGraphByDate,
-    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph
-}
-    from './dashboard-graphs.js'
-
-
+    generateDoubleLineGraphByDateWithDuration, generateIsCorrectBarGraph,
+    generateCircularCorrectBarGraph
+} from './dashboard-graphs.js'
 
 
 let myChart = null;
 
 const keyDataContainer = document.getElementById('key-data-container');
+const graphTitle = document.getElementById('titleOfGraph');
 
-const loadGraphButton = document.getElementById('sessionDurationByDateButton');
-const h2Element = document.getElementById('titleOfGraph');
 
-loadGraphButton.addEventListener('click', async () => {
-    h2Element.textContent = 'Play time duration by day';
+document.getElementById('sessionDurationByDateButton').addEventListener('click', async () => {
+    graphTitle.textContent = 'Play time duration by day';
 
     const sessionDataJson = await callRoute('getUserSessionData');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
@@ -27,13 +24,15 @@ loadGraphButton.addEventListener('click', async () => {
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
+
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
 })
 
 
-
 document.getElementById('sessionNumberByDateButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Number of session by day';
+    graphTitle.textContent = 'Number of session by day';
 
     const sessionDataJson = await callRoute('getUserSessionCount');
     console.log("sessionDataStr : " + JSON.stringify(sessionDataJson))
@@ -42,13 +41,14 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
 })
 
 
-
 document.getElementById('lastSessionResultsButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Your latest results :';
+    graphTitle.textContent = 'Your latest results :';
 
     const resJson = await callRoute('getLatestResults');
     console.log("sessionDataStr : " + JSON.stringify(resJson))
@@ -57,12 +57,15 @@ document.getElementById('lastSessionResultsButton').addEventListener('click', as
     const incorrect = resJson.map(session => session.IncorrectCount);
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
-    myChart = generateIsCorrectBarGraph(correct, incorrect)
+    // myChart = generateIsCorrectBarGraph(correct, incorrect)
+
+    if (myChart !== null) { myChart.destroy(); }
+    myChart = generateCircularCorrectBarGraph(correct, incorrect)
 })
 
 
 document.getElementById('resultsByDayButton').addEventListener('click', async () => {
-    h2Element.textContent = 'Results by day';
+    graphTitle.textContent = 'Results by day';
 
     const resJson = await callRoute('getResultsByDay');
     console.log("sessionDataStr : " + JSON.stringify(resJson))
@@ -77,13 +80,15 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
 
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateDoubleLineGraphByDate(correct, incorrect, sessionDates, 'Number of answers')
 })
 
 
 async function displayLevelStats(level) {
 
-    h2Element.textContent = 'Results for level ' + level;
+    graphTitle.textContent = 'Results for level ' + level;
     const resJson = await callLevelRoute('getResultByLevel', level)
     console.log("callLevelRoute : " + JSON.stringify(resJson))
 
@@ -111,26 +116,26 @@ async function displayLevelStats(level) {
 
     const keyDataList = [
         { key: 'nbAttempts', value: sessionCount, subtext: 'Number of attempts' },
-        { key: 'totTime', value:  convertSecondsToMinutesAndSeconds(sessionTotalDuration), subtext: 'Total time' },
+        { key: 'totTime', value: convertSecondsToMinutesAndSeconds(sessionTotalDuration), subtext: 'Total time' },
         { key: 'avgTimeLevel', value: sessionAverageDuration + "s", subtext: 'Average time in this level' },
         { key: 'avgTimeAnswer', value: answerAverageDuration + "s", subtext: 'Average time of an answer' }
     ];
 
     generateKeyDataBoxes(keyDataList)
 
-
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 }
 
 
-function generateKeyDataBoxes(keyDataList){
+function generateKeyDataBoxes(keyDataList) {
     keyDataContainer.innerHTML = '';
 
     keyDataList.forEach(item => {
         // Create the data box
         const box = document.createElement('div');
         box.classList.add('key-data-box');
-        
+
 
         // Create the subtext element
         const subtext = document.createElement('div');
@@ -210,8 +215,6 @@ document.getElementById('tab-button1').addEventListener('click', () => {
 })
 
 
-
-
 document.getElementById('tab-button2').addEventListener('click', () => {
     document.getElementById(`level1Button`).click();
     document.getElementById(`level1Button`).classList.add('active');
@@ -219,7 +222,9 @@ document.getElementById('tab-button2').addEventListener('click', () => {
 
 
 document.getElementById('tab-button3').addEventListener('click', async () => {
+    graphTitle.textContent = '';
     const userStats = await callRoute('/getUserStats')
+
 
     const keyDataList = [
         { key: 'totSessionTime', value: convertSecondsToMinutesAndSeconds(userStats.mTotalSessionTime), subtext: 'Time playing' },
@@ -231,8 +236,6 @@ document.getElementById('tab-button3').addEventListener('click', async () => {
 })
 
 
-window.onload = async () => {
-    keepAuthenticate();
-    setTabButtons();
-    document.querySelector('.tab-button.active').click();
-}
+await keepAuthenticate();
+setTabButtons();
+document.querySelector('.tab-button.active').click();
