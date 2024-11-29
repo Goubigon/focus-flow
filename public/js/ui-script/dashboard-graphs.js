@@ -1,5 +1,18 @@
+const loadingGif = document.getElementById("loadingGif");
+const myCanvas = document.getElementById('myChart');
+
+function showLoading(){
+    loadingGif.style.display = "block";
+    myCanvas.style.display = "none";
+}
+
+function hideLoading(){
+    loadingGif.style.display = "none";
+    myCanvas.style.display = "block";
+}
+
 function setupCanvas() {
-    const myCanvas = document.getElementById('myChart');
+    showLoading();
     if (myCanvas) {
         myCanvas.width = window.innerWidth * 0.8;
         myCanvas.height = window.innerHeight * 0.5;
@@ -13,6 +26,7 @@ function checkCanvas(ctx){
         console.error("Canvas setup failed");
         return false;
     }
+    hideLoading();
     return true;
 }
 
