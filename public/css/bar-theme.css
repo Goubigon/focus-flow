@@ -4,6 +4,7 @@
     position: fixed;
     width: 100%;
     top: 0;
+    height:5vh;
 }
 
 
@@ -20,6 +21,7 @@
 }
 
 .bar-list li a {
+    text-align: center;
     transform: translateY(-80%);
     color: white;
     padding: 8px 16px;

@@ -1,5 +1,6 @@
-#bar{
+.bar-center{
     text-align: center; 
+    padding: 1vh;
 }
 
 .bar-list li a:hover {
