@@ -1,4 +1,4 @@
-.bar-center{
+.bar-center {
     text-align: center;
 }
 
@@ -23,4 +23,16 @@
 
 #logoutButton:hover {
     background-color: darkred;
+}
+
+@media (max-width: 600px) {
+    .bar-list li a,
+    #logoutButton {
+        font-size: 0.8em;
+        padding: 1em 0.4em;
+    }
+
+    #logoutButton {
+        right: 10px;
+    }
 }
