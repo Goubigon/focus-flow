@@ -8,12 +8,11 @@ import {
 } from './dashboard-graphs.js'
 
 
-
-
 let myChart = null;
 
 const keyDataContainer = document.getElementById('key-data-container');
 const graphTitle = document.getElementById('titleOfGraph');
+
 
 document.getElementById('sessionDurationByDateButton').addEventListener('click', async () => {
     graphTitle.textContent = 'Play time duration by day';
@@ -25,9 +24,11 @@ document.getElementById('sessionDurationByDateButton').addEventListener('click',
     const sessionDurations = sessionDataJson.map(session => session.durationSum);
     console.log("sessionDates : " + sessionDates)
     console.log("Durations : " + sessionDurations)
+
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateGraphByDate(sessionDurations, sessionDates, 'Total session time (seconds)', 'Duration (seconds)', 'line')
 })
-
 
 
 document.getElementById('sessionNumberByDateButton').addEventListener('click', async () => {
@@ -40,9 +41,10 @@ document.getElementById('sessionNumberByDateButton').addEventListener('click', a
     const sessionCount = sessionDataJson.map(session => session.sessionCount);
     console.log("sessionDates : " + sessionDates)
     console.log("sessionCount : " + sessionCount)
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateGraphByDate(sessionCount, sessionDates, 'Number of session', 'Number of session', 'bar')
 })
-
 
 
 document.getElementById('lastSessionResultsButton').addEventListener('click', async () => {
@@ -56,6 +58,8 @@ document.getElementById('lastSessionResultsButton').addEventListener('click', as
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
     // myChart = generateIsCorrectBarGraph(correct, incorrect)
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateCircularCorrectBarGraph(correct, incorrect)
 })
 
@@ -76,6 +80,8 @@ document.getElementById('resultsByDayButton').addEventListener('click', async ()
     console.log("correct : " + correct)
     console.log("incorrect : " + incorrect)
 
+
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateDoubleLineGraphByDate(correct, incorrect, sessionDates, 'Number of answers')
 })
 
@@ -110,26 +116,26 @@ async function displayLevelStats(level) {
 
     const keyDataList = [
         { key: 'nbAttempts', value: sessionCount, subtext: 'Number of attempts' },
-        { key: 'totTime', value:  convertSecondsToMinutesAndSeconds(sessionTotalDuration), subtext: 'Total time' },
+        { key: 'totTime', value: convertSecondsToMinutesAndSeconds(sessionTotalDuration), subtext: 'Total time' },
         { key: 'avgTimeLevel', value: sessionAverageDuration + "s", subtext: 'Average time in this level' },
         { key: 'avgTimeAnswer', value: answerAverageDuration + "s", subtext: 'Average time of an answer' }
     ];
 
     generateKeyDataBoxes(keyDataList)
 
-
+    if (myChart !== null) { myChart.destroy(); }
     myChart = generateDoubleLineGraphByDateWithDuration(correct, incorrect, duration, formattedSessionDates, 'Number of answers')
 }
 
 
-function generateKeyDataBoxes(keyDataList){
+function generateKeyDataBoxes(keyDataList) {
     keyDataContainer.innerHTML = '';
 
     keyDataList.forEach(item => {
         // Create the data box
         const box = document.createElement('div');
         box.classList.add('key-data-box');
-        
+
 
         // Create the subtext element
         const subtext = document.createElement('div');
@@ -230,8 +236,6 @@ document.getElementById('tab-button3').addEventListener('click', async () => {
 })
 
 
-window.onload = async () => {
-    keepAuthenticate();
-    setTabButtons();
-    document.querySelector('.tab-button.active').click();
-}
+await keepAuthenticate();
+setTabButtons();
+document.querySelector('.tab-button.active').click();

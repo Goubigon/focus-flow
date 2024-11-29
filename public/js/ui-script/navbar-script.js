@@ -9,6 +9,4 @@ document.getElementById("logoutButton").addEventListener('click', async () =>{
 })
 
 
-window.onload = () => {
-    console.log("Load navbar logout script ");
-}
+console.log("Load navbar logout script ");

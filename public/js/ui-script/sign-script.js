@@ -51,6 +51,4 @@ document.getElementById('signForm').addEventListener('submit', async (event) => 
   }
 })
 
-window.onload = async () => {
-  await alreadyConnected()
-}
+await alreadyConnected();
