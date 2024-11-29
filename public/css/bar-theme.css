@@ -15,19 +15,19 @@
 }
 
 .bar-list li {
-    width: 20%;
-    display: inline;
-    margin: 0 15px;
+    width: auto;
+    display: inline-block;
+    margin: 0 10px;
 }
 
-.bar-list li a {
+.bar-list li a, button {
+    display: inline-block;
     text-align: center;
-    transform: translateY(-80%);
     color: white;
-    padding: 8px 16px;
+    padding: 0.5em 1em; 
     text-decoration: none;
-    font-size: 18px;
+    font-size: 1em; 
     border-radius: 4px;
     transition: background-color 0.3s;
+    border: none;
 }
-
