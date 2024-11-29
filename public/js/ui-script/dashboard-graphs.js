@@ -1,12 +1,25 @@
 function setupCanvas() {
     const myCanvas = document.getElementById('myChart');
-    myCanvas.width = window.innerWidth * 0.8;
-    myCanvas.height = window.innerHeight * 0.5;
-    return myCanvas.getContext('2d');
+    if (myCanvas) {
+        myCanvas.width = window.innerWidth * 0.8;
+        myCanvas.height = window.innerHeight * 0.5;
+        return myCanvas.getContext('2d');
+    }
+    return null;
+}
+
+function checkCanvas(ctx){
+    if (!ctx) {
+        console.error("Canvas setup failed");
+        return false;
+    }
+    return true;
 }
 
 export function generateGraphByDate(duration, date, label, yText, chartType) {
     const ctx = setupCanvas();
+    if (!checkCanvas(ctx)) return;
+
     return new Chart(ctx, {
         type: chartType,
         data: {
@@ -59,7 +72,7 @@ export function generateGraphByDate(duration, date, label, yText, chartType) {
 
 export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
     const ctx = setupCanvas();
-
+    if (!checkCanvas(ctx)) return;
     return new Chart(ctx, {
         type: 'line',
         data: {
@@ -117,6 +130,7 @@ export function generateDoubleLineGraphByDate(val1, val2, date, yText) {
 
 export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, date, yText) {
     const ctx = setupCanvas();
+    if (!checkCanvas(ctx)) return;
     return new Chart(ctx, {
         type: 'line',
 
@@ -198,6 +212,7 @@ export function generateDoubleLineGraphByDateWithDuration(val1, val2, duration, 
 
 export function generateIsCorrectBarGraph(correct, incorrect) {
     const ctx = setupCanvas();
+    if (!checkCanvas(ctx)) return;
     return new Chart(ctx, {
         type: 'bar',
         data: {
@@ -251,7 +266,7 @@ export function generateIsCorrectBarGraph(correct, incorrect) {
 
 export function generateCircularCorrectBarGraph(correct, incorrect) {
     const ctx = setupCanvas();
-
+    if (!checkCanvas(ctx)) return;
     return new Chart(ctx, {
         type: 'doughnut', // Change to 'pie' if you prefer a pie chart
         data: {
