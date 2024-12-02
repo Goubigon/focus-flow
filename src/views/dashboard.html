@@ -35,16 +35,14 @@
             <div class="tab-content">
                 <div class="high-content">
                     <div id="tab1" class="tab active">
-
                         <h2>General results</h2>
                         <p>Get general information about your results.</p>
                         <button class="element-button" id="sessionDurationByDateButton">Playtime by day</button>
                         <button class="element-button" id="sessionNumberByDateButton">Number of session by day</button>
-                        <button class="element-button active" id="lastSessionResultsButton">Results from last
-                            session</button>
+                        <button class="element-button active" id="lastSessionResultsButton">Results from last session</button>
                         <button class="element-button" id="resultsByDayButton">Results by day</button>
-
                     </div>
+
                     <div id="tab2" class="tab">
                         <h2>Results by level</h2>
                         <p>Get key performance indicator and graphs of your results by levels.</p>
@@ -53,28 +51,27 @@
                         <button class="element-button" id="level3Button">Level 3</button>
                         <button class="element-button" id="level4Button">Level 4</button>
                         <button class="element-button" id="level5Button">Level 5</button>
-
                     </div>
+
                     <div id="tab3" class="tab">
                         <h2>Profile</h2>
                         <p>Get information about your profile.</p>
                     </div>
-
                 </div>
-                
+
                 <div id="key-data-container"></div>
 
                 <div class="low-content">
-                    <h2 class="tab" id="titleOfGraph"></h2>
-                    <canvas id="myChart"></canvas>
+                    <h2 id="titleOfGraph"></h2>
+
+                    <img id="loadingGif" src="/img/loading.gif" alt="loading_gif" width="30%">
+                    <canvas id="myChart" style="display:none;"></canvas>
                 </div>
             </div>
         </div>
 
         <script type="module" src="/js/ui-script/dashboard-script.js"></script>
     </div>
-
-
 
 </body>
 
