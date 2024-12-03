@@ -21,7 +21,7 @@ let totalDuration = 0;
 const linesContainerElement = document.getElementById('linesContainer');
 
 
-function prepareTextContent(item){
+function prepareTextContent(item) {
     //Add () to negative numbers
     const fLOpe = item.leftOperation < 0 ? `(${item.leftOperation})` : `${item.leftOperation}`;
     const fROpe = item.rightOperation < 0 ? `(${item.rightOperation})` : `${item.rightOperation}`;
@@ -39,7 +39,7 @@ function generateExerciseDiv(questionJsonList) {
         lineDiv.id = `line${i}`;
 
         const operationsSpan = document.createElement('span');
-        
+
         operationsSpan.textContent = prepareTextContent(item);
         lineDiv.appendChild(operationsSpan);
 
@@ -135,24 +135,20 @@ document.getElementById('predict').addEventListener('click', async () => {
     const dataURL = canvas.toDataURL('image/png');
     prediction = await askPredict(dataURL);
     console.log(prediction)
-    
-    
-    if (inputIsCorrect(prediction)) {
-        let currentQuestion = questionJsonList[currentLine]
-        if (handleResult(prediction, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
-        else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
 
-        linesContainerElement.children[currentLine].classList.remove('current');
-        linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    let currentQuestion = questionJsonList[currentLine]
+    if (handleResult(prediction, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
+    else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
 
-        currentLine++;
+    linesContainerElement.children[currentLine].classList.remove('current');
+    linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-        if (currentLine == numberOfLines) {
-            handleEndOfSession();
-        } else {
-            linesContainerElement.children[currentLine].classList.add('current');
-        }
+    currentLine++;
 
+    if (currentLine == numberOfLines) {
+        handleEndOfSession();
+    } else {
+        linesContainerElement.children[currentLine].classList.add('current');
     }
 });
 
