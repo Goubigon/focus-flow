@@ -75,19 +75,17 @@ input[type="checkbox"] {
 
 
 #customButton {
-    width: auto; /* Allow natural width scaling */
-    max-width: 200px; /* Prevent the button from becoming too wide */
-    padding: 0.8em 1.2em; /* Scalable padding */
     background-color: rgb(96, 220, 127);
-    color: white;
-    font-size: 1em; /* Relative font size */
-    text-align: center;
-    border-radius: 4px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 #customButton:hover {
     background-color: rgb(59, 170, 86);
+}
+
+#experimentalButton {
+    background-color: rgb(220, 121, 96);
+}
+
+#experimentalButton:hover {
+    background-color: rgb(177, 82, 58);
 }

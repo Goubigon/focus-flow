@@ -1,7 +1,4 @@
 
-import { askPredict } from '../client-api/model_api.js';
-
-
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 let drawing = false;
@@ -36,8 +33,7 @@ document.getElementById('clear').addEventListener('click', () => {
     document.getElementById('second_prob').innerText = '';
 });
 
-// Predict number
-document.getElementById('predict').addEventListener('click', async () => {
-    const dataURL = canvas.toDataURL('image/png');
-    await askPredict(dataURL);
+document.getElementById('predict').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 });
+
