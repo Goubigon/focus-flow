@@ -102,6 +102,8 @@ const customButton = document.getElementById('customButton');
 const configDiv = document.getElementById('configDiv');
 const levelButtonsContainer = document.getElementById('levelButtons');
 
+const experimentalButton = document.getElementById('experimentalButton');
+
 // Show levels when the "Levels" button is clicked
 levelsButton.addEventListener('click', () => {
     configForm.style.display = 'none'; // Hide the form
@@ -141,6 +143,18 @@ window.addEventListener('beforeunload', (event) => {
         //deprecated but old browsers still need a message
         event.returnValue = "You have unsaved changes. Are you sure you want to leave?";
     }
+});
+
+
+
+experimentalButton.addEventListener('click', async () => {
+    const paramJson = await createParams(0, 0, 0, 2, 1, 1, 1, 5);
+    const sessionJson = await createSession(paramJson.mParametersIdentifier, getCleanDateTime(new Date()))
+    
+    localStorage.setItem('mSessionIdentifier', sessionJson.mSessionIdentifier);
+    localStorage.setItem('mParametersIdentifier', sessionJson.mParametersIdentifier);
+
+    window.location.href = 'experimental-exercise';
 });
 
 

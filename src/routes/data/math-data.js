@@ -75,7 +75,7 @@ function randomNumber(minVal, maxVal) {
     return Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal
 }
 
-function getCorrectResult(lOpe, mOpe, rOpe){
+function getCorrectResult(lOpe, mOpe, rOpe) {
     if (mOpe === "+") {
         return lOpe + rOpe;
     } else if (mOpe === "-") {
@@ -106,7 +106,7 @@ router.post("/generateQuestions", async (req, res) => {
         const lOpe = randomNumber(mMinNumber, mMaxNumber);
         const mOpe = opList[Math.floor(Math.random() * opList.length)];
         const rOpe = randomNumber(mMinNumber, mMaxNumber);
-        const qRes =  getCorrectResult(lOpe, mOpe, rOpe)
+        const qRes = getCorrectResult(lOpe, mOpe, rOpe)
 
         const question = {
             leftOperation: lOpe,
@@ -120,13 +120,46 @@ router.post("/generateQuestions", async (req, res) => {
     res.status(201).send(questionJsonList)
 })
 
+
+router.post("/generateExperimentalQuestions", async (req, res) => {
+    let questionJsonList = [];
+
+    //const operations = ['+', '-'];
+    //const mOpe = operations[Math.floor(Math.random() * operations.length)];
+
+    let lOpe, rOpe, qRes;
+    for (let i = 0; i < 5; i++) {
+        qRes = Math.floor(Math.random() * 9) + 1;  // res  :   0 ~ 9  ->  8 // 6
+        lOpe = Math.floor(Math.random() * 21) - 10; // left : -10 ~ 10 -> -5 // 9
+        if (qRes > lOpe) {
+            mOpe = '+';
+            rOpe = qRes - lOpe; // right = 8 + 5 = 13
+        }
+        else {
+            mOpe = '-';
+            rOpe = lOpe - qRes; // right = 9 - 6 = 3
+        }
+
+        const question = {
+            leftOperation: lOpe,
+            mathOperation: mOpe,
+            rightOperation: rOpe,
+            qResult: qRes,
+        };
+        questionJsonList.push(question);
+    }
+
+    console.log("[POST /generateExperimentalQuestions] final list of questions : " + JSON.stringify(questionJsonList))
+    res.status(201).send(questionJsonList)
+})
+
 router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
     const mSessionIdentifier = req.body[0].mSessionIdentifier;
 
-    for(let i = 0 ; i < req.body.length; i++){
+    for (let i = 0; i < req.body.length; i++) {
         console.log(i + " : " + JSON.stringify(req.body[i]))
         const { leftOperation, mathOperation,
-            rightOperation,qResult, qAnswer, isCorrect, 
+            rightOperation, qResult, qAnswer, isCorrect,
             qTime, qDate
         } = req.body[i]
 
@@ -149,6 +182,5 @@ router.post("/insertAllAnswers", middleAuthentication, async (req, res) => {
 
     res.status(201)
 })
-
 
 module.exports = router;

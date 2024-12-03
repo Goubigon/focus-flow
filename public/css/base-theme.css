@@ -21,15 +21,16 @@ body {
     font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-align: center;
 }
 
 .base-button:hover {
     background-color: #0056b3;
 }
 
-.half-button {
-    width: 50%;
-    margin: 10px;
+.reactive-button {
+    width: auto;
+    max-width: 200px;
 }
 
 .base-image {

@@ -1,7 +1,10 @@
 import { getCleanDateTime, loadFromLocalStorage } from '../client-api/tools.js';
 import { keepAuthenticate } from '../client-api/user_api.js';
 
-import { askGenerateQuestions, insertAllAnswers } from '../client-api/math_api.js';
+import { askGenerateExperimentalQuestions } from '../client-api/math_api.js';
+
+import { askPredict } from '../client-api/model_api.js';
+
 
 
 let startTime; //starting time when questions are loaded
@@ -16,8 +19,6 @@ let numberOfLines;
 let totalDuration = 0;
 
 const linesContainerElement = document.getElementById('linesContainer');
-const answerInputTextArea = document.getElementById('answer-input');
-const errorMessageElement = document.getElementById('errorMessage');
 
 
 function prepareTextContent(item){
@@ -37,7 +38,8 @@ function generateExerciseDiv(questionJsonList) {
         lineDiv.tabIndex = 0; // Make it focusable
         lineDiv.id = `line${i}`;
 
-        const operationsSpan = document.createElement('span');=
+        const operationsSpan = document.createElement('span');
+        
         operationsSpan.textContent = prepareTextContent(item);
         lineDiv.appendChild(operationsSpan);
 
@@ -49,7 +51,6 @@ function generateExerciseDiv(questionJsonList) {
         linesContainerElement.appendChild(lineDiv);
     }
 }
-
 
 //Adds the answer, isCorrect, qTime and qDate into the json
 //Return isCorrect
@@ -124,66 +125,48 @@ function handleEndOfSession() {
     totalDurationMessage.style.display = 'block'; // Change to 'block' to make it visible
     totalDurationMessage.textContent = 'Total duration : ' + Number(totalDuration.toFixed(3)) + 's';
 
-    // insert answers in database
-    insertAllAnswers(questionJsonList)
 }
 
-// Event listener for answering a line (using Enter key)
-answerInputTextArea.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-        event.preventDefault();
 
-        let answerValue = answerInputTextArea.value;
-        if (inputIsCorrect(answerValue)) {
-            answerValue = formattedValue(answerValue);
+let prediction;
 
-            let currentQuestion = questionJsonList[currentLine]
-            if (handleResult(answerValue, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
-            else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
+// Predict number
+document.getElementById('predict').addEventListener('click', async () => {
+    const dataURL = canvas.toDataURL('image/png');
+    prediction = await askPredict(dataURL);
+    console.log(prediction)
+    
+    
+    if (inputIsCorrect(prediction)) {
+        let currentQuestion = questionJsonList[currentLine]
+        if (handleResult(prediction, currentQuestion)) { linesContainerElement.children[currentLine].classList.add('isCorrect'); }
+        else { linesContainerElement.children[currentLine].classList.add('isIncorrect'); }
 
-            linesContainerElement.children[currentLine].classList.remove('current');
-            linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        linesContainerElement.children[currentLine].classList.remove('current');
+        linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-            currentLine++;
+        currentLine++;
 
-            if (currentLine == numberOfLines) {
-                handleEndOfSession();
-            } else {
-                linesContainerElement.children[currentLine].classList.add('current');
-            }
-
+        if (currentLine == numberOfLines) {
+            handleEndOfSession();
+        } else {
+            linesContainerElement.children[currentLine].classList.add('current');
         }
-        answerInputTextArea.value = '';
-        answerInputTextArea.focus();
+
     }
 });
-
-
-answerInputTextArea.addEventListener('input', function (e) {
-    const errorMessageElement = document.getElementById('errorMessage');
-    let value = e.target.value;
-
-    // Remove any character that is not a digit, '.', or '-' 
-    value = value.replace(/[^0-9.-]/g, '');
-
-    errorMessageElement.innerHTML = '';
-    e.target.value = value;
-});
-
 
 
 
 await keepAuthenticate();
 
-mSessionIdentifier = loadFromLocalStorage('mSessionIdentifier');
-mParametersIdentifier = loadFromLocalStorage('mParametersIdentifier');
 
-questionJsonList = await askGenerateQuestions(mParametersIdentifier)
+questionJsonList = await askGenerateExperimentalQuestions()
+
 console.log("[exercise onload] question list: " + JSON.stringify(questionJsonList))
 
 generateExerciseDiv(questionJsonList)
 
 numberOfLines = questionJsonList.length;
-answerInputTextArea.focus()
 linesContainerElement.children[currentLine].classList.add('current');
 startTime = new Date();

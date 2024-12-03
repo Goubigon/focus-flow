@@ -63,6 +63,9 @@ The last command should have installed the following key packages:
 npm list
 ```
 ```
+
+The last command should have installed the following key packages.
+```bash
 ├── bcrypt@5.1.1
 ├── cookie-parser@1.4.7
 ├── dotenv@16.4.5
@@ -85,10 +88,15 @@ Copy .env.example to .env
 ```bash
 cp .env.example .env
 ```
-Generate cryptographic strings for token secrets using OpenSSL:
+Generate a cryptographic string for ACCESS_TOKEN_SECRET using OpenSSL:
 ```bash
 openssl rand -hex 64
 ```
+Then generate another one for REFRESH_TOKEN_SECRET:
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'));"
+```
+
 In your newly created .env file:
 1. Replace DB_USER and DB_PASSWORD with your actual credentials.
 2. Replace the ACCESS_TOKEN_SECRET with a generated cryptographic string.

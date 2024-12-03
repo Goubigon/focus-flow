@@ -1,4 +1,3 @@
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -19,9 +18,15 @@ body {
 }
 
 .input-container {
-    display: flex; 
-    flex-direction: column; /* Stack children vertically */
-    align-items: flex-start; /* Align items to the start (left) */
+    display: flex;
+    flex-direction: column;
+    /* Stack children vertically */
+    align-items: flex-start;
+    /* Align items to the start (left) */
+}
+
+.input-container * {
+    margin: 10px;
 }
 
 .lines-container {
@@ -37,23 +42,34 @@ body {
     /* Set a background color */
     box-shadow: 10px 5px 10px rgba(0, 0, 0, 0.1);
     /* Add a shadow for depth */
-    
+
     margin-left: 400px;
     margin-right: 20px;
 }
 
 .big-input {
-    width: 300px; /* Width of the input field */
-    height: 300px; /* Height to match the lines-container */
-    font-size: 24px; /* Larger font for better readability */
-    padding: 10px; /* Padding inside the text area */
-    border: 1px solid #ccc; /* Border around the text area */
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-    border-radius: 8px; /* Rounded corners for a softer look */
-    resize: none; /* Prevent the user from resizing the textarea */
-    outline: none; /* Remove default focus outline */
-    box-sizing: border-box; /* Include padding and border in width/height */
-    margin-bottom: 5px; /* Space between textarea and error message */
+    width: 300px;
+    /* Width of the input field */
+    height: 300px;
+    /* Height to match the lines-container */
+    font-size: 24px;
+    /* Larger font for better readability */
+    padding: 10px;
+    /* Padding inside the text area */
+    border: 1px solid #ccc;
+    /* Border around the text area */
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow effect */
+    border-radius: 8px;
+    /* Rounded corners for a softer look */
+    resize: none;
+    /* Prevent the user from resizing the textarea */
+    outline: none;
+    /* Remove default focus outline */
+    box-sizing: border-box;
+    /* Include padding and border in width/height */
+    margin-bottom: 5px;
+    /* Space between textarea and error message */
 }
 
 .error-message {
@@ -61,9 +77,12 @@ body {
     margin-top: 30px;
     margin-left: 20px;
     font-size: 14px;
-    visibility: hidden; /* Hide by default */
-    width: 300px; /* Match the width of the textarea */
-    display: block; /* Ensure it occupies its own line */
+    visibility: hidden;
+    /* Hide by default */
+    width: 300px;
+    /* Match the width of the textarea */
+    display: block;
+    /* Ensure it occupies its own line */
 }
 
 
@@ -80,7 +99,7 @@ body {
     background: #f0f0f0;
     transition: background 0.5s;
     /* Smooth background change */
-    outline : none;
+    outline: none;
 }
 
 .line.current {
@@ -99,47 +118,91 @@ body {
 }
 
 .line {
-    position: relative; /* Ensure position is relative for absolute positioning of answerDiv */
+    position: relative;
+    /* Ensure position is relative for absolute positioning of answerDiv */
 }
 
 .answer {
-    font-size: 0.8em; /* Extra small text size */
-    position: absolute; /* Position it absolutely within lineDiv */
-    bottom: 0; /* Align to the bottom */
-    right: 0; /* Align to the right */
-    margin: 5px; /* Optional: Add some margin for spacing */
+    font-size: 0.8em;
+    /* Extra small text size */
+    position: absolute;
+    /* Position it absolutely within lineDiv */
+    bottom: 0;
+    /* Align to the bottom */
+    right: 0;
+    /* Align to the right */
+    margin: 5px;
+    /* Optional: Add some margin for spacing */
     visibility: hidden;
 
-    opacity: 0; /* Start with opacity 0 */
-    transition: opacity 0.5s ease, visibility 0.5s ease; /* Fade effect */
+    opacity: 0;
+    /* Start with opacity 0 */
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    /* Fade effect */
 }
 
 
-.button {
-    display: inline-block; /* Make it behave like a button */
-    padding: 10px 20px; /* Add some padding */
-    background-color: #28a745; /* Green background color */
-    color: white; /* Text color */
-    text-decoration: none; /* Remove underline */
-    border-radius: 5px; /* Rounded corners */
-    border: none; /* Remove border */
-    cursor: pointer; /* Show pointer cursor */
-    font-size: 16px; /* Adjust font size */
-    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+.a-button {
+    display: inline-block;
+    /* Make it behave like a button */
+    padding: 10px 20px;
+    /* Add some padding */
+    background-color: #28a745;
+    /* Green background color */
+    color: white;
+    /* Text color */
+    text-decoration: none;
+    /* Remove underline */
+    border-radius: 5px;
+    /* Rounded corners */
+    border: none;
+    /* Remove border */
+    cursor: pointer;
+    /* Show pointer cursor */
+    font-size: 16px;
+    /* Adjust font size */
+    transition: background-color 0.3s ease;
+    /* Smooth transition for hover effect */
     visibility: hidden;
 }
 
-.button:hover {
-    background-color: #218838; /* Darker green on hover */
+.a-button:hover {
+    background-color: #218838;
+    /* Darker green on hover */
 }
 
 #totalDurationMessage {
-    display: none; /* Hidden by default */
-    padding: 10px; /* Add some padding */
-    margin: 20px 0; /* Margin for spacing */
-    background-color: #f8f9fa; /* Light gray background */
-    color: #333; /* Dark text color */
-    border: 1px solid #ccc; /* Light border */
-    border-radius: 5px; /* Rounded corners */
-    font-size: 16px; /* Font size */
+    display: none;
+    /* Hidden by default */
+    padding: 10px;
+    /* Add some padding */
+    margin: 20px 0;
+    /* Margin for spacing */
+    background-color: #f8f9fa;
+    /* Light gray background */
+    color: #333;
+    /* Dark text color */
+    border: 1px solid #ccc;
+    /* Light border */
+    border-radius: 5px;
+    /* Rounded corners */
+    font-size: 16px;
+    /* Font size */
+}
+
+
+#predict {
+    background-color: rgb(96, 220, 127);
+}
+
+#predict:hover {
+    background-color: rgb(59, 170, 86);
+}
+
+#clear {
+    background-color: rgb(220, 121, 96);
+}
+
+#clear:hover {
+    background-color: rgb(177, 82, 58);
 }
