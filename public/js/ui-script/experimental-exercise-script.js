@@ -10,7 +10,6 @@ import { askPredict } from '../client-api/model_api.js';
 let startTime; //starting time when questions are loaded
 
 let mSessionIdentifier;
-let mParametersIdentifier;
 let questionJsonList;
 
 let currentLine = 0;
@@ -19,6 +18,33 @@ let numberOfLines;
 let totalDuration = 0;
 
 const linesContainerElement = document.getElementById('linesContainer');
+
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+let drawing = false;
+
+// Start drawing
+canvas.addEventListener('mousedown', (event) => {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(event.offsetX, event.offsetY);
+});
+
+// Drawing on canvas
+canvas.addEventListener('mousemove', (event) => {
+    if (drawing) {
+        ctx.lineWidth = 10;
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+    }
+});
+
+// Stop drawing
+canvas.addEventListener('mouseup', () => {
+    drawing = false;
+});
+
 
 
 function prepareTextContent(item) {
@@ -45,7 +71,6 @@ function generateExerciseDiv(questionJsonList) {
 
         const answerDiv = document.createElement('div');
         answerDiv.className = 'answer';
-        //answerDiv.textContent = '____ (Duration: __ seconds)';
         lineDiv.appendChild(answerDiv);
 
         linesContainerElement.appendChild(lineDiv);
@@ -81,25 +106,6 @@ function handleViewResult(userAnswer, actualResult, duration) {
 
 }
 
-// Check if number is correct
-function inputIsCorrect(answerValue) {
-    let minusCount = (answerValue.match(/-/g) || []).length;
-    let dotCount = (answerValue.match(/\./g) || []).length;
-    if (minusCount > 1 || (minusCount === 1 && answerValue.indexOf('-') !== 0) || dotCount > 1 || isNaN(parseFloat(answerValue))) {
-        errorMessageElement.textContent = 'Invalid input! Only one "-" and one "." allowed.';
-        errorMessageElement.style.visibility = 'visible';
-        return false;
-    }
-    return true;
-}
-
-function formattedValue(answerValue) {
-    // Remove unnecessary leading zeros and trailing zeros
-    answerValue = answerValue.replace(/^0+(?=\d)/, ''); // Remove leading zeros
-    answerValue = answerValue.replace(/(\.\d*?[1-9])0+$/, '$1'); // Remove trailing zeros after decimal point
-    answerValue = answerValue.replace(/(\.0+)$/, '.'); // Remove .0
-    return answerValue
-}
 
 function handleEndOfSession() {
     // Insert the sessionIdentifier to each items of the json
@@ -130,6 +136,13 @@ function handleEndOfSession() {
 
 let prediction;
 
+
+// Clear canvas
+document.getElementById('clear').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+});
+
+
 // Predict number
 document.getElementById('predict').addEventListener('click', async () => {
     const dataURL = canvas.toDataURL('image/png');
@@ -142,6 +155,8 @@ document.getElementById('predict').addEventListener('click', async () => {
 
     linesContainerElement.children[currentLine].classList.remove('current');
     linesContainerElement.children[currentLine].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     currentLine++;
 
@@ -150,6 +165,7 @@ document.getElementById('predict').addEventListener('click', async () => {
     } else {
         linesContainerElement.children[currentLine].classList.add('current');
     }
+    
 });
 
 
