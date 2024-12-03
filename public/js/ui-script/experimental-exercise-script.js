@@ -1,7 +1,7 @@
 import { getCleanDateTime, loadFromLocalStorage } from '../client-api/tools.js';
 import { keepAuthenticate } from '../client-api/user_api.js';
 
-import { askGenerateQuestions, insertAllAnswers, askGenerateExperimentalQuestions } from '../client-api/math_api.js';
+import { askGenerateExperimentalQuestions } from '../client-api/math_api.js';
 
 import { askPredict } from '../client-api/model_api.js';
 

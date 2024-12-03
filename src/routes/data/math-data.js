@@ -124,33 +124,31 @@ router.post("/generateQuestions", async (req, res) => {
 router.post("/generateExperimentalQuestions", async (req, res) => {
     let questionJsonList = [];
 
-    const operations = ['+', '-'];
-    const mOpe = operations[Math.floor(Math.random() * operations.length)];
+    //const operations = ['+', '-'];
+    //const mOpe = operations[Math.floor(Math.random() * operations.length)];
 
     let lOpe, rOpe, qRes;
-    for (let i = 0; i < 5; i++){
-            switch (mOpe) {
-                case '+':
-                    qRes = Math.floor(Math.random() * 10);
-                    lOpe = Math.floor(Math.random() * (qRes + 1));
-                    rOpe = qRes - lOpe;
-                    break;
-                case '-':
-                    lOpe = Math.floor(Math.random() * 10);
-                    rOpe = Math.floor(Math.random() * (lOpe + 1));
-                    qRes = lOpe - rOpe;
-                    break;
-            }
-            
+    for (let i = 0; i < 5; i++) {
+        qRes = Math.floor(Math.random() * 9) + 1;  // res  :   0 ~ 9  ->  8 // 6
+        lOpe = Math.floor(Math.random() * 21) - 10; // left : -10 ~ 10 -> -5 // 9
+        if (qRes > lOpe) {
+            mOpe = '+';
+            rOpe = qRes - lOpe; // right = 8 + 5 = 13
+        }
+        else {
+            mOpe = '-';
+            rOpe = lOpe - qRes; // right = 9 - 6 = 3
+        }
+
         const question = {
             leftOperation: lOpe,
             mathOperation: mOpe,
             rightOperation: rOpe,
             qResult: qRes,
         };
-        questionJsonList.push(question);        
+        questionJsonList.push(question);
     }
-    
+
     console.log("[POST /generateExperimentalQuestions] final list of questions : " + JSON.stringify(questionJsonList))
     res.status(201).send(questionJsonList)
 })
