@@ -37,7 +37,7 @@ function generateExerciseDiv(questionJsonList) {
         lineDiv.tabIndex = 0; // Make it focusable
         lineDiv.id = `line${i}`;
 
-        const operationsSpan = document.createElement('span');=
+        const operationsSpan = document.createElement('span');
         operationsSpan.textContent = prepareTextContent(item);
         lineDiv.appendChild(operationsSpan);
 
