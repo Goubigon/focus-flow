@@ -20,6 +20,14 @@ const answerInputTextArea = document.getElementById('answer-input');
 const errorMessageElement = document.getElementById('errorMessage');
 
 
+function prepareTextContent(item){
+    //Add () to negative numbers
+    const fLOpe = item.leftOperation < 0 ? `(${item.leftOperation})` : `${item.leftOperation}`;
+    const fROpe = item.rightOperation < 0 ? `(${item.rightOperation})` : `${item.rightOperation}`;
+
+    return `${fLOpe} ${item.mathOperation} ${fROpe} = `;
+}
+
 
 function generateExerciseDiv(questionJsonList) {
     for (let i = 0; i < questionJsonList.length; i++) {
@@ -30,7 +38,8 @@ function generateExerciseDiv(questionJsonList) {
         lineDiv.id = `line${i}`;
 
         const operationsSpan = document.createElement('span');
-        operationsSpan.textContent = `${item.leftOperation} ${item.mathOperation} ${item.rightOperation} = `;
+        
+        operationsSpan.textContent = prepareTextContent(item);
         lineDiv.appendChild(operationsSpan);
 
         const answerDiv = document.createElement('div');
