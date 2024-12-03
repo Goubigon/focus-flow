@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise</title>
+
+    <link rel="stylesheet" href="/css/exercise.css">
+
+    <style>
+        canvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+
+<body>
+    <div id="bar"></div>
+    <script>
+        fetch('/partial/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('bar').innerHTML = data;
+                return import('/js/ui-script/navbar-script.js');
+            })
+            .catch(error => console.error("Error loading navbar:", error));
+    </script>
+
+
+    <div class="main-container">
+        <div class="lines-container" id="linesContainer"></div>
+
+        <div class="input-container">
+            <canvas id="canvas" width="200" height="200"></canvas>
+            <button class="base-button reactive-button" id="clear">Clear</button>
+            <button class="base-button reactive-button" id="predict">Predict Number</button>
+            
+            <a href="/dashboard" class="a-button" id="dashboardButton">Go to Results</a>
+            <div id="totalDurationMessage"></div>
+        </div>
+        
+    </div>
+
+
+    <script type="module" src="/js/ui-script/experimental-exercise-script.js"></script>
+    <script type="module" src="/js/ui-script/hand-script.js"></script>
+</body>
+
+</html>
