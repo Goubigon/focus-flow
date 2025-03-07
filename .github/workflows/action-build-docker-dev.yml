@@ -22,7 +22,7 @@ jobs:
     - name: Execute Docker commands on server
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd /home/leo/remote_docker_folder
+          cd cd ~/works
           docker rmi $(docker images focus-flow-image -q)
           docker build --no-cache -t focus-flow-image:dev -f Dockerfile-dev .
           docker compose up -d --build focus-flow-dev
