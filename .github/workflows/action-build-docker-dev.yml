@@ -18,6 +18,15 @@ jobs:
       uses: webfactory/ssh-agent@v0.5.3
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Check server reachability
+      run: ping -c 4 ${{ secrets.SSH_HOST }}
+
+
+    - name: Debug SSH connection
+      run: |
+        ssh -vvv -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+
 
     - name: Execute Docker commands on server
       run: |
