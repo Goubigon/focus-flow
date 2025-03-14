@@ -14,11 +14,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        
+    - name: Install Tailscale
+      run: |
+        curl -fsSL https://tailscale.com/install.sh | sh
+
+    - name: Connect to Tailscale
+      env:
+        TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
+      run: |
+        sudo tailscale up --authkey=${TAILSCALE_AUTH_KEY}
+
     - name: Check server reachability
       run: ping -c 4 ${{ secrets.SSH_HOST }}
 
@@ -36,3 +41,5 @@ jobs:
           docker build --no-cache -t focus-flow-image:dev -f Dockerfile-dev .
           docker compose up -d --build focus-flow-dev
         EOF
+
+
