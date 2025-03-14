@@ -24,8 +24,6 @@ jobs:
       run: |
         sudo tailscale up --authkey=${TAILSCALE_AUTH_KEY}
 
-    - name: Check server reachability
-      run: ping -c 4 ${{ secrets.SSH_HOST }}
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
@@ -40,10 +38,13 @@ jobs:
     - name: Execute Docker commands on server
       run: |
         ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
-          cd cd ~/works
-          docker rmi $(docker images focus-flow-image -q)
+          cd ~/works
+          docker ps -q --filter "ancestor=focus-flow-image:dev"
+          docker stop $(docker ps -q --filter "ancestor=focus-flow-image:dev") || true
+          docker rm $(docker ps -aq --filter "ancestor=focus-flow-image:dev") || true
+          docker rmi -f focus-flow-image:dev
           docker build --no-cache -t focus-flow-image:dev -f Dockerfile-dev .
-          docker-compose up -d --build focus-flow-dev
+          docker-compose up -d --build focus-flow-service-dev
         EOF
 
 
