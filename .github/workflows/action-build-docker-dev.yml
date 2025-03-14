@@ -43,7 +43,7 @@ jobs:
           cd cd ~/works
           docker rmi $(docker images focus-flow-image -q)
           docker build --no-cache -t focus-flow-image:dev -f Dockerfile-dev .
-          docker compose up -d --build focus-flow-dev
+          docker-compose up -d --build focus-flow-dev
         EOF
 
 
