@@ -22,8 +22,7 @@ jobs:
       env:
         TAILSCALE_AUTH_KEY: ${{ secrets.TAILSCALE_AUTH_KEY }}
       run: |
-        sudo tailscale up --authkey=${TAILSCALE_AUTH_KEY}
-
+        sudo tailscale up --authkey=${TAILSCALE_AUTH_KEY} --ssh --hostname=focus-flow-actions-runner
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
